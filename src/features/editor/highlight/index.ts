@@ -1,0 +1,1 @@
+export { highlightInit } from "./model";
