@@ -1,4 +1,3 @@
-// widgets/editor/sidebar.tsx
 "use client";
 import { useMemo } from "react";
 import { useUnit } from "effector-react";
@@ -27,7 +26,7 @@ export const findWidgetById = (pages: Pages, id: string) => {
 };
 
 export const EditorSidebar = () => {
-  const [pages, selected, globalSel] = useUnit([
+  const [pages, selected] = useUnit([
     $pagesJson,
     $selectedElement,
     $globalProps,
@@ -54,7 +53,7 @@ export const EditorSidebar = () => {
       type: pages.global?.type ?? "global",
       data: pages.global?.props ?? {},
     };
-  }, [pages, selected?.props?.id, globalSel]);
+  }, [pages, selected?.props?.id]);
 
   const handleChange = (path: (string | number)[], value: any) => {
     if (view.mode === "widget" && view.id) {
@@ -77,7 +76,7 @@ export const EditorSidebar = () => {
               key === "type" ||
               key === "widgets" ? null : (
               <div className="flex gap-[2px] flex-col" key={key}>
-                <span className="uppercase font-medium text-sm opacity-40 capitalize">
+                <span className="uppercase font-medium text-sm opacity-40">
                   {key}
                 </span>
                 <RecursiveRender

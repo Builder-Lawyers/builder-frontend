@@ -4,8 +4,7 @@
     "props": {
       "type": "global",
       "logo": "url here",
-      "colors":
-      {
+      "colors": {
         "main": "white",
         "accent": "black"
       },
