@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ReactNode } from "react";
-import { Urbanist } from "next/font/google";
-import { AppLayout } from "@/shared/layouts/app";
-import { Header } from "@/widgets/header/ui";
+import { Mulish } from "next/font/google";
 
-const urbanist = Urbanist({
+const mulish = Mulish({
   weight: ["500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
@@ -22,9 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={urbanist.className}>
-        <AppLayout header={<Header />}>{children}</AppLayout>
-      </body>
+      <body className={mulish.className}>{children}</body>
     </html>
   );
 }

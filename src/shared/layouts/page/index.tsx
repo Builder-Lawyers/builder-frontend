@@ -16,7 +16,7 @@ export const PageLayout = ({
         className,
       )}
     >
-      <div className="flex flex-col h-full max-w-[1440px] w-full">
+      <div className="flex flex-col h-full max-w-[1280px] w-full">
         {children}
       </div>
     </div>

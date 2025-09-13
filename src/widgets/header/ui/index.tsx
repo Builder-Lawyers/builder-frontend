@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export const Header = () => {
   return (
-    <header className="h-[64px]">
-      <PageLayout className="px-[48px] bg-white border-b">
-        <div className="h-full  w-full flex justify-between  items-center">
+    <header className="h-[96px]">
+      <PageLayout className="px-[48px]">
+        <div className="h-full w-full flex justify-between  items-center">
           <nav>
             <li className="flex uppercase gap-8">
               <Link href="/">Home</Link>
@@ -15,9 +15,16 @@ export const Header = () => {
               <a href="#">Contact</a>
             </li>
           </nav>
-          <Link href="editor">
-            <Button>To editor</Button>
-          </Link>
+          <div className="flex gap-[24px] items-center">
+            <Link href="login">
+              <Button size="link" variant="link">
+                Log in
+              </Button>
+            </Link>
+            <Link href="signup">
+              <Button>To editor</Button>
+            </Link>
+          </div>
         </div>
       </PageLayout>
     </header>
