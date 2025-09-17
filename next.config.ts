@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import unpluginIcons from "unplugin-icons/webpack";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -7,6 +8,16 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,
+  },
+
+  webpack(config) {
+    config.plugins.push(
+      unpluginIcons({
+        compiler: "jsx",
+        jsx: "react",
+      }),
+    );
+    return config;
   },
   async rewrites() {
     return [

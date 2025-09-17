@@ -9,29 +9,27 @@ export const Zoom = () => {
   const [onZoomOut, onZoomIn] = useUnit([zoomOut, zoomIn, setScale]);
 
   return (
-    <div className="flex gap-2 p-1 rounded">
+    <div className="flex gap-4 p-1 rounded">
       <Button
-        variant={"ghost"}
+        variant="link"
         onClick={() => {
           setScale(ZOOM.MIN);
         }}
-        size={"icon"}
       >
         <Smartphone size={20} />
       </Button>
       <Button
-        variant={"ghost"}
+        variant="link"
         onClick={() => {
           setScale(ZOOM.MAX);
         }}
-        size={"icon"}
       >
         <Laptop size={20} />
       </Button>
-      <Button variant={"ghost"} onClick={onZoomOut} size={"icon"}>
+      <Button variant="link" onClick={onZoomOut}>
         <ZoomOut size={20} />
       </Button>
-      <Button variant={"ghost"} onClick={onZoomIn} size={"icon"}>
+      <Button variant="link" onClick={onZoomIn}>
         <ZoomIn size={20} />
       </Button>
     </div>

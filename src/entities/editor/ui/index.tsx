@@ -7,7 +7,7 @@ interface Props {
 
 export const Editor = ({ editor, sidebar }: Props) => {
   return (
-    <div className="flex h-[calc(100dvh-64px)] w-full grow rounded">
+    <div className="flex h-dvh w-full grow rounded">
       {sidebar}
       {editor}
     </div>

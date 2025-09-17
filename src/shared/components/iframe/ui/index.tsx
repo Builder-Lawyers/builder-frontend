@@ -48,7 +48,7 @@ export const Iframe = forwardRef<HTMLIFrameElement, IframeProps>(
           className="relative  p-2 w-full h-full flex  items-center  overflow-auto m-auto justify-center"
         >
           <iframe
-            className="h-full bg-white rounded border  w-full"
+            className="h-full bg-white rounded border border-black/10 w-full"
             ref={ref}
             src={src}
             {...rest}

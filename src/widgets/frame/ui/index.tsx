@@ -78,7 +78,7 @@ export const Frame = ({ src, json }: Props) => {
     <Iframe
       ref={ref}
       actions={
-        <div className="flex w-full justify-between items-center">
+        <div className="flex gap-4 p-2 w-full justify-between items-center">
           <Zoom />
           <div className="flex gap-4">
             <Preview callback={resetHighlight} />

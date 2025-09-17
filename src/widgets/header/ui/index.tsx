@@ -22,7 +22,7 @@ export const Header = () => {
               </Button>
             </Link>
             <Link href="signup">
-              <Button>To editor</Button>
+              <Button>Get Started</Button>
             </Link>
           </div>
         </div>

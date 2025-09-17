@@ -8,25 +8,51 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { Label } from "@/shared/components/ui/label";
-import { CenteringLayout } from "@/shared/layouts/centering";
 import Link from "next/link";
+import { AuthForm } from "@/shared/components/auth-form";
+
+import { cn } from "@/shared/lib/utils";
+
+const steps = [
+  {
+    title: "Create account",
+    description: "Lorem ipsum dolor sit amet",
+    isComplete: true,
+  },
+  {
+    title: "Choose Plan",
+    description: "Lorem ipsum dolor sit amet",
+  },
+  {
+    title: "Choose Template",
+    description: "Lorem ipsum dolor sit amet",
+  },
+];
 
 export const Registration = () => {
   return (
-    <div className="flex items-center justify-between">
-      <CenteringLayout
-        forPage={false}
-        className="flex h-[100dvh] justify-between p-2 w-full"
-      >
-        <div className="flex bg-black/5 rounded-[16px] justify-center gap-[12px] h-full w-full flex-col">
-          {/*<h1 className="text-[42px] font-namu uppercase">*/}
-          {/*  Try creating a website quickly and easily*/}
-          {/*</h1>*/}
-          {/*<p className="text-[16px] text-typography-secondary uppercase">*/}
-          {/*  Lorem ipsum dolor sit amet, consectetur adipiscing elit*/}
-          {/*</p>*/}
+    <AuthForm
+      widget={
+        <div className="flex h-full justify-between flex-col">
+          <h1 className="text-[24px] font-namu uppercase">BUILDER.AI</h1>
+          <div className="flex flex-col gap-4">
+            {steps.map((step) => (
+              <div
+                key={step.title}
+                className={cn("flex gap-2", !step.isComplete && "opacity-40")}
+              >
+                <div>
+                  <h2 className="uppercase  font-namu">{step.title}</h2>
+                  <p className="text-secondary">{step.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div>hello</div>
         </div>
-        <Card className="gap-[48px] bg-white p-[48px] w-[60%]">
+      }
+      form={
+        <Card className="gap-[48px] bg-white w-full max-w-[560px]">
           <CardHeader>
             <CardTitle className="text-[24px] font-semibold text-typography-foreground uppercase text-center">
               Registration
@@ -46,9 +72,11 @@ export const Registration = () => {
                 />
               </div>
               <div className="gap-[12px]  items-center flex-col flex">
-                <Button className="w-full" type="submit">
-                  Continue
-                </Button>
+                <Link className="w-full" href={"/editor"}>
+                  <Button className="w-full" type="submit">
+                    Continue
+                  </Button>
+                </Link>
                 <Label>
                   <span className="text-typography-secondary">
                     Already have an account?
@@ -63,7 +91,7 @@ export const Registration = () => {
             </div>
           </CardContent>
         </Card>
-      </CenteringLayout>
-    </div>
+      }
+    />
   );
 };

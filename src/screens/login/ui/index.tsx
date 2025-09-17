@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -5,28 +7,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
+
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
-import { Label } from "@/shared/components/ui/label";
-import { CenteringLayout } from "@/shared/layouts/centering";
-import Link from "next/link";
+import { AuthForm } from "@/shared/components/auth-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+} from "@/shared/components/ui/form";
+import { useForm } from "react-hook-form";
+import { login, LoginFormValues, loginValidation } from "@/screens/login/model";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
 
 export const LoginPage = () => {
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginValidation),
+    defaultValues: {
+      email: "sanity@mailinator.com",
+      password: "Password_25!",
+    },
+  });
+
+  function onSubmit(data: LoginFormValues) {
+    login(data).then(() => {
+      redirect("/editor");
+    });
+  }
+
   return (
-    <div className="flex items-center justify-between">
-      <CenteringLayout
-        forPage={false}
-        className="flex h-[100dvh] justify-between p-2 w-full"
-      >
-        <div className="flex bg-black/5 rounded-[16px] justify-center gap-[12px] h-full w-full flex-col">
-          {/*<h1 className="text-[42px] font-namu uppercase">*/}
-          {/*  Try creating a website quickly and easily*/}
-          {/*</h1>*/}
-          {/*<p className="text-[16px] text-typography-secondary uppercase">*/}
-          {/*  Lorem ipsum dolor sit amet, consectetur adipiscing elit*/}
-          {/*</p>*/}
-        </div>
-        <Card className="gap-[48px] bg-white p-[48px] w-[60%]">
+    <AuthForm
+      form={
+        <Card className="gap-[48px] bg-white w-full max-w-[560px]">
           <CardHeader>
             <CardTitle className="text-[24px] font-semibold text-typography-foreground uppercase text-center">
               Sign In
@@ -35,31 +49,58 @@ export const LoginPage = () => {
               Please provide your email and password
             </CardDescription>
           </CardHeader>
-          <CardContent className="w-full  flex">
-            <div className="w-full gap-[48px] flex-col flex">
-              <div className="w-full flex gap-[24px] flex-col">
-                <Input label="Email" placeholder="Enter your email" />
-                <Input label="Password" placeholder="Enter your password" />
-              </div>
-              <div className="gap-[12px]  items-center flex-col flex">
-                <Button className="w-full" type="submit">
-                  Continue
+          <CardContent>
+            <Form {...form}>
+              <form
+                className="flex flex-col gap-[12px]"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          id="email"
+                          label="Email"
+                          type="email"
+                          placeholder="Enter your email"
+                          error={fieldState.error?.message}
+                          aria-invalid={!!fieldState.error}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          id="password"
+                          label="Password"
+                          type="password"
+                          placeholder="Enter your password"
+                          error={fieldState.error?.message}
+                          aria-invalid={!!fieldState.error}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <Button className="mt-[24px]" type="submit">
+                  Submit
                 </Button>
-                <Label>
-                  <span className="text-typography-secondary">
-                    Don't have an account?
-                  </span>
-                  <Link href="signup">
-                    <Button size={"link"} variant={"link"}>
-                      Sing In
-                    </Button>
-                  </Link>
-                </Label>
-              </div>
-            </div>
+              </form>
+            </Form>
           </CardContent>
         </Card>
-      </CenteringLayout>
-    </div>
+      }
+    />
   );
 };

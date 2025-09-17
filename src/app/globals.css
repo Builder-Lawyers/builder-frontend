@@ -40,3 +40,7 @@
 @layer base {
 
 }
+
+body{
+    color: var(--color-foreground);
+}

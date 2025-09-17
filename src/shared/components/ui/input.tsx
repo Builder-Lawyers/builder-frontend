@@ -14,6 +14,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   slots?: InputSlots;
   label?: string;
   helperText?: string;
+  error?: string;
 }
 
 function InputHeadless({ className, type, slots, ...props }: InputProps) {
@@ -41,6 +42,7 @@ export default function Input({
   slots,
   label,
   helperText,
+  error,
   ...props
 }: InputProps) {
   const Root = slots?.root ?? "div";
@@ -55,10 +57,15 @@ export default function Input({
       <InputHeadless {...props} slots={slots} />
       {helperText && (
         <HelperSlot
-          className="text-[0.8rem] text-muted-foreground"
+          className="text-[14px] text-muted-foreground"
           data-slot="helper"
         >
           {helperText}
+        </HelperSlot>
+      )}
+      {error && (
+        <HelperSlot className="text-[14px]" data-slot="error">
+          {error}
         </HelperSlot>
       )}
     </Root>

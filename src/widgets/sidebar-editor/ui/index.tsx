@@ -66,7 +66,7 @@ export const EditorSidebar = () => {
   const entries = Object.entries(view.data ?? {});
 
   return (
-    <div className="flex grow h-full flex-col w-[400px] border-r gap-2">
+    <div className="flex grow h-full flex-col w-[400px] border-r border-black/10 gap-2">
       <aside className="p-4 flex flex-col gap-6">
         <h1 className="font-bold text-xl capitalize">{view.type || "—"}</h1>
 
