@@ -1,1 +1,0 @@
-export { scrollToActiveElement } from "./model";

@@ -50,10 +50,12 @@ export default function Input({
   const HelperSlot = slots?.helper ?? "p";
 
   return (
-    <Root className="w-full space-y-1.5" data-slot="root">
-      <LabelSlot htmlFor={props.id} data-slot="label">
-        {label}
-      </LabelSlot>
+    <Root className="w-full gap-1.5 flex-col flex" data-slot="root">
+      {label && (
+        <LabelSlot htmlFor={props.id} data-slot="label">
+          {label}
+        </LabelSlot>
+      )}
       <InputHeadless {...props} slots={slots} />
       {helperText && (
         <HelperSlot

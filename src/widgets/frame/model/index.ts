@@ -1,96 +1,65 @@
-import { RefObject, useEffect, useRef } from "react";
+import { DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
+import { useEditorStore } from "@/entities/editor";
+import { useEffect, useMemo, useState } from "react";
 
-type InjectionProps = {
-  iframeRef: RefObject<HTMLIFrameElement | null>;
-  onLoad?: (iframe: HTMLIFrameElement) => void;
-  onClick?: (target: HTMLElement, iframe: HTMLIFrameElement) => void;
-  onMouseMove?: (target: HTMLElement, iframe: HTMLIFrameElement) => void;
-  onHover?: (target: HTMLElement, iframe: HTMLIFrameElement) => void;
-  onCleanup?: () => void;
-};
+export const useFrame = (ref: HTMLIFrameElement | null) => {
+  const { widgets, api: editorApi } = useEditorStore();
 
-export const useIframeInjection = ({
-  iframeRef,
-  onLoad,
-  onClick,
-  onMouseMove,
-  onHover,
-  onCleanup,
-}: InjectionProps) => {
-  const attachedDocRef = useRef<Document | null>(null);
-  const rafRef = useRef<number | null>(null);
+  const [hoveredDOMElement, setHoveredDOMElement] =
+    useState<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const iframe = iframeRef?.current;
-    if (!iframe) return;
+  const [selectedDOMElement, setSelectedDOMElement] =
+    useState<HTMLDivElement | null>(null);
 
-    const cleanups: (() => void)[] = [];
+  const clickOnElement = (element: HTMLDivElement) => {
+    setSelectedDOMElement(element);
+  };
 
-    const runInjection = () => {
-      const doc = iframe.contentDocument;
-      const win = iframe.contentWindow;
-      const body = doc?.body;
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
 
-      if (!doc || !win || !body) return;
+    const oldIndex = widgets.findIndex((w) => w.id === active.id);
+    const newIndex = widgets.findIndex((w) => w.id === over.id);
 
-      if (attachedDocRef.current && attachedDocRef.current !== doc) {
-        cleanups.forEach((fn) => fn());
-        cleanups.length = 0;
-      }
-
-      attachedDocRef.current = doc;
-
-      onLoad?.(iframe);
-
-      if (onClick) {
-        const handleClick = (e: MouseEvent) => {
-          const target = e.target as HTMLElement | null;
-          if (target) onClick(target, iframe);
-        };
-        doc.addEventListener("click", handleClick, true);
-        cleanups.push(() =>
-          doc.removeEventListener("click", handleClick, true),
-        );
-      }
-
-      if (onMouseMove || onHover) {
-        const handleMouseMove = (e: MouseEvent) => {
-          if (rafRef.current) return;
-          rafRef.current = requestAnimationFrame(() => {
-            rafRef.current = null;
-
-            const target = e.target as HTMLElement | null;
-            if (!target) return;
-
-            if (onMouseMove) onMouseMove(target, iframe);
-            if (onHover) onHover(target, iframe);
-          });
-        };
-        doc.addEventListener("mousemove", handleMouseMove, { passive: true });
-        cleanups.push(() => {
-          doc.removeEventListener("mousemove", handleMouseMove);
-          if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        });
-      }
-    };
-
-    iframe.addEventListener("load", runInjection);
-
-    if (iframe.contentDocument?.readyState === "complete") {
-      runInjection();
-    }
-
-    return () => {
-      iframe.removeEventListener("load", runInjection);
-      cleanups.forEach((fn) => fn());
-      attachedDocRef.current = null;
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, [iframeRef, onClick, onMouseMove, onHover]);
+    editorApi.reorder(null, (list) => arrayMove(list, oldIndex, newIndex));
+  };
 
   useEffect(() => {
-    return () => {
-      onCleanup?.();
+    if (!ref) return;
+    const iframeDoc = ref.contentDocument;
+
+    if (!iframeDoc) return;
+
+    const handleLeave = () => {
+      setHoveredDOMElement(null);
     };
-  }, []);
+
+    iframeDoc.addEventListener("mouseleave", handleLeave);
+
+    return () => {
+      iframeDoc.removeEventListener("mouseleave", handleLeave);
+    };
+  }, [ref, setHoveredDOMElement]);
+
+  const elementDOMProps = useMemo(() => {
+    const element = hoveredDOMElement?.getBoundingClientRect();
+    if (!element) return null;
+
+    return {
+      isActive: !!element,
+      height: element.height,
+      width: element.width,
+      coordinates: { x: element.x, y: element.y },
+    };
+  }, [hoveredDOMElement]);
+
+  return {
+    handleDragEnd,
+    elementDOMProps,
+    setHoveredDOMElement,
+    clickOnElement,
+    selectedDOMElement,
+  };
 };

@@ -1,48 +1,90 @@
-// entities/editor/model.ts
-import { Pages } from "@/shared/types";
-import { createEvent, createStore } from "effector";
-import { cloneDeep, set } from "lodash";
+import { create } from "zustand/react";
+import { immer } from "zustand/middleware/immer";
+import { WidgetProps } from "@/shared/types";
+import { getWidgetSettings } from "@/shared/utils";
 
-const $pagesJson = createStore<Pages | null>(null);
+export interface EditorState {
+  widgets: WidgetProps[];
+}
 
-const getPagesJson = createEvent<Pages>();
+interface EditorApi {
+  add: (widget: WidgetProps) => void;
+  update: (id: string, updater: (widget?: WidgetProps) => WidgetProps) => void;
+  remove: (id: string) => void;
+  getById: (id: string) => WidgetProps | undefined;
+  reorder: (
+    parentId: string | null,
+    updater: (widgets: WidgetProps[]) => WidgetProps[],
+  ) => void;
+}
 
-const updateWidgetProp = createEvent<{
-  widgetId?: string;
-  path: (string | number)[];
-  value: any;
-}>();
+export function normalizeWidgets(widgets: WidgetProps[]): WidgetProps[] {
+  const topFixed = widgets.filter(
+    (w) => getWidgetSettings(w)?.optional?.fixed === "top",
+  );
+  const bottomFixed = widgets.filter(
+    (w) => getWidgetSettings(w)?.optional.fixed === "bottom",
+  );
+  const normal = widgets.filter(
+    (w) =>
+      !["top", "bottom"].includes(
+        getWidgetSettings(w)?.optional?.fixed as string,
+      ),
+  );
 
-const updateGlobalProp = createEvent<{
-  path: (string | number)[];
-  value: any;
-}>();
+  return [...topFixed, ...normal, ...bottomFixed];
+}
 
-$pagesJson.on(getPagesJson, (_, p) => p);
+export const useEditorStore = create<EditorState & { api: EditorApi }>()(
+  immer((set, getState) => ({
+    widgets: [],
+    api: {
+      add: (widget) =>
+        set((state) => {
+          state.widgets.push(widget);
+          state.widgets = normalizeWidgets(state.widgets);
+        }),
 
-$pagesJson.on(updateWidgetProp, (pages, { widgetId, path, value }) => {
-  if (!pages || !widgetId) return pages;
-  const next = cloneDeep(pages);
+      update: (id, updater) =>
+        set((state) => {
+          const updateRecursive = (widgets: typeof state.widgets): boolean => {
+            for (let i = 0; i < widgets.length; i++) {
+              if (widgets[i].id === id) {
+                widgets[i] = updater(widgets[i]);
+                return true;
+              }
+              if (
+                widgets[i].children &&
+                updateRecursive(widgets[i].children!)
+              ) {
+                return true;
+              }
+            }
+            return false;
+          };
 
-  const updateIn = (widgets?: any[]) => {
-    if (!widgets) return;
-    for (const w of widgets) {
-      if (w?.props?.id === widgetId) {
-        set(w.props, path, value);
-      }
-    }
-  };
+          updateRecursive(state.widgets);
+        }),
 
-  updateIn(next.global?.props?.widgets);
-  for (const page of next.pages ?? []) updateIn(page.widgets);
-  return next;
-});
+      remove: (id) =>
+        set((state) => {
+          state.widgets = state.widgets.filter((w) => w.id !== id);
+          state.widgets = normalizeWidgets(state.widgets);
+        }),
 
-$pagesJson.on(updateGlobalProp, (pages, { path, value }) => {
-  if (!pages) return pages;
-  const next = cloneDeep(pages);
-  set(next, ["global", "props", ...path], value);
-  return next;
-});
+      getById: (id) => getState().widgets.find((w) => w.id === id),
 
-export { $pagesJson, getPagesJson, updateWidgetProp, updateGlobalProp };
+      reorder: (parentId, updater) =>
+        set((state) => {
+          if (parentId === null) {
+            state.widgets = normalizeWidgets(updater(state.widgets));
+          } else {
+            const parent = state.widgets.find((w) => w.id === parentId);
+            if (parent && parent.children) {
+              parent.children = normalizeWidgets(updater(parent.children));
+            }
+          }
+        }),
+    },
+  })),
+);

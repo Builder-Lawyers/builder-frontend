@@ -1,1 +1,1 @@
-export { Frame } from "./ui";
+export { FramePreview } from "./ui";

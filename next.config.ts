@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/template/:path*",
+        source: "/template",
         destination: "http://localhost:4321/:path*",
       },
     ];

@@ -3,7 +3,6 @@ import { CenteringLayout } from "@/shared/layouts/centering";
 import { Button } from "@/shared/components/ui/button";
 
 export const WelcomePage = async () => {
-  console.log(process.env.NEXT_PUBLIC_COGNITO_USERPOOL_ID);
   return (
     <PageLayout>
       <div className="flex flex-col justify-center gap-[20px]">

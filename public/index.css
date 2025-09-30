@@ -1,3 +1,42 @@
-body {
-  background: rgba(0, 156, 255, 0.1);
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    height: 200vh;
+    font-family: 'Mulish', sans-serif;
+}
+*{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+.header{
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    h1{
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+}
+
+button{
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    background: black;
+    color: white;
+}
+
+.hero{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+    height: 500px;
+    text-align: center;
 }

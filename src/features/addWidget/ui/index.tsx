@@ -1,0 +1,32 @@
+import { Button } from "@/shared/components/ui/button";
+import { cloneWidget } from "@/features/addWidget";
+import { useEditorStore } from "@/entities/editor";
+import { WidgetProps } from "@/shared/types";
+import { ComponentProps } from "react";
+import { useWidgetStore } from "@/entities/widget/model";
+
+type ButtonProps = ComponentProps<typeof Button>;
+
+interface AddWidgetProps extends ButtonProps {
+  widget: WidgetProps;
+}
+
+export const AddWidget = ({ widget, ...rest }: AddWidgetProps) => {
+  const { api } = useEditorStore();
+  const { api: widgetApi } = useWidgetStore();
+
+  return (
+    <Button
+      draggable
+      {...rest}
+      variant="default"
+      onClick={() => {
+        api.add(cloneWidget(widget));
+        widgetApi.setActiveWidget(widget);
+      }}
+      key={widget.id}
+    >
+      {widget.type}
+    </Button>
+  );
+};

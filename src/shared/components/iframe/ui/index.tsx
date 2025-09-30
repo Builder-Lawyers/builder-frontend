@@ -1,63 +1,56 @@
 "use client";
-import React, { forwardRef, IframeHTMLAttributes } from "react";
-import { cn } from "@/shared/lib/utils";
 
-type DeviceType = "mobile" | "desktop" | "tv";
+import React, {
+  forwardRef,
+  useRef,
+  useState,
+  useEffect,
+  IframeHTMLAttributes,
+} from "react";
+import { createPortal } from "react-dom";
 
 interface IframeProps extends IframeHTMLAttributes<HTMLIFrameElement> {
-  wrapperClassName?: string;
-  device?: DeviceType;
-  scale?: number;
-  actions?: React.ReactNode;
-  scaleNode?: React.ReactNode;
+  children?: React.ReactNode;
+  injectCSS?: string;
 }
 
-const deviceSizes: Record<DeviceType, { width: number; height: number }> = {
-  mobile: { width: 375, height: 667 },
-  desktop: { width: 1440, height: 900 },
-  tv: { width: 1920, height: 1080 },
-};
+export const IFrame = forwardRef<HTMLIFrameElement, IframeProps>(
+  ({ children, injectCSS, ...rest }, ref) => {
+    const innerRef = useRef<HTMLIFrameElement | null>(null);
+    const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
 
-export const Iframe = forwardRef<HTMLIFrameElement, IframeProps>(
-  (
-    {
-      src,
-      wrapperClassName,
+    useEffect(() => {
+      if (typeof ref === "function") {
+        ref(innerRef.current);
+      } else if (ref) {
+        (ref as React.MutableRefObject<HTMLIFrameElement | null>).current =
+          innerRef.current;
+      }
+    }, [ref]);
 
-      device = "desktop",
-      scale = 1,
-      actions,
-      ...rest
-    },
-    ref,
-  ) => {
-    const scaledWidth = deviceSizes[device].width * scale;
+    useEffect(() => {
+      if (innerRef.current) {
+        const iframeDoc = innerRef.current.contentDocument;
+        if (iframeDoc?.body && iframeDoc?.head) {
+          setMountNode(iframeDoc.body);
+
+          if (injectCSS) {
+            const linkEl = iframeDoc.createElement("link");
+            linkEl.rel = "stylesheet";
+            linkEl.type = "text/css";
+            linkEl.href = injectCSS;
+            iframeDoc.head.appendChild(linkEl);
+          }
+        }
+      }
+    }, [injectCSS]);
 
     return (
-      <div
-        className={cn(
-          "relative flex-col   bg-black/[5%] overflow-hidden grow flex w-full h-full justify-center m-auto",
-          wrapperClassName,
-        )}
-      >
-        <div className="flex px-2 w-full justify-between items-center bg-white">
-          {actions}
-        </div>
-        <div
-          style={{ maxWidth: scaledWidth }}
-          className="relative  p-2 w-full h-full flex  items-center  overflow-auto m-auto justify-center"
-        >
-          <iframe
-            className="h-full bg-white rounded border border-black/10 w-full"
-            ref={ref}
-            src={src}
-            {...rest}
-            allow="clipboard-write"
-          />
-        </div>
-      </div>
+      <iframe ref={innerRef} {...rest}>
+        {mountNode && createPortal(children, mountNode)}
+      </iframe>
     );
   },
 );
 
-Iframe.displayName = "Iframe";
+IFrame.displayName = "IFrame";
