@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { Widget } from "@/entities/widget";
 import { WidgetComponentProps } from "@/entities/widget";
+import { CSS } from "@dnd-kit/utilities";
 import { CSSProperties } from "react";
 
 interface SortableWidgetProps {
@@ -11,28 +11,25 @@ interface SortableWidgetProps {
 export const SortableWidget = ({
   ...props
 }: WidgetComponentProps & SortableWidgetProps) => {
+  const isWidgetFixed = () => {
+    return Boolean(props?.settings?.optional.fixed);
+  };
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
+      disabled: isWidgetFixed(),
       id: props.id,
     });
 
   const style: CSSProperties = {
-    transform: CSS.Transform.toString({
-      x: transform?.x ?? 0,
-      y: transform?.y ?? 0,
-      scaleX: 1,
-      scaleY: 1,
-    }),
+    transform: CSS.Translate.toString(transform),
     transition,
+    cursor: isWidgetFixed() ? "default" : "pointer",
   };
 
   return (
     <Widget
       ref={setNodeRef}
       style={style}
-      onDrag={() => {
-        console.log("dsa");
-      }}
       {...attributes}
       {...listeners}
       {...props}
