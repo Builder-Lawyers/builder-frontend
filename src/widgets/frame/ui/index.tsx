@@ -27,13 +27,13 @@ export const FramePreview = () => {
   const ref = useRef<HTMLIFrameElement | null>(null);
 
   const { widgets } = useEditorStore();
-  const { widget, api: widgetApi } = useWidgetStore();
+  const { api: widgetApi } = useWidgetStore();
 
   const [activeWidget, setActiveWidget] = useState<(typeof widgets)[0] | null>(
     null,
   );
 
-  const { handleDragEnd, setHoveredDOMElement, findDOMElement } = useFrame(
+  const { handleDragEnd, setHoveredDOMElement, elementDOMProps } = useFrame(
     ref.current,
   );
   // const { width, height, coordinates, isActive } = elementDOMProps ?? {};
@@ -58,10 +58,7 @@ export const FramePreview = () => {
           modifiers={[snapCenterToCursor]}
           collisionDetection={closestCenter}
           sensors={[mouseSensor]}
-          onDragEnd={(e) => {
-            handleDragEnd(e);
-            setActiveWidget(null);
-          }}
+          onDragEnd={handleDragEnd}
           measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
           onDragStart={(e) => {
             const widget = widgets.find((w) => w.id === e.active.id);
@@ -78,8 +75,8 @@ export const FramePreview = () => {
               {normalized.map((item) => (
                 <SortableWidget
                   key={item.id}
-                  onMouseEnter={(e) => setHoveredDOMElement(e.currentTarget)}
-                  onClick={() => {
+                  onClick={(e) => {
+                    setHoveredDOMElement(e.currentTarget);
                     widgetApi.setActiveWidget(item);
                   }}
                   {...item}
@@ -88,11 +85,12 @@ export const FramePreview = () => {
             </SortableContext>
           </IFrameLayout>
 
-          {/* TODO: Overlay*/}
           <SortableOverlay>
             {activeWidget ? <SortableWidget {...activeWidget} /> : null}
           </SortableOverlay>
         </DndContext>
+        {/* TODO: Highlight*/}
+
         {/*<Highlight*/}
         {/*  isActive={isActive}*/}
         {/*  coordinates={coordinates}*/}
