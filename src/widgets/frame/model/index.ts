@@ -43,6 +43,15 @@ export const useFrame = (ref: HTMLIFrameElement | null) => {
     };
   }, [ref, setHoveredDOMElement]);
 
+  const findDOMElement = (id: string) => {
+    if (!ref) return null;
+
+    const iframeDoc = ref.contentDocument;
+    if (!iframeDoc) return null;
+
+    return iframeDoc.querySelector<HTMLDivElement>(`[data-widget-id="${id}"]`);
+  };
+
   const elementDOMProps = useMemo(() => {
     const element = hoveredDOMElement?.getBoundingClientRect();
 
@@ -60,8 +69,10 @@ export const useFrame = (ref: HTMLIFrameElement | null) => {
 
   return {
     handleDragEnd,
+    findDOMElement,
     elementDOMProps,
     setHoveredDOMElement,
+    hoveredDOMElement,
     clickOnElement,
     selectedDOMElement,
   };

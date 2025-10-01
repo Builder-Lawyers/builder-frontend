@@ -17,6 +17,7 @@ export const Highlight = ({
   return (
     <div
       style={{
+        borderRadius: 4,
         transition: "all 100ms ease",
         pointerEvents: "none",
         display: isActive ? "block" : "none",

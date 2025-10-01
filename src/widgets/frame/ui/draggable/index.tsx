@@ -4,7 +4,13 @@ import { Widget } from "@/entities/widget";
 import { WidgetComponentProps } from "@/entities/widget";
 import { CSSProperties } from "react";
 
-export const SortableWidget = ({ ...props }: WidgetComponentProps) => {
+interface SortableWidgetProps {
+  isActive?: boolean;
+}
+
+export const SortableWidget = ({
+  ...props
+}: WidgetComponentProps & SortableWidgetProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: props.id,
@@ -24,6 +30,9 @@ export const SortableWidget = ({ ...props }: WidgetComponentProps) => {
     <Widget
       ref={setNodeRef}
       style={style}
+      onDrag={() => {
+        console.log("dsa");
+      }}
       {...attributes}
       {...listeners}
       {...props}

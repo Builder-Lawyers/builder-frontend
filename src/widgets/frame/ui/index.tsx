@@ -16,8 +16,8 @@ import { SortableWidget } from "@/widgets/frame/ui/draggable";
 import { useWidgetStore } from "@/entities/widget/model";
 import { useFrame } from "@/widgets/frame/model";
 import { normalizeWidgets } from "@/entities/editor/model";
-import { PageLayout } from "@/shared/layouts/page";
 import { IFrameLayout } from "@/shared/components/iframe/layout";
+import { useDragWidget } from "@/features/dragWidget";
 
 export const FramePreview = () => {
   const ref = useRef<HTMLIFrameElement | null>(null);
@@ -28,6 +28,8 @@ export const FramePreview = () => {
   const { handleDragEnd, setHoveredDOMElement, elementDOMProps } = useFrame(
     ref.current,
   );
+  const { setDraggingCoordinates, coordsRef } = useDragWidget();
+
   const { width, height, coordinates, isActive } = elementDOMProps ?? {};
 
   const mouseSensor = useSensor(PointerSensor, {
@@ -39,6 +41,8 @@ export const FramePreview = () => {
 
   const normalized = normalizeWidgets(widgets);
 
+  console.log(coordsRef.current);
+
   return (
     <div className="p-2 bg-black/5 w-full">
       <IFrame
@@ -47,24 +51,32 @@ export const FramePreview = () => {
         ref={ref}
       >
         <DndContext
+          onDragMove={(e) => {
+            console.log(e.over?.rect);
+          }}
           collisionDetection={closestCenter}
           sensors={[mouseSensor]}
           onDragEnd={handleDragEnd}
         >
-          <PageLayout>
-            <IFrameLayout>
-              <SortableContext items={widgets.map((w) => w.id)}>
-                {normalized.map((item) => (
-                  <SortableWidget
-                    key={item.id}
-                    onMouseEnter={(e) => setHoveredDOMElement(e.currentTarget)}
-                    onClick={() => widgetApi.setActiveWidget(item)}
-                    {...item}
-                  />
-                ))}
-              </SortableContext>
-            </IFrameLayout>
-          </PageLayout>
+          <IFrameLayout>
+            <SortableContext items={widgets.map((w) => w.id)}>
+              {normalized.map((item) => (
+                <SortableWidget
+                  key={item.id}
+                  onMouseEnter={(e) => setHoveredDOMElement(e.currentTarget)}
+                  onClick={() => {
+                    widgetApi.setActiveWidget(item);
+                  }}
+                  {...item}
+                />
+              ))}
+            </SortableContext>
+          </IFrameLayout>
+
+          {/* TODO: Overlay*/}
+          {/*<SortableOverlay>*/}
+          {/*  {widget ? <Widget {...draggableDOMElement} /> : null}*/}
+          {/*</SortableOverlay>*/}
         </DndContext>
         <Highlight
           isActive={isActive}
