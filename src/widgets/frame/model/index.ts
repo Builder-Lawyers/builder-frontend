@@ -45,12 +45,15 @@ export const useFrame = (ref: HTMLIFrameElement | null) => {
 
   const elementDOMProps = useMemo(() => {
     const element = hoveredDOMElement?.getBoundingClientRect();
+
     if (!element) return null;
+
+    const offset = 2;
 
     return {
       isActive: !!element,
-      height: element.height,
-      width: element.width,
+      height: element.height - offset * 2,
+      width: element.width - offset * 2,
       coordinates: { x: element.x, y: element.y },
     };
   }, [hoveredDOMElement]);

@@ -38,13 +38,13 @@ export const Sidebar = () => {
       }
       editor={
         widget && (
-          <div className="flex gap-4 flex-col">
+          <div className="flex gap-[24px] flex-col">
             <span className="uppercase text-xs opacity-40 font-bold">
               edit {widget.type}
             </span>
             <div className="flex flex-col gap-4">
               {flat.map((widget) => (
-                <div className="flex flex-col" key={widget.id}>
+                <div className="flex gap-1.5 flex-col" key={widget.id}>
                   <p className="text-[10px] font-bold opacity-40 uppercase">
                     {widget.type}
                   </p>

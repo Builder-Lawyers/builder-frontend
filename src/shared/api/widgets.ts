@@ -1,5 +1,7 @@
 import { WidgetProps } from "@/shared/types";
 
+export const globalTemplateOptions = {};
+
 export const widgetsTemplate: WidgetProps[] = [
   {
     id: crypto.randomUUID(),

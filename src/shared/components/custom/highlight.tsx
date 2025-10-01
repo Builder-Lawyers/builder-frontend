@@ -1,4 +1,4 @@
-interface HighlightProps {
+export interface HighlightProps {
   isActive?: boolean;
   coordinates?: {
     x: number;
@@ -17,6 +17,7 @@ export const Highlight = ({
   return (
     <div
       style={{
+        transition: "all 100ms ease",
         pointerEvents: "none",
         display: isActive ? "block" : "none",
         position: "absolute",

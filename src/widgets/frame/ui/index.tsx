@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { useEditorStore } from "@/entities/editor";
 import { IFrame } from "@/shared/components/iframe/ui";
+import { Highlight } from "@/shared/components/custom/highlight";
 import {
   closestCenter,
   DndContext,
@@ -15,7 +16,8 @@ import { SortableWidget } from "@/widgets/frame/ui/draggable";
 import { useWidgetStore } from "@/entities/widget/model";
 import { useFrame } from "@/widgets/frame/model";
 import { normalizeWidgets } from "@/entities/editor/model";
-import { Highlight } from "@/shared/components/custom/highlight";
+import { PageLayout } from "@/shared/layouts/page";
+import { IFrameLayout } from "@/shared/components/iframe/layout";
 
 export const FramePreview = () => {
   const ref = useRef<HTMLIFrameElement | null>(null);
@@ -41,7 +43,7 @@ export const FramePreview = () => {
     <div className="p-2 bg-black/5 w-full">
       <IFrame
         injectCSS="/index.css"
-        className="w-full h-full no-scrollbar rounded bg-white overflow-hidden relative"
+        className="w-full h-full rounded bg-white overflow-hidden relative"
         ref={ref}
       >
         <DndContext
@@ -49,16 +51,20 @@ export const FramePreview = () => {
           sensors={[mouseSensor]}
           onDragEnd={handleDragEnd}
         >
-          <SortableContext items={widgets.map((w) => w.id)}>
-            {normalized.map((item) => (
-              <SortableWidget
-                key={item.id}
-                onMouseEnter={(e) => setHoveredDOMElement(e.currentTarget)}
-                onClick={() => widgetApi.setActiveWidget(item)}
-                {...item}
-              />
-            ))}
-          </SortableContext>
+          <PageLayout>
+            <IFrameLayout>
+              <SortableContext items={widgets.map((w) => w.id)}>
+                {normalized.map((item) => (
+                  <SortableWidget
+                    key={item.id}
+                    onMouseEnter={(e) => setHoveredDOMElement(e.currentTarget)}
+                    onClick={() => widgetApi.setActiveWidget(item)}
+                    {...item}
+                  />
+                ))}
+              </SortableContext>
+            </IFrameLayout>
+          </PageLayout>
         </DndContext>
         <Highlight
           isActive={isActive}

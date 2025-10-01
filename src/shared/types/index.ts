@@ -7,6 +7,11 @@ export interface WidgetSettings {
   };
 }
 
+// interface TemplateGlobalSettings {
+//   optional: {};
+//   general: {};
+// }
+
 export interface WidgetProps<
   Tag extends keyof JSX.IntrinsicElements = keyof JSX.IntrinsicElements,
 > {
@@ -16,6 +21,6 @@ export interface WidgetProps<
   settings?: WidgetSettings;
   attrs?: Record<string, any>;
   tag: Tag;
-  props?: Partial<JSX.IntrinsicElements[Tag]>;
+  props?: Record<string, any>;
   children?: Array<Omit<WidgetProps, "settings">>;
 }
