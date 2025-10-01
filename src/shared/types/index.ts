@@ -1,16 +1,11 @@
 import { JSX } from "react";
 
 export interface WidgetSettings {
-  optional: { fixed?: "top" | "bottom" };
-  general: {
+  optional?: { fixed?: "top" | "bottom" };
+  general?: {
     single?: boolean;
   };
 }
-
-// interface TemplateGlobalSettings {
-//   optional: {};
-//   general: {};
-// }
 
 export interface WidgetProps<
   Tag extends keyof JSX.IntrinsicElements = keyof JSX.IntrinsicElements,

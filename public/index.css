@@ -35,12 +35,6 @@ button{
 }
 
 .hero{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    justify-content: center;
-    height: 500px;
-    text-align: center;
+   background: violet;
 }
+

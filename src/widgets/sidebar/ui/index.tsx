@@ -17,7 +17,7 @@ export const Sidebar = () => {
 
   const isSingleElementOnFrame = (widgetType: string) => {
     return widgets.some(
-      (w) => w.type === widgetType && w.settings?.general.single === true,
+      (w) => w.type === widgetType && w.settings?.general?.single === true,
     );
   };
 

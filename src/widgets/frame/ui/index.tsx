@@ -33,14 +33,11 @@ export const FramePreview = () => {
     null,
   );
 
-  const { handleDragEnd, setHoveredDOMElement, elementDOMProps } = useFrame(
-    ref.current,
-  );
-  // const { width, height, coordinates, isActive } = elementDOMProps ?? {};
+  const { handleDragEnd, setHoveredDOMElement } = useFrame(ref.current);
 
   const mouseSensor = useSensor(PointerSensor, {
     activationConstraint: {
-      delay: 100,
+      delay: 50,
       tolerance: 5,
     },
   });

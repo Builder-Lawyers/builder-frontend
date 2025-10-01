@@ -23,7 +23,7 @@ export function normalizeWidgets(widgets: WidgetProps[]): WidgetProps[] {
     (w) => getWidgetSettings(w)?.optional?.fixed === "top",
   );
   const bottomFixed = widgets.filter(
-    (w) => getWidgetSettings(w)?.optional.fixed === "bottom",
+    (w) => getWidgetSettings(w)?.optional?.fixed === "bottom",
   );
   const normal = widgets.filter(
     (w) =>

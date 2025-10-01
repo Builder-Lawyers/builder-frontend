@@ -22,7 +22,6 @@ export const AddWidget = ({ widget, ...rest }: AddWidgetProps) => {
       variant="default"
       onClick={() => {
         const clonedWidget = cloneWidget(widget);
-
         api.add(clonedWidget);
         widgetApi.setActiveWidget(clonedWidget);
       }}
