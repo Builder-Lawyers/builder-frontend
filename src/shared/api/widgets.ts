@@ -56,19 +56,7 @@ export const widgetsTemplate: WidgetProps[] = [
             tag: "h1",
             value: "Header Title",
           },
-          {
-            id: crypto.randomUUID(),
-            type: "button",
-            tag: "button",
-            children: [
-              {
-                id: crypto.randomUUID(),
-                type: "button-value",
-                tag: "p",
-                value: "Button",
-              },
-            ],
-          },
+          linkWidget,
         ],
       },
     ],

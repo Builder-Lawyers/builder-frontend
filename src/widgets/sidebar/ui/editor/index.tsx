@@ -13,7 +13,7 @@ export const SidebarEditor = ({
 
   return (
     <div className="flex gap-[24px] flex-col">
-      <p className="text-[14px] font-bold opacity-40 uppercase">edit {name}</p>
+      <p className="text-[12px] font-bold opacity-40 uppercase">edit {name}</p>
       <div className="flex flex-col gap-4">
         {widget.map((widget) => (
           <div className="flex flex-col gap-1.5" key={widget.id}>
