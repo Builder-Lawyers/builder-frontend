@@ -15,7 +15,9 @@ export interface WidgetProps<
   value?: string;
   settings?: WidgetSettings;
   attrs?: Record<string, any>;
+  parentId?: string;
   tag: Tag;
+  label?: string;
   props?: Record<string, any>;
   children?: Array<Omit<WidgetProps, "settings">>;
 }

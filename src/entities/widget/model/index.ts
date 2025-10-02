@@ -3,29 +3,23 @@ import { immer } from "zustand/middleware/immer";
 import { WidgetProps } from "@/shared/types";
 
 export interface WidgetState {
-  widget: WidgetProps | null;
+  activeWidgetID: string | null;
 }
 
 interface WidgetApi {
-  setActiveWidget: (widget: WidgetProps) => void;
-  updateWidget: (
-    widget: WidgetProps,
-    updater: (widget: WidgetProps) => WidgetProps,
-  ) => void;
+  setActiveWidgetID: (widget: WidgetProps) => string;
 }
 
 export const useWidgetStore = create<WidgetState & { api: WidgetApi }>()(
   immer((set) => ({
-    widget: null,
+    activeWidgetID: null,
     api: {
-      setActiveWidget: (widget: WidgetProps) =>
+      setActiveWidgetID: (widget: WidgetProps) => {
         set((state) => {
-          state.widget = widget;
-        }),
-      updateWidget: (widget: WidgetProps, updater) =>
-        set((state) => {
-          state.widget = updater(widget);
-        }),
+          state.activeWidgetID = widget.id;
+        });
+        return widget.id;
+      },
     },
   })),
 );

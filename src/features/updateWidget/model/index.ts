@@ -1,13 +1,13 @@
 import { WidgetProps } from "@/shared/types";
 
-type WidgetUpdate = Partial<
-  Omit<WidgetProps, "id" | "children" | "type" | "attrs">
->;
-
 export const widgetUpdater = (
   widget: WidgetProps,
-  value: WidgetUpdate,
+  value: Partial<WidgetProps>,
 ): WidgetProps => {
+  console.log("widgetUpdater", {
+    ...widget,
+    ...value,
+  });
   return {
     ...widget,
     ...value,

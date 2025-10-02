@@ -11,23 +11,32 @@ interface AddWidgetProps extends ButtonProps {
   widget: WidgetProps;
 }
 
-export const AddWidget = ({ widget, ...rest }: AddWidgetProps) => {
+export const CreateWidgetButton = ({ widget, ...rest }: AddWidgetProps) => {
   const { api } = useEditorStore();
   const { api: widgetApi } = useWidgetStore();
 
   return (
-    <Button
-      draggable
-      {...rest}
-      variant="default"
-      onClick={() => {
-        const clonedWidget = cloneWidget(widget);
-        api.add(clonedWidget);
-        widgetApi.setActiveWidget(clonedWidget);
-      }}
-      key={widget.id}
-    >
-      {widget.type}
-    </Button>
+    <div>
+      <Button
+        draggable
+        {...rest}
+        variant="default"
+        onClick={() => {
+          const clonedWidget = cloneWidget(widget);
+
+          api.dispatch({
+            type: "Widget.Added",
+            payload: {
+              widget: clonedWidget,
+            },
+          });
+
+          widgetApi.setActiveWidgetID(clonedWidget);
+        }}
+        key={widget.id}
+      >
+        {widget.label}
+      </Button>
+    </div>
   );
 };

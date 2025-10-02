@@ -1,2 +1,2 @@
 export { cloneWidget } from "./model";
-export { AddWidget } from "./ui";
+export { CreateWidgetButton } from "./ui";

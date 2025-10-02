@@ -16,6 +16,7 @@ export const Widget = ({
   children = [],
   onClick,
   props,
+  parentId,
   ...rest
 }: WidgetComponentProps) => {
   const Comp = Tag as keyof JSX.IntrinsicElements | ComponentType<any>;
@@ -26,6 +27,7 @@ export const Widget = ({
       {...props}
       {...rest}
       onClick={onClick}
+      data-parent-id={parentId}
       data-widget-id={id}
       className={type}
     >

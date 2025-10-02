@@ -1,10 +1,9 @@
 import { DragEndEvent } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
-import { useEditorStore } from "@/entities/editor";
 import { useEffect, useMemo, useState } from "react";
+import { useEditorStore } from "@/entities/editor";
 
 export const useFrame = (ref: HTMLIFrameElement | null) => {
-  const { widgets, api: editorApi } = useEditorStore();
+  const { widgets } = useEditorStore();
 
   const [hoveredDOMElement, setHoveredDOMElement] =
     useState<HTMLDivElement | null>(null);
@@ -16,14 +15,20 @@ export const useFrame = (ref: HTMLIFrameElement | null) => {
     setSelectedDOMElement(element);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = ({
+    event,
+    action,
+  }: {
+    event: DragEndEvent;
+    action: (oldIndex: number, newIndex: number) => void;
+  }) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
     const oldIndex = widgets.findIndex((w) => w.id === active.id);
     const newIndex = widgets.findIndex((w) => w.id === over.id);
 
-    editorApi.reorder(null, (list) => arrayMove(list, oldIndex, newIndex));
+    action(oldIndex, newIndex);
   };
 
   useEffect(() => {

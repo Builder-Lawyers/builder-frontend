@@ -1,32 +1,33 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { useEditorStore } from "@/entities/editor";
 import { IFrame } from "@/shared/components/iframe/ui";
 import {
   closestCenter,
   DndContext,
-  MeasuringStrategy,
   PointerSensor,
   useSensor,
 } from "@dnd-kit/core";
 
 import {
+  arrayMove,
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { SortableWidget } from "@/widgets/frame/ui/draggable";
 import { useWidgetStore } from "@/entities/widget/model";
 import { useFrame } from "@/widgets/frame/model";
-import { normalizeWidgets } from "@/entities/editor/model";
+
 import { IFrameLayout } from "@/shared/components/iframe/layout";
 import { SortableOverlay } from "@/widgets/frame/ui/overlay";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
+import { useEditorStore } from "@/entities/editor";
+import { normalizeWidgets } from "@/entities/editor/ulits";
 
 export const FramePreview = () => {
   const ref = useRef<HTMLIFrameElement | null>(null);
 
-  const { widgets } = useEditorStore();
+  const { widgets, api: editorApi } = useEditorStore();
   const { api: widgetApi } = useWidgetStore();
 
   const [activeWidget, setActiveWidget] = useState<(typeof widgets)[0] | null>(
@@ -37,7 +38,7 @@ export const FramePreview = () => {
 
   const mouseSensor = useSensor(PointerSensor, {
     activationConstraint: {
-      delay: 50,
+      delay: 75,
       tolerance: 5,
     },
   });
@@ -50,13 +51,34 @@ export const FramePreview = () => {
         injectCSS="/index.css"
         className="w-full h-full rounded bg-white overflow-hidden relative"
         ref={ref}
+        onClick={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest("a")) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log("🔒 Link click blocked in editor mode");
+          }
+        }}
       >
         <DndContext
           modifiers={[snapCenterToCursor]}
           collisionDetection={closestCenter}
           sensors={[mouseSensor]}
-          onDragEnd={handleDragEnd}
-          measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
+          onDragEnd={(e) =>
+            handleDragEnd({
+              event: e,
+              action: (oldIndex, newIndex) => {
+                editorApi.dispatch({
+                  type: "Widget.Reordered",
+                  payload: {
+                    parentId: null,
+                    updater: (list) => arrayMove(list, oldIndex, newIndex),
+                  },
+                });
+              },
+            })
+          }
           onDragStart={(e) => {
             const widget = widgets.find((w) => w.id === e.active.id);
             if (widget) {
@@ -74,7 +96,7 @@ export const FramePreview = () => {
                   key={item.id}
                   onClick={(e) => {
                     setHoveredDOMElement(e.currentTarget);
-                    widgetApi.setActiveWidget(item);
+                    widgetApi.setActiveWidgetID(item);
                   }}
                   {...item}
                 />

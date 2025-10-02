@@ -1,27 +1,39 @@
 import { WidgetProps } from "@/shared/types";
 
+// factory.link({
+//   href: "#",
+//   type: "button-link",
+//   label: "Button",
+//   id: crypto.randomUUID(),
+//   children: [factory.button({ parentId: "button-link", value: "32123" })],
+// }),
+
 export const factory = {
-  link: (props: { href: string; children?: WidgetProps[] }): WidgetProps => {
-    const child = props.children?.find((c) => typeof c.value === "string");
-
-    console.log(child);
-
+  link: (
+    props: Omit<WidgetProps, "settings" | "tag"> & {
+      href?: string;
+    },
+  ): WidgetProps => {
     return {
-      id: crypto.randomUUID(),
-      type: "link",
+      ...props,
       tag: "a",
       props: {
         href: props.href,
-        id: child?.id,
       },
       children: props.children,
     };
   },
 
-  button: (props: { value: string }): WidgetProps => ({
+  button: (
+    props: Omit<WidgetProps, "id" | "settings" | "type" | "tag"> & {
+      value: string;
+      parentId?: string;
+    },
+  ): WidgetProps => ({
     id: crypto.randomUUID(),
-    type: "button",
+    parentId: props.parentId,
     tag: "button",
-    value: props.value,
+    type: "button",
+    ...props,
   }),
 };

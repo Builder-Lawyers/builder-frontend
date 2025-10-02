@@ -1,9 +1,16 @@
 import { WidgetProps } from "@/shared/types";
+import { nanoid } from "nanoid";
 
-export const cloneWidget = (widget: WidgetProps): WidgetProps => {
+export const cloneWidget = (
+  widget: WidgetProps,
+  parentId?: string,
+): WidgetProps => {
+  const id = nanoid();
+
   return {
     ...widget,
-    id: crypto.randomUUID(),
-    children: widget.children?.map(cloneWidget),
+    id,
+    parentId,
+    children: widget.children?.map((child) => cloneWidget(child, id)),
   };
 };
