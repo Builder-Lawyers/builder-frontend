@@ -11,19 +11,14 @@ interface SortableWidgetProps {
 export const SortableWidget = ({
   ...props
 }: WidgetComponentProps & SortableWidgetProps) => {
-  const isWidgetFixed = () => {
-    return Boolean(props?.settings?.optional.fixed);
-  };
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
-      disabled: isWidgetFixed(),
       id: props.id,
     });
 
   const style: CSSProperties = {
     transform: CSS.Translate.toString(transform),
     transition,
-    cursor: isWidgetFixed() ? "default" : "pointer",
   };
 
   return (

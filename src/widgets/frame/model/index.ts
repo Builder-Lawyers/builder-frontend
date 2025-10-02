@@ -1,13 +1,8 @@
 import { DragEndEvent } from "@dnd-kit/core";
-import { useEffect, useMemo, useState } from "react";
-import { useEditorStore } from "@/entities/editor";
+import { useState } from "react";
+import { WidgetProps } from "@/shared/types";
 
 export const useFrame = (ref: HTMLIFrameElement | null) => {
-  const { widgets } = useEditorStore();
-
-  const [hoveredDOMElement, setHoveredDOMElement] =
-    useState<HTMLDivElement | null>(null);
-
   const [selectedDOMElement, setSelectedDOMElement] =
     useState<HTMLDivElement | null>(null);
 
@@ -18,9 +13,11 @@ export const useFrame = (ref: HTMLIFrameElement | null) => {
   const handleDragEnd = ({
     event,
     action,
+    widgets,
   }: {
     event: DragEndEvent;
     action: (oldIndex: number, newIndex: number) => void;
+    widgets: WidgetProps[];
   }) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
@@ -31,53 +28,16 @@ export const useFrame = (ref: HTMLIFrameElement | null) => {
     action(oldIndex, newIndex);
   };
 
-  useEffect(() => {
-    if (!ref) return;
-    const iframeDoc = ref.contentDocument;
-
-    if (!iframeDoc) return;
-
-    const handleLeave = () => {
-      setHoveredDOMElement(null);
-    };
-
-    iframeDoc.addEventListener("mouseleave", handleLeave);
-
-    return () => {
-      iframeDoc.removeEventListener("mouseleave", handleLeave);
-    };
-  }, [ref, setHoveredDOMElement]);
-
   const findDOMElement = (id: string) => {
     if (!ref) return null;
-
     const iframeDoc = ref.contentDocument;
     if (!iframeDoc) return null;
-
     return iframeDoc.querySelector<HTMLDivElement>(`[data-widget-id="${id}"]`);
   };
-
-  const elementDOMProps = useMemo(() => {
-    const element = hoveredDOMElement?.getBoundingClientRect();
-
-    if (!element) return null;
-
-    const offset = 2;
-
-    return {
-      isActive: !!element,
-      height: element.height - offset * 2,
-      width: element.width - offset * 2,
-      coordinates: { x: element.x, y: element.y },
-    };
-  }, [hoveredDOMElement]);
 
   return {
     handleDragEnd,
     findDOMElement,
-    elementDOMProps,
-    setHoveredDOMElement,
-    hoveredDOMElement,
     clickOnElement,
     selectedDOMElement,
   };

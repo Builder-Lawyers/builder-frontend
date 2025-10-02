@@ -1,15 +1,19 @@
 import { widgetsTemplate } from "@/shared/api/widgets";
 import { CreateWidgetButton } from "@/features/addWidget";
 import { useEditorStore } from "@/entities/editor";
+import { useCallback } from "react";
 
 export const SidebarTree = () => {
-  const { widgets } = useEditorStore();
+  const widgets = useEditorStore((state) => state.widgets);
 
-  const isSingleElementOnFrame = (widgetType: string) => {
-    return widgets.some(
-      (w) => w.type === widgetType && w.settings?.general?.single === true,
-    );
-  };
+  const isSingleElementOnFrame = useCallback(
+    (widgetType: string) => {
+      return widgets.some(
+        (w) => w.type === widgetType && w.settings?.general?.single === true,
+      );
+    },
+    [widgets],
+  );
 
   return (
     <div className="flex flex-col gap-2">

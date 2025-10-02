@@ -29,4 +29,48 @@ const linkWidget = method.link((id) => {
   };
 });
 
-export const widgetsTemplate: WidgetProps[] = [linkWidget];
+export const widgetsTemplate: WidgetProps[] = [
+  linkWidget,
+  {
+    id: crypto.randomUUID(),
+    type: "header",
+    tag: "header",
+    settings: {
+      general: {
+        single: true,
+      },
+      optional: {
+        fixed: "top",
+      },
+    },
+    label: "Header",
+    children: [
+      {
+        id: crypto.randomUUID(),
+        type: "header",
+        tag: "section",
+        children: [
+          {
+            type: "header-title",
+            id: crypto.randomUUID(),
+            tag: "h1",
+            value: "Header Title",
+          },
+          {
+            id: crypto.randomUUID(),
+            type: "button",
+            tag: "button",
+            children: [
+              {
+                id: crypto.randomUUID(),
+                type: "button-value",
+                tag: "p",
+                value: "Button",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];

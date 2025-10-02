@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { IFrame } from "@/shared/components/iframe/ui";
 import {
   closestCenter,
@@ -23,18 +23,18 @@ import { SortableOverlay } from "@/widgets/frame/ui/overlay";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import { useEditorStore } from "@/entities/editor";
 import { normalizeWidgets } from "@/entities/editor/ulits";
+import { WidgetComponentProps } from "@/entities/widget";
 
 export const FramePreview = () => {
   const ref = useRef<HTMLIFrameElement | null>(null);
 
-  const { widgets, api: editorApi } = useEditorStore();
-  const { api: widgetApi } = useWidgetStore();
+  const widgets = useEditorStore((state) => state.widgets);
+  const editorApi = useEditorStore((state) => state.api);
 
-  const [activeWidget, setActiveWidget] = useState<(typeof widgets)[0] | null>(
-    null,
-  );
+  const widgetApi = useWidgetStore((state) => state.api);
+  const activeWidgetID = useWidgetStore((state) => state.activeWidgetID);
 
-  const { handleDragEnd, setHoveredDOMElement } = useFrame(ref.current);
+  const { handleDragEnd } = useFrame(ref.current);
 
   const mouseSensor = useSensor(PointerSensor, {
     activationConstraint: {
@@ -77,12 +77,13 @@ export const FramePreview = () => {
                   },
                 });
               },
+              widgets,
             })
           }
           onDragStart={(e) => {
             const widget = widgets.find((w) => w.id === e.active.id);
             if (widget) {
-              setActiveWidget(widget);
+              widgetApi.setActiveWidgetID(widget);
             }
           }}
         >
@@ -94,8 +95,7 @@ export const FramePreview = () => {
               {normalized.map((item) => (
                 <SortableWidget
                   key={item.id}
-                  onClick={(e) => {
-                    setHoveredDOMElement(e.currentTarget);
+                  onClick={() => {
                     widgetApi.setActiveWidgetID(item);
                   }}
                   {...item}
@@ -105,7 +105,11 @@ export const FramePreview = () => {
           </IFrameLayout>
 
           <SortableOverlay>
-            {activeWidget ? <SortableWidget {...activeWidget} /> : null}
+            {activeWidgetID ? (
+              <SortableWidget
+                {...(editorApi.getById(activeWidgetID) as WidgetComponentProps)}
+              />
+            ) : null}
           </SortableOverlay>
         </DndContext>
         {/* TODO: Highlight*/}

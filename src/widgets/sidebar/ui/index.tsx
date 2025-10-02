@@ -21,7 +21,9 @@ export const Sidebar = () => {
   return (
     <SidebarHeadless
       tree={<SidebarTree />}
-      editor={widget && <SidebarEditor widget={flat} />}
+      editor={
+        widget && <SidebarEditor name={widget.label || "Edit"} widget={flat} />
+      }
     />
   );
 };
