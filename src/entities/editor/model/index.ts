@@ -1,6 +1,6 @@
 import { create } from "zustand/react";
 import { immer } from "zustand/middleware/immer";
-import { WidgetProps } from "@/shared/types";
+import { ElementWidget, TypedWidget, WidgetProps } from "@/shared/types";
 import { normalizeWidgets } from "@/entities/editor/ulits";
 
 export type EditorEvent =
@@ -27,14 +27,40 @@ function editorReducer(
       return normalizeWidgets([...widgets, event.payload.widget]);
 
     case "Widget.Updated": {
+      const { id, changes } = event.payload;
+
       const updateRecursive = (arr: WidgetProps[]): WidgetProps[] =>
-        arr.map((w) =>
-          w.id === event.payload.id
-            ? { ...w, ...event.payload.changes }
-            : w.children
-              ? { ...w, children: updateRecursive(w.children) }
-              : w,
-        );
+        arr.map((w) => {
+          if (w.id === id) {
+            if (w.kind === "element") {
+              const elementChanges = changes as Partial<ElementWidget>;
+              return {
+                ...w,
+                ...elementChanges,
+                props: { ...w.props, ...elementChanges.props },
+              };
+            }
+
+            if (w.kind === "typed") {
+              const typedChanges = changes as Partial<TypedWidget>;
+              return {
+                ...w,
+                ...typedChanges,
+                attrs: { ...w.attrs, ...typedChanges.attrs },
+              };
+            }
+          }
+
+          if (w.children) {
+            return {
+              ...w,
+              children: updateRecursive(w.children),
+            };
+          }
+
+          return w;
+        });
+
       return updateRecursive(widgets);
     }
 
@@ -81,16 +107,15 @@ export const useEditorStore = create<EditorState>()(
     api: {
       dispatch: (event) =>
         set((state) => {
+          state.widgets = editorReducer(state.widgets, event);
           state.past.push(event);
           state.future = [];
-          state.widgets = state.past.reduce(editorReducer, []);
         }),
 
       undo: () =>
         set((state) => {
           if (state.past.length === 0) return;
-          const last = state.past.pop()!;
-          state.future.unshift(last);
+          state.past.pop();
           state.widgets = state.past.reduce(editorReducer, []);
         }),
 
@@ -98,11 +123,22 @@ export const useEditorStore = create<EditorState>()(
         set((state) => {
           if (state.future.length === 0) return;
           const next = state.future.shift()!;
+          state.widgets = editorReducer(state.widgets, next);
           state.past.push(next);
-          state.widgets = state.past.reduce(editorReducer, []);
         }),
 
-      getById: (id) => get().widgets.find((w) => w.id === id),
+      getById: (id) => {
+        const search = (arr: WidgetProps[]): WidgetProps | undefined => {
+          for (const w of arr) {
+            if (w.id === id) return w;
+            if (w.children) {
+              const found = search(w.children);
+              if (found) return found;
+            }
+          }
+        };
+        return id ? search(get().widgets) : undefined;
+      },
     },
   })),
 );

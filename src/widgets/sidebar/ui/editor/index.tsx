@@ -1,38 +1,37 @@
-import { WidgetProps } from "@/shared/types";
-import Input from "@/shared/components/ui/input";
 import { useEditorStore } from "@/entities/editor";
+import { EditorField } from "@/widgets/sidebar/model";
+import Input from "@/shared/components/ui/input";
 
 export const SidebarEditor = ({
   widget,
-  name,
+  label,
 }: {
-  widget: Omit<WidgetProps, "children">[];
-  name: string;
+  widget: EditorField[];
+  label: string;
 }) => {
   const api = useEditorStore((state) => state.api);
 
+  console.log(widget);
   return (
     <div className="flex gap-[24px] flex-col">
-      <p className="text-[12px] font-bold opacity-40 uppercase">edit {name}</p>
+      <p className="text-[10px] font-bold opacity-40 uppercase">{label}</p>
       <div className="flex flex-col gap-4">
-        {widget.map((widget) => (
-          <div className="flex flex-col gap-1.5" key={widget.id}>
+        {widget.map((f) => (
+          <div key={`${f.id}-${f.field}`} className="flex flex-col gap-1.5">
             <p className="text-[10px] font-bold opacity-40 uppercase">
-              {widget.label || widget.type}
+              {f.label}
             </p>
             <Input
+              defaultValue={f.value}
               onChange={(e) => {
                 api.dispatch({
                   type: "Widget.Updated",
                   payload: {
-                    id: widget.id,
-                    changes: {
-                      value: e.target.value,
-                    },
+                    id: f.id,
+                    changes: { [f.field]: e.target.value },
                   },
                 });
               }}
-              defaultValue={widget.value}
             />
           </div>
         ))}

@@ -7,17 +7,26 @@ export interface WidgetSettings {
   };
 }
 
-export interface WidgetProps<
-  Tag extends keyof JSX.IntrinsicElements = keyof JSX.IntrinsicElements,
-> {
+export interface BaseWidget {
   id: string;
-  type: string;
-  value?: string;
-  settings?: WidgetSettings;
-  attrs?: Record<string, any>;
   parentId?: string;
-  tag: Tag;
   label?: string;
-  props?: Record<string, any>;
-  children?: Array<Omit<WidgetProps, "settings">>;
+  settings?: WidgetSettings;
+  children?: WidgetProps[];
 }
+
+export interface ElementWidget<Tag extends keyof JSX.IntrinsicElements = any>
+  extends BaseWidget {
+  kind: "element";
+  tag: Tag;
+  props?: JSX.IntrinsicElements[Tag];
+}
+
+export interface TypedWidget extends BaseWidget {
+  kind: "typed";
+  type: "button" | "link" | "hero" | string;
+  value?: string;
+  attrs?: Record<string, any>;
+}
+
+export type WidgetProps = ElementWidget | TypedWidget;

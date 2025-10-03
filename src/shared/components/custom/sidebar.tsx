@@ -17,7 +17,7 @@ export const SidebarHeadless = ({ editor, tree }: SidebarProps) => {
     <div className="flex grow gap-6 h-full flex-col w-full max-w-[450px] border-r border-black/10 overflow-auto">
       <ResizablePanelGroup direction="vertical">
         <ResizablePanel
-          defaultSize={40}
+          defaultSize={60}
           minSize={20}
           maxSize={80}
           className="p-[24px]"
