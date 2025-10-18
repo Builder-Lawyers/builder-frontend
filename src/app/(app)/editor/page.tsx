@@ -1,5 +1,5 @@
-import { EditorPage } from "@/screens/editor";
+import { Editor } from "@/screens/editor";
 
-export default function Page() {
-  return <EditorPage />;
+export default function EditorPage() {
+  return <Editor />;
 }

@@ -1,24 +1,37 @@
 import { create } from "zustand/react";
 import { immer } from "zustand/middleware/immer";
-import { WidgetProps } from "@/shared/types";
+import { Widget } from "@/shared/types/template";
 
-export interface WidgetState {
-  activeWidgetID: string | null;
+interface State {
+  selectedWidgetId: string;
 }
 
-interface WidgetApi {
-  setActiveWidgetID: (widget: WidgetProps) => string;
+interface Api {
+  onSelectedWidgetId: (widgetId: string) => void;
+  findWidgetById: (widgetId: string, widgets: Widget[]) => Widget;
 }
 
-export const useWidgetStore = create<WidgetState & { api: WidgetApi }>()(
-  immer((set) => ({
-    activeWidgetID: null,
+interface WidgetModel {
+  state: State;
+  api: Api;
+}
+
+export const useWidget = create<WidgetModel>()(
+  immer((setState) => ({
+    state: {
+      selectedWidgetId: "",
+    },
     api: {
-      setActiveWidgetID: (widget: WidgetProps) => {
-        set((state) => {
-          state.activeWidgetID = widget.id;
-        });
-        return widget.id;
+      onSelectedWidgetId: (widgetId) =>
+        setState((state) => {
+          state.state.selectedWidgetId = widgetId;
+        }),
+      findWidgetById: (widgetId: string, widgets) => {
+        const found = widgets.find((widget) => widget.id === widgetId);
+        if (!found) {
+          throw new Error(`Widget with id "${widgetId}" not found`);
+        }
+        return found;
       },
     },
   })),

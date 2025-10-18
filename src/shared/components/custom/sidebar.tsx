@@ -5,34 +5,51 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/shared/components/ui/resizable";
-import React from "react";
+import React, { ReactNode } from "react";
 
-interface SidebarProps {
-  editor?: React.ReactNode;
-  tree?: React.ReactNode;
+export interface SidebarSection {
+  id: string;
+  label: string | ReactNode;
+  element: React.ReactNode;
+  defaultSize?: number;
+  minSize?: number;
+  maxSize?: number;
 }
 
-export const SidebarHeadless = ({ editor, tree }: SidebarProps) => {
+interface SidebarHeadlessProps {
+  sections: SidebarSection[];
+  direction?: "vertical" | "horizontal";
+  className?: string;
+}
+
+export const SidebarHeadless: React.FC<SidebarHeadlessProps> = ({
+  sections,
+  direction = "vertical",
+  className = "",
+}) => {
   return (
-    <div className="flex grow gap-6 h-full flex-col w-full max-w-[450px] border-r border-black/10 overflow-auto">
-      <ResizablePanelGroup direction="vertical">
-        <ResizablePanel
-          defaultSize={60}
-          minSize={20}
-          maxSize={80}
-          className="p-[24px]"
-        >
-          {tree}
-        </ResizablePanel>
-        <ResizableHandle />
-        <ResizablePanel
-          defaultSize={40}
-          maxSize={80}
-          minSize={20}
-          className="p-[24px]"
-        >
-          {editor}
-        </ResizablePanel>
+    <div
+      className={`flex grow bg-white rounded-2xl h-full w-full overflow-hidden ${className}`}
+    >
+      <ResizablePanelGroup direction={direction}>
+        {sections.map((section, index) => (
+          <React.Fragment key={section.id}>
+            <ResizablePanel
+              defaultSize={section.defaultSize ?? 50}
+              minSize={section.minSize ?? 10}
+              maxSize={section.maxSize ?? 90}
+            >
+              <div className="flex p-4 flex-col gap-6">
+                <span className="font-bold capitalize text-[16px]">
+                  {section.label}
+                </span>
+                {section.element}
+              </div>
+            </ResizablePanel>
+
+            {index < sections.length - 1 && <ResizableHandle />}
+          </React.Fragment>
+        ))}
       </ResizablePanelGroup>
     </div>
   );

@@ -34,6 +34,9 @@ export const IFrame = forwardRef<HTMLIFrameElement, IframeProps>(
         if (iframeDoc?.body && iframeDoc?.head) {
           setMountNode(iframeDoc.body);
 
+          iframeDoc.documentElement.style.overflowX = "hidden";
+          iframeDoc.body.style.overflowX = "hidden";
+
           if (injectCSS) {
             const linkEl = iframeDoc.createElement("link");
             linkEl.rel = "stylesheet";
@@ -46,7 +49,15 @@ export const IFrame = forwardRef<HTMLIFrameElement, IframeProps>(
     }, [injectCSS]);
 
     return (
-      <iframe ref={innerRef} {...rest}>
+      <iframe
+        ref={innerRef}
+        {...rest}
+        style={{
+          ...rest.style,
+          overflowY: "scroll",
+          overflowX: "hidden",
+        }}
+      >
         {mountNode && createPortal(children, mountNode)}
       </iframe>
     );

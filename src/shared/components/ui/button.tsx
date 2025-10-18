@@ -9,8 +9,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-accent  text-background hover:bg-accent/80",
+        default: "bg-accent text-background hover:bg-accent/80",
         link: "bg-transparent underline text-foreground",
+        bordered: "bg-transparent border border-foreground/20 text-foreground",
       },
       size: {
         default: "px-[24px] py-[12px] has-[>svg]:px-3",

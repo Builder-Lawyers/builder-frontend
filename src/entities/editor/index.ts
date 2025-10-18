@@ -1,2 +1,1 @@
-export { Editor } from "./ui";
-export { useEditorStore } from "./model";
+export { useEditor } from "./model";
