@@ -1,25 +1,66 @@
+import React, { FormEventHandler, JSX, ReactNode } from "react";
+import { cn, getChildByType } from "@/shared/lib/utils";
+import { Header, Subtitle, Title } from "@/shared/ui/auth-form/header";
 import { CenteringLayout } from "@/shared/layouts/centering";
-import { ReactNode } from "react";
 
-interface Props {
-  form: ReactNode;
-  widget?: ReactNode;
+export interface BaseProps {
+  children: ReactNode;
 }
 
-export const AuthForm = ({ form, widget }: Props) => {
+interface FormFieldProps {
+  onSubmit: FormEventHandler<HTMLFormElement>;
+}
+
+const Form = ({ children }: BaseProps) => (
+  <div className="flex flex-col gap-6 w-full">{children}</div>
+);
+
+const Actions = ({ children }: BaseProps) => (
+  <div className="flex flex-col gap-2 w-full items-center justify-center">
+    {children}
+  </div>
+);
+
+interface AuthFormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+  children: ReactNode;
+  onSubmit: FormEventHandler<HTMLFormElement>;
+}
+
+interface AuthFormCompound {
+  (props: AuthFormProps): JSX.Element;
+  Header: typeof Header;
+  Title: typeof Title;
+  Subtitle: typeof Subtitle;
+  Form: typeof Form;
+  Actions: typeof Actions;
+}
+
+export const AuthForm = (({
+  children,
+  onSubmit,
+  className,
+  ...rest
+}: AuthFormProps) => {
+  const header = getChildByType(children, AuthForm.Header);
+  const form = getChildByType(children, AuthForm.Form);
+  const actions = getChildByType(children, AuthForm.Actions);
+
   return (
-    <div className="flex items-center justify-between">
-      <CenteringLayout
-        forPage={false}
-        className="flex h-[100dvh] justify-between gap-[12px] p-2 w-full"
-      >
-        <div className="flex bg-black/5 p-[48px] rounded-[16px] gap-[12px] h-full w-full flex-col">
-          {widget}
-        </div>
-        <div className="w-full flex justify-center w-full max-w-[900px]">
+    <form {...rest} className={cn(className, "flex")} onSubmit={onSubmit}>
+      <div className="w-[60%] h-full bg-accent">dsa</div>
+      <CenteringLayout>
+        <div className="flex flex-col gap-12 w-full max-w-[420px]">
+          {header}
           {form}
+          {actions}
         </div>
       </CenteringLayout>
-    </div>
+    </form>
   );
-};
+}) as AuthFormCompound;
+
+AuthForm.Header = Header;
+AuthForm.Title = Title;
+AuthForm.Subtitle = Subtitle;
+AuthForm.Form = Form;
+AuthForm.Actions = Actions;

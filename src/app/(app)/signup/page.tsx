@@ -1,5 +1,5 @@
-import { Registration } from "@/screens/signup/ui";
+import { RegistrationPage } from "@/screens/registration";
 
 export default function SignUp() {
-  return <Registration />;
+  return <RegistrationPage />;
 }

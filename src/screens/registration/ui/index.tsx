@@ -1,33 +1,35 @@
 "use client";
 
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  LoginFormValues,
-  loginValidation,
-  onSubmit,
-} from "@/screens/login/model";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthForm } from "@/shared/ui/auth-form";
 import { FormControl, FormField, FormItem } from "@/shared/ui/form";
 import Input from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
+import {
+  onSubmit,
+  RegistrationFormValues,
+  registrationValidation,
+} from "@/screens/registration/model";
 
-export const LoginPage = () => {
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginValidation),
+export const RegistrationPage = () => {
+  const form = useForm<RegistrationFormValues>({
+    resolver: zodResolver(registrationValidation),
     defaultValues: {
-      email: "sanity@mailinator.com",
-      password: "Password_25!",
+      email: "mock_email@gmail.com",
+      password: "Qwerty123_",
+      repeatPassword: "Qwerty123_",
     },
   });
 
   return (
     <div className="p-4">
       <FormProvider {...form}>
-        <AuthForm onSubmit={form.handleSubmit(onSubmit)}>
+        <AuthForm autoComplete="on" onSubmit={form.handleSubmit(onSubmit)}>
           <AuthForm.Header>
-            <AuthForm.Title>Log in</AuthForm.Title>
+            <AuthForm.Title>Sign up</AuthForm.Title>
             <AuthForm.Subtitle>
               Please provide your email and password
             </AuthForm.Subtitle>
@@ -44,6 +46,7 @@ export const LoginPage = () => {
                       id="email"
                       label="Email"
                       type="email"
+                      required
                       autoComplete="email"
                       placeholder="Enter your email"
                       error={fieldState.error?.message}
@@ -62,9 +65,34 @@ export const LoginPage = () => {
                     <Input
                       {...field}
                       id="password"
+                      autoComplete="new-password"
                       label="Password"
+                      required
+                      name="password"
                       type="password"
                       placeholder="Enter your password"
+                      error={fieldState.error?.message}
+                      aria-invalid={!!fieldState.error}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="repeatPassword"
+              render={({ field, fieldState }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      id="repeat-password"
+                      label="Repeat password"
+                      name="password"
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      placeholder="Enter your repeated password"
                       error={fieldState.error?.message}
                       aria-invalid={!!fieldState.error}
                     />
@@ -78,10 +106,10 @@ export const LoginPage = () => {
               submit
             </Button>
             <p className="text-[14px] text-foreground/60">
-              Don&#39;t have an account?{" "}
+              Do you have account already?{" "}
               <Button size="link" variant="link">
-                <Link href="/signup" className="text-foreground">
-                  Sing Up
+                <Link href="/login" className="text-foreground">
+                  Sing In
                 </Link>
               </Button>
             </p>

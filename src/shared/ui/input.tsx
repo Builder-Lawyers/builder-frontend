@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { cn } from "@/shared/lib/utils";
 import { Label } from "@/shared/ui/label";
 
@@ -17,7 +16,13 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-function InputHeadless({ className, type, slots, ...props }: InputProps) {
+function InputHeadless({
+  className,
+  type,
+  slots,
+  error,
+  ...props
+}: InputProps) {
   const Root = slots?.root ?? "div";
   const InputSlot = slots?.input ?? "input";
 
@@ -26,10 +31,12 @@ function InputHeadless({ className, type, slots, ...props }: InputProps) {
       <InputSlot
         type={type}
         data-slot="input"
+        aria-invalid={!!error}
         className={cn(
-          "file:text-foreground py-[8px] placeholder:text-secondary/60 selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex w-full min-w-0 rounded-xl border-secondary/40 border bg-transparent px-3 text-base transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          "focus-visible:border-ring focus-visile:ring-ring/50 focus-visible:ring-[3px]",
-          "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+          "file:text-foreground py-[10px] placeholder:text-secondary/60 selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex w-full min-w-0 rounded-xl border bg-transparent px-3 text-base transition-[color,box-shadow,border] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          error
+            ? "border-destructive ring-destructive/40 focus-visible:ring-destructive/40"
+            : "border-secondary/40 ring-foreground/60 focus-visible:ring-[2px]",
           className,
         )}
         {...props}
@@ -56,8 +63,8 @@ export default function Input({
           {label}
         </LabelSlot>
       )}
-      <InputHeadless {...props} slots={slots} />
-      {helperText && (
+      <InputHeadless {...props} slots={slots} error={error} />
+      {helperText && !error && (
         <HelperSlot
           className="text-[14px] text-muted-foreground"
           data-slot="helper"
@@ -66,7 +73,7 @@ export default function Input({
         </HelperSlot>
       )}
       {error && (
-        <HelperSlot className="text-[14px]" data-slot="error">
+        <HelperSlot className="text-[12px] text-destructive" data-slot="error">
           {error}
         </HelperSlot>
       )}

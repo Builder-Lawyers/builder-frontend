@@ -15,7 +15,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "px-[24px] py-[12px] has-[>svg]:px-3",
-        link: "",
+        link: "p-0",
       },
     },
     defaultVariants: {

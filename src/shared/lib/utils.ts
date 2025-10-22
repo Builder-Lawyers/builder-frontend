@@ -6,10 +6,21 @@ import {
   WidgetOptions,
 } from "@/shared/types/template";
 import Handlebars from "handlebars";
+import React, { ReactNode } from "react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export function getChildByType<T>(
+  children: ReactNode,
+  type: React.FC<T>,
+): React.ReactElement<T> | null {
+  return React.Children.toArray(children).find(
+    (child) => React.isValidElement(child) && child.type === type,
+  ) as React.ReactElement<T> | null;
+}
+
 function flattenOption(opt: MetaOptions): any {
   if (opt.meta === "list") {
     const list = opt as ListOption;

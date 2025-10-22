@@ -1,11 +1,9 @@
 "use client";
 
-import {
-  CognitoUserPool,
-  CognitoUser,
-  AuthenticationDetails,
-} from "amazon-cognito-identity-js";
+import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import { z } from "zod";
+import { SessionTokens, userPool } from "@/shared/cognito";
+import { redirect } from "next/navigation";
 
 export const loginValidation = z.object({
   email: z.string().nonempty({
@@ -17,21 +15,6 @@ export const loginValidation = z.object({
 });
 
 export type LoginFormValues = z.infer<typeof loginValidation>;
-
-const poolData = {
-  UserPoolId: String(process.env.NEXT_PUBLIC_COGNITO_USERPOOL_ID),
-  ClientId: String(process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID),
-};
-
-export class SessionTokens {
-  constructor(
-    public idToken: string,
-    public accessToken: string,
-    public refreshToken: string,
-  ) {}
-}
-
-const userPool = new CognitoUserPool(poolData);
 
 export function login({
   email,
@@ -61,3 +44,9 @@ export function login({
     });
   });
 }
+
+export const onSubmit = (data: LoginFormValues) => {
+  login(data).then(() => {
+    redirect("/editor");
+  });
+};
