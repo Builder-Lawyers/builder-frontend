@@ -7,12 +7,10 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
   reactStrictMode: false,
 
-  // 🔧 вимикаємо ESLint під час build / start
   eslint: {
     ignoreDuringBuilds: true,
   },
 
-  // 🔧 вимикаємо type-checking під час build
   typescript: {
     ignoreBuildErrors: true,
   },

@@ -4,7 +4,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/shared/components/ui/resizable";
+} from "@/shared/ui/resizable";
 import React, { ReactNode } from "react";
 
 export interface SidebarSection {

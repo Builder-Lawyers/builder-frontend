@@ -1,26 +1,20 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { login, LoginFormValues, loginValidation } from "@/screens/login/model";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
+import { AuthForm } from "@/shared/ui/auth-form";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/shared/components/ui/card";
-
-import { Input } from "@/shared/components/ui/input";
-import { Button } from "@/shared/components/ui/button";
-import { AuthForm } from "@/shared/components/auth-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@/shared/components/ui/form";
-import { useForm } from "react-hook-form";
-import { login, LoginFormValues, loginValidation } from "@/screens/login/model";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
+} from "@/shared/ui/card";
+import { Form, FormControl, FormField, FormItem } from "@/shared/ui/form";
+import Input from "@/shared/ui/input";
+import { Button } from "@/shared/ui/button";
 
 export const LoginPage = () => {
   const form = useForm<LoginFormValues>({

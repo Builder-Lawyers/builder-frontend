@@ -1,1 +1,1 @@
-export { WidgetEditorPanel } from "./ui";
+export { EditorPanelWidget } from "./ui";

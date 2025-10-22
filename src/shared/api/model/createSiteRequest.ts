@@ -5,12 +5,12 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import type { CreateSiteRequestFields } from './createSiteRequestFields';
+import type { CreateSiteRequestFields } from "./createSiteRequestFields";
 
 export interface CreateSiteRequest {
   templateID: number;
   planID: number;
-  userID: string;
+  userID?: string;
   /** json object with all widgets and fields of a site */
   fields?: CreateSiteRequestFields;
 }

@@ -2,7 +2,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/shared/components/ui/collapsible";
+} from "@/shared/ui/collapsible";
 import { ChevronDown, LucideIcon } from "lucide-react";
 import { ReactNode } from "react";
 import { cn } from "@/shared/lib/utils";

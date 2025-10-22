@@ -1,1 +1,1 @@
-export { Editor } from "./ui";
+export { EditorScreen } from "./ui";

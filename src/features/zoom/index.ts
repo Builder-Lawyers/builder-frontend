@@ -1,3 +1,3 @@
 export { useDeviceView, devicePresets } from "./model";
 export type { Device } from "./model";
-export { ZoomActions } from "./ui";
+export { ZoomActions, ZoomWrapper } from "./ui";

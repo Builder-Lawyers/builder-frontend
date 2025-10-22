@@ -1,19 +1,18 @@
-import { SidebarHeadless } from "@/shared/components/custom/sidebar";
 import { useEffect, useState } from "react";
 import { mockFetchPage } from "@/shared/api/mock";
 import { Pages } from "@/shared/types/template";
 import MaterialSymbolsComputerOutlineRounded from "~icons/material-symbols/computer-outline-rounded";
 import { cn } from "@/shared/lib/utils";
-import { useEditor } from "@/entities/editor";
 import { Widget } from "@/entities/widget/ui";
 import { useWidget } from "@/entities/widget";
 import { nanoid } from "nanoid";
-
+import { useEditor } from "@/features/editor";
+import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
 interface SidebarProps {
   className?: string;
 }
 
-export const Sidebar = ({ className }: SidebarProps) => {
+export const SidebarWidget = ({ className }: SidebarProps) => {
   const { widgets } = useEditor();
   const { api, state } = useWidget();
   const [pages, setPages] = useState<Pages["label"][]>([]);

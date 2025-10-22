@@ -1,6 +1,6 @@
 import { PageLayout } from "@/shared/layouts/page";
 import { CenteringLayout } from "@/shared/layouts/centering";
-import { Button } from "@/shared/components/ui/button";
+import { Button } from "@/shared/ui/button";
 
 export const WelcomePage = async () => {
   return (

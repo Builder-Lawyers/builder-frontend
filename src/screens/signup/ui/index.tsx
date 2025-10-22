@@ -1,17 +1,16 @@
+import { AuthForm } from "@/shared/ui/auth-form";
+import { cn } from "@/shared/lib/utils";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/shared/components/ui/card";
-import { Input } from "@/shared/components/ui/input";
-import { Button } from "@/shared/components/ui/button";
-import { Label } from "@/shared/components/ui/label";
+} from "@/shared/ui/card";
+import Input from "@/shared/ui/input";
 import Link from "next/link";
-import { AuthForm } from "@/shared/components/auth-form";
-
-import { cn } from "@/shared/lib/utils";
+import { Button } from "@/shared/ui/button";
+import { Label } from "@/shared/ui/label";
 
 const steps = [
   {

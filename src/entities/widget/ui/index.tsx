@@ -1,17 +1,12 @@
 import FluentLayerDiagonal24Regular from "~icons/fluent/layer-diagonal-24-regular";
 import IconamoonArrowUp2Light from "~icons/iconamoon/arrow-up-2-light";
+
 import {
   MetaOptions,
   Widget as WidgetProps,
   WidgetOptions,
 } from "@/shared/types/template";
-import React, {
-  HTMLAttributes,
-  RefObject,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { HTMLAttributes, RefObject, useRef, useState } from "react";
 import { cn } from "@/shared/lib/utils";
 
 export const WidgetTitle = ({ label }: { label: WidgetProps["label"] }) => {
@@ -114,16 +109,9 @@ interface WidgetContainerProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Widget = ({ widget, isActive, ...rest }: WidgetContainerProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(isActive);
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(0);
-
-  useLayoutEffect(() => {
-    if (contentRef.current) {
-      setHeight(contentRef.current.scrollHeight);
-    }
-  }, [isOpen, widget.options]);
 
   return (
     <div className="flex flex-col">
@@ -139,12 +127,8 @@ export const Widget = ({ widget, isActive, ...rest }: WidgetContainerProps) => {
       />
       <div
         className={cn(
-          "transition-all duration-150 ease-in-out overflow-hidden",
+          "transition-all duration-250 ease-in-out overflow-hidden",
         )}
-        style={{
-          height: isOpen ? height : 0,
-          opacity: isOpen ? 1 : 0,
-        }}
       >
         {isOpen && widget.options && (
           <Options contentRef={contentRef} options={widget.options} />

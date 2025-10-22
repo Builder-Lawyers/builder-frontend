@@ -8,15 +8,15 @@ import {
   ListOption,
 } from "@/shared/types/template";
 import SolarTextBold from "~icons/solar/text-bold";
-import Input from "@/shared/components/ui/input";
+import Input from "@/shared/ui/input";
 import WpfCursor from "~icons/wpf/cursor";
 import MiOptionsVertical from "~icons/mi/options-vertical";
-import { Textarea } from "@/shared/components/ui/textarea";
+import { Textarea } from "@/shared/ui/textarea";
 import {
   Dropzone,
   DropzoneContent,
   DropzoneEmptyState,
-} from "@/shared/components/ui/dropzone";
+} from "@/shared/ui/dropzone";
 
 type MetaType = MetaOptions["meta"];
 
