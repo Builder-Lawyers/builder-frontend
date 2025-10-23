@@ -1,6 +1,8 @@
 import { SessionTokens, userPool } from "@/shared/cognito";
 import { redirect } from "next/navigation";
 import z from "zod";
+import { UseFormSetError } from "react-hook-form";
+import { isDev } from "@/shared/lib/utils";
 
 export const registrationValidation = z
   .object({
@@ -37,11 +39,24 @@ export function registration(
   });
 }
 
-export const onSubmit = async (data: RegistrationFormValues) => {
-  try {
-    await registration(data.email, data.password);
-    redirect("/editor");
-  } catch (error) {
-    console.error(error);
-  }
+export const useRegistration = ({
+  setError,
+}: {
+  setError: UseFormSetError<RegistrationFormValues>;
+}) => {
+  const onSubmit = (data: RegistrationFormValues) => {
+    registration(data.email, data.password)
+      .then(() => {})
+      .catch((err) => {
+        setError("password", { message: err.message });
+        setError("email", { message: err.message });
+      })
+      .finally(() => {
+        if (isDev()) {
+          redirect("/editor");
+        }
+      });
+  };
+
+  return { onSubmit };
 };

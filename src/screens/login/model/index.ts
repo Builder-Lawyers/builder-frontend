@@ -4,6 +4,8 @@ import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import { z } from "zod";
 import { SessionTokens, userPool } from "@/shared/cognito";
 import { redirect } from "next/navigation";
+import { UseFormSetError } from "react-hook-form";
+import { isDev } from "@/shared/lib/utils";
 
 export const loginValidation = z.object({
   email: z.string().nonempty({
@@ -45,8 +47,27 @@ export function login({
   });
 }
 
-export const onSubmit = (data: LoginFormValues) => {
-  login(data).then(() => {
-    redirect("/editor");
-  });
+export const useLogin = ({
+  setError,
+}: {
+  setError: UseFormSetError<LoginFormValues>;
+}) => {
+  const onSubmit = (data: LoginFormValues) => {
+    login(data)
+      .then(() => {
+        redirect("/editor");
+      })
+      .catch((err) => {
+        setError("root", { message: err });
+        setError("password", { message: err.message });
+        setError("email", { message: err.email });
+      })
+      .finally(() => {
+        if (isDev()) {
+          redirect("/editor");
+        }
+      });
+  };
+
+  return { onSubmit };
 };

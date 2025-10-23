@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
   LoginFormValues,
   loginValidation,
-  onSubmit,
+  useLogin,
 } from "@/screens/login/model";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthForm } from "@/shared/ui/auth-form";
@@ -22,8 +22,12 @@ export const LoginPage = () => {
     },
   });
 
+  const { setError } = form;
+
+  const { onSubmit } = useLogin({ setError: setError });
+
   return (
-    <div className="p-4">
+    <div className="h-sreen">
       <FormProvider {...form}>
         <AuthForm onSubmit={form.handleSubmit(onSubmit)}>
           <AuthForm.Header>

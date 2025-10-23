@@ -46,9 +46,13 @@ export const AuthForm = (({
   const actions = getChildByType(children, AuthForm.Actions);
 
   return (
-    <form {...rest} className={cn(className, "flex")} onSubmit={onSubmit}>
-      <div className="w-[60%] h-full bg-accent">dsa</div>
-      <CenteringLayout>
+    <form
+      {...rest}
+      className={cn(className, "flex p-4 h-full min-h-screen")}
+      onSubmit={onSubmit}
+    >
+      <div className="w-[30%] sm:flex hidden grow flex-1/4 bg-accent rounded-xl" />
+      <CenteringLayout className="flex-1/2">
         <div className="flex flex-col gap-12 w-full max-w-[420px]">
           {header}
           {form}

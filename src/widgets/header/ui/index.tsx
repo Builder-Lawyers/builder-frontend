@@ -16,12 +16,12 @@ export const Header = () => {
             </li>
           </nav>
           <div className="flex gap-[24px] items-center">
-            <Link href="login">
+            <Link href="/login">
               <Button size="link" variant="link">
                 Log in
               </Button>
             </Link>
-            <Link href="signup">
+            <Link href="/signup">
               <Button>Get Started</Button>
             </Link>
           </div>

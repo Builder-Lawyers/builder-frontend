@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import { useWidget } from "@/entities/widget";
 import { ZoomWrapper } from "@/features/zoom";
-import { renderWidget } from "@/shared/lib/utils";
 import { useEditor } from "@/features/editor";
 import { Frame } from "@/widgets/frame/ui/headless";
 import { IFrame } from "@/shared/ui/iframe/ui";
+import { renderWidget } from "@/widgets/frame/ui/model";
 
 export const FrameWidget = () => {
   const { api } = useWidget();

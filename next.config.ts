@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 import unpluginIcons from "unplugin-icons/webpack";
 
 const nextConfig: NextConfig = {
+  test: {
+    environment: "jsdom",
+  },
   poweredByHeader: false,
   trailingSlash: false,
   skipTrailingSlashRedirect: true,

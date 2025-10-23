@@ -9,9 +9,9 @@ import Input from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
 import {
-  onSubmit,
   RegistrationFormValues,
   registrationValidation,
+  useRegistration,
 } from "@/screens/registration/model";
 
 export const RegistrationPage = () => {
@@ -24,8 +24,11 @@ export const RegistrationPage = () => {
     },
   });
 
+  const { setError } = form;
+  const { onSubmit } = useRegistration({ setError });
+
   return (
-    <div className="p-4">
+    <div className="h-screen">
       <FormProvider {...form}>
         <AuthForm autoComplete="on" onSubmit={form.handleSubmit(onSubmit)}>
           <AuthForm.Header>
