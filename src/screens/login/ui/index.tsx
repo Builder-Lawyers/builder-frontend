@@ -12,6 +12,8 @@ import { FormControl, FormField, FormItem } from "@/shared/ui/form";
 import Input from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
+import { GoogleLogin } from "@react-oauth/google";
+import { redirect } from "next/navigation";
 
 export const LoginPage = () => {
   const form = useForm<LoginFormValues>({
@@ -37,6 +39,15 @@ export const LoginPage = () => {
             </AuthForm.Subtitle>
           </AuthForm.Header>
           <AuthForm.Form>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                redirect("/editor");
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+            <AuthForm.Split>Or</AuthForm.Split>
             <FormField
               control={form.control}
               name="email"

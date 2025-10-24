@@ -4,13 +4,18 @@ import { Header, Subtitle, Title } from "@/shared/ui/auth-form/header";
 import { CenteringLayout } from "@/shared/layouts/centering";
 
 export interface BaseProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
-interface FormFieldProps {
-  onSubmit: FormEventHandler<HTMLFormElement>;
-}
-
+const Split = (props: BaseProps) => (
+  <div className="flex items-center gap-2" {...props}>
+    <div className="h-[1px] w-full bg-foreground/10" />
+    <p className="text-foreground/40 text-[12px] uppercase ">
+      {props.children}
+    </p>
+    <div className="h-[1px] w-full bg-foreground/10" />
+  </div>
+);
 const Form = ({ children }: BaseProps) => (
   <div className="flex flex-col gap-6 w-full">{children}</div>
 );
@@ -33,6 +38,7 @@ interface AuthFormCompound {
   Subtitle: typeof Subtitle;
   Form: typeof Form;
   Actions: typeof Actions;
+  Split: typeof Split;
 }
 
 export const AuthForm = (({
@@ -67,4 +73,5 @@ AuthForm.Header = Header;
 AuthForm.Title = Title;
 AuthForm.Subtitle = Subtitle;
 AuthForm.Form = Form;
+AuthForm.Split = Split;
 AuthForm.Actions = Actions;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ReactNode } from "react";
 import { Mulish } from "next/font/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const mulish = Mulish({
   weight: ["500", "600", "700", "800", "900"],
@@ -20,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={mulish.className}>{children}</body>
+      <body className={mulish.className}>
+        <GoogleOAuthProvider clientId="27957713975-osgmdhce9gbkb23gv6nmb2mc355l587n.apps.googleusercontent.com">
+          {children}
+        </GoogleOAuthProvider>
+      </body>
     </html>
   );
 }

@@ -13,6 +13,8 @@ import {
   registrationValidation,
   useRegistration,
 } from "@/screens/registration/model";
+import { GoogleLogin } from "@react-oauth/google";
+import { redirect } from "next/navigation";
 
 export const RegistrationPage = () => {
   const form = useForm<RegistrationFormValues>({
@@ -38,6 +40,15 @@ export const RegistrationPage = () => {
             </AuthForm.Subtitle>
           </AuthForm.Header>
           <AuthForm.Form>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                redirect("/editor");
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+            <AuthForm.Split>Or</AuthForm.Split>
             <FormField
               control={form.control}
               name="email"
