@@ -10,7 +10,6 @@ import { Icon } from "@iconify/react";
 export const WidgetTitle = ({ label }: { label: WidgetProps["label"] }) => {
   return (
     <div className="flex items-center gap-3">
-      icon
       <p className="text-foreground text-[14px]">{label}</p>
     </div>
   );

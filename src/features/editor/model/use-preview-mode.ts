@@ -6,7 +6,7 @@ export type Device = "desktop" | "phone";
 export const devicePresets: Record<
   Device,
   { width: string | number; scale: number }
-> = {
+  > = {
   desktop: { width: "100%", scale: 1 },
   phone: { width: 390, scale: 1 },
 };

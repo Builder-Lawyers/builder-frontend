@@ -1,14 +1,15 @@
 import React, { useRef } from "react";
 import { useWidget } from "@/entities/widget";
-import { ZoomWrapper } from "@/features/zoom";
 import { useEditor } from "@/features/editor";
 import { IFrame } from "@/shared/ui/iframe/ui";
 import { Frame } from "@/features/editor/ui/frame";
 import { useRenderTemplate } from "@/features/editor/model/use-render-template";
+import { PreviewWrapper } from "@/features/editor/compose/preview-mode";
+
 export const FrameViewer = () => {
   const { api } = useWidget();
-  const { renderWidget } = useRenderTemplate();
   const { widgets } = useEditor();
+  const { renderWidget } = useRenderTemplate();
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -16,7 +17,7 @@ export const FrameViewer = () => {
     <Frame>
       <Frame.Actions>actions</Frame.Actions>
       <Frame.Content>
-        <ZoomWrapper>
+        <PreviewWrapper>
           <IFrame
             ref={iframeRef}
             injectCSS="/index.css"
@@ -33,7 +34,7 @@ export const FrameViewer = () => {
               />
             ))}
           </IFrame>
-        </ZoomWrapper>
+        </PreviewWrapper>
       </Frame.Content>
     </Frame>
   );

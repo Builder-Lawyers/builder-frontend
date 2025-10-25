@@ -1,12 +1,12 @@
-import {
-  devicePresets,
-  useDeviceView,
-  type Device,
-} from "@/features/zoom/model";
 import { ReactNode } from "react";
 import { Button } from "@/shared/ui/button";
+import {
+  Device,
+  devicePresets,
+  useDeviceView,
+} from "@/features/editor/model/use-preview-mode";
 
-export const ZoomActions = () => {
+export const PreviewActions = () => {
   const { api, device } = useDeviceView();
 
   return (
@@ -24,7 +24,7 @@ export const ZoomActions = () => {
   );
 };
 
-export const ZoomWrapper = ({ children }: { children: ReactNode }) => {
+export const PreviewWrapper = ({ children }: { children: ReactNode }) => {
   const { width, scale } = useDeviceView();
   return (
     <div
