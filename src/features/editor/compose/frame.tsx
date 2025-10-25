@@ -5,13 +5,17 @@ import { IFrame } from "@/shared/ui/iframe/ui";
 import { Frame } from "@/features/editor/ui/frame";
 import { useRenderTemplate } from "@/features/editor/model/use-render-template";
 import { PreviewWrapper } from "@/features/editor/compose/preview-mode";
+import { useHighlight } from "@/features/editor/model/use-highlight";
+import { Highlight } from "@/features/editor/ui/highlight";
 
 export const FrameViewer = () => {
   const { api } = useWidget();
   const { widgets } = useEditor();
   const { renderWidget } = useRenderTemplate();
-
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const { onHoverElement, onSelectElement, hoverPositions, activePositions } =
+    useHighlight(iframeRef);
 
   return (
     <Frame>
@@ -25,14 +29,20 @@ export const FrameViewer = () => {
           >
             {widgets.map((w) => (
               <div
+                onMouseEnter={onHoverElement}
                 key={w.id}
                 data-widget-id={w.id}
-                onClick={() => api.onSelectedWidgetId(w.id)}
+                onClick={(e) => {
+                  api.onSelectedWidgetId(w.id);
+                  onSelectElement(e);
+                }}
                 dangerouslySetInnerHTML={{
                   __html: renderWidget(w.component, w.options),
                 }}
               />
             ))}
+            <Highlight {...hoverPositions} type="hover" />
+            <Highlight {...activePositions} type="active" />
           </IFrame>
         </PreviewWrapper>
       </Frame.Content>
