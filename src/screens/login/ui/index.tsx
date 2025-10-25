@@ -40,7 +40,7 @@ export const LoginPage = () => {
           </AuthForm.Header>
           <AuthForm.Form>
             <GoogleLogin
-              onSuccess={(credentialResponse) => {
+              onSuccess={() => {
                 redirect("/editor");
               }}
               onError={() => {

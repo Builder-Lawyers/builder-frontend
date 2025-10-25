@@ -7,10 +7,7 @@ import {
   ButtonOption,
   ListOption,
 } from "@/shared/types/template";
-import SolarTextBold from "~icons/solar/text-bold";
 import Input from "@/shared/ui/input";
-import WpfCursor from "~icons/wpf/cursor";
-import MiOptionsVertical from "~icons/mi/options-vertical";
 import { Textarea } from "@/shared/ui/textarea";
 import {
   Dropzone,
@@ -49,10 +46,7 @@ const OptionsLabel = ({
 const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
   text: ({ field, onChange }: { field: TextOption; onChange?: any }) => (
     <div className="flex flex-col gap-1.5">
-      <OptionsLabel
-        icon={<SolarTextBold width={16} height={16} />}
-        label={field.label}
-      />
+      <OptionsLabel icon={<div>icon</div>} label={field.label} />
       {field.changeable.value.length > 40 ? (
         <Textarea
           value={field.changeable.value}
@@ -71,10 +65,7 @@ const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
 
   image: ({ field, onChange }: { field: ImageOption; onChange?: any }) => (
     <div className="flex flex-col gap-2">
-      <OptionsLabel
-        icon={<SolarTextBold width={16} height={16} />}
-        label={field.label}
-      />
+      <OptionsLabel icon={<div>icon</div>} label={field.label} />
       <Input
         type="text"
         value={field.changeable.src}
@@ -96,10 +87,7 @@ const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
 
   link: ({ field, onChange }: { field: LinkOption; onChange?: any }) => (
     <div className="flex flex-col gap-1.5">
-      <OptionsLabel
-        icon={<WpfCursor width={16} height={16} />}
-        label={field.label}
-      />
+      <OptionsLabel icon={<div>icon</div>} label={field.label} />
       <Input
         type="text"
         value={field.changeable.href}
@@ -118,9 +106,9 @@ const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
   button: ({ field, onChange }: { field: ButtonOption; onChange?: any }) => (
     <div className="flex flex-col gap-1.5">
       <OptionsLabel
-        icon={<WpfCursor width={16} height={16} />}
+        icon={<div>icon</div>}
         label={field.label}
-        action={<MiOptionsVertical />}
+        action={<div>icon</div>}
       />
       <Input
         type="text"

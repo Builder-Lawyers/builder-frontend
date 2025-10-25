@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
-import { mockFetchPage } from "@/shared/api/mock";
-import { Pages } from "@/shared/types/template";
-import MaterialSymbolsComputerOutlineRounded from "~icons/material-symbols/computer-outline-rounded";
-import { cn } from "@/shared/lib/utils";
-import { Widget } from "@/entities/widget/ui";
-import { useWidget } from "@/entities/widget";
-import { nanoid } from "nanoid";
-import { useEditor } from "@/features/editor";
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
+import { useEditor } from "@/features/editor";
+import { useWidget, Widget } from "@/entities/widget";
+import { useEffect, useState } from "react";
+import { Pages } from "@/shared/types/template";
+import { mockFetchPage } from "@/shared/api/mock";
+import { cn } from "@/shared/lib/utils";
+import { nanoid } from "nanoid";
+
 interface SidebarProps {
   className?: string;
 }
 
-export const SidebarWidget = ({ className }: SidebarProps) => {
+export const Sidebar = ({ className }: SidebarProps) => {
   const { widgets } = useEditor();
   const { api, state } = useWidget();
   const [pages, setPages] = useState<Pages["label"][]>([]);
@@ -41,13 +40,7 @@ export const SidebarWidget = ({ className }: SidebarProps) => {
                   key={widget}
                 >
                   <div className="flex items-center gap-3">
-                    <MaterialSymbolsComputerOutlineRounded
-                      opacity="60%"
-                      className="text-foreground"
-                      color={"text-foreground"}
-                      width={24}
-                      height={24}
-                    />
+                    <div>Icon</div>
                     <p className="text-foreground text-[14px]">{widget}</p>
                   </div>
                 </div>

@@ -1,11 +1,15 @@
 "use client";
 import { useEffect } from "react";
-import { SidebarWidget } from "@/widgets/sidebar";
-import { mockFetchTemplates } from "@/shared/api/mock";
-import { Editor, useEditor } from "@/features/editor";
-import { EditorPanelWidget } from "@/widgets/editor-panel";
-import { FrameWidget } from "@/widgets/frame";
 
+import { mockFetchTemplates } from "@/shared/api/mock";
+
+import {
+  Editor,
+  EditorPanel,
+  FrameViewer,
+  Sidebar,
+  useEditor,
+} from "@/features/editor";
 
 export const EditorScreen = () => {
   const { dispatch } = useEditor();
@@ -22,9 +26,9 @@ export const EditorScreen = () => {
 
   return (
     <Editor
-      editorPanel={<EditorPanelWidget className="max-w-[20%]" />}
-      frame={<FrameWidget />}
-      sidebar={<SidebarWidget className="max-w-[20%]" />}
+      editorPanel={<EditorPanel className="max-w-[20%]" />}
+      frame={<FrameViewer />}
+      sidebar={<Sidebar className="max-w-[20%]" />}
     />
   );
 };

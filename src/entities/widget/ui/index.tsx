@@ -1,6 +1,3 @@
-import FluentLayerDiagonal24Regular from "~icons/fluent/layer-diagonal-24-regular";
-import IconamoonArrowUp2Light from "~icons/iconamoon/arrow-up-2-light";
-
 import {
   MetaOptions,
   Widget as WidgetProps,
@@ -8,16 +5,12 @@ import {
 } from "@/shared/types/template";
 import React, { HTMLAttributes, RefObject, useRef, useState } from "react";
 import { cn } from "@/shared/lib/utils";
+import { Icon } from "@iconify/react";
 
 export const WidgetTitle = ({ label }: { label: WidgetProps["label"] }) => {
   return (
     <div className="flex items-center gap-3">
-      <FluentLayerDiagonal24Regular
-        opacity="60%"
-        className="text-foreground"
-        width={24}
-        height={24}
-      />
+      icon
       <p className="text-foreground text-[14px]">{label}</p>
     </div>
   );
@@ -26,14 +19,7 @@ export const WidgetTitle = ({ label }: { label: WidgetProps["label"] }) => {
 const OptionIcon = ({ meta }: { meta: MetaOptions["meta"] }) => {
   switch (meta) {
     case "link":
-      return (
-        <FluentLayerDiagonal24Regular
-          opacity="60%"
-          className="text-foreground"
-          width={20}
-          height={20}
-        />
-      );
+      return <div>icon</div>;
     default:
       return <div className="w-5 h-5 bg-secondary/10 rounded" />;
   }
@@ -64,13 +50,10 @@ const WidgetComponent = ({
     >
       <WidgetTitle label={widget.label} />
       {widget.options && (
-        <IconamoonArrowUp2Light
-          className={cn(
-            "duration-150 transform",
-            isOpen ? "rotate-180" : "rotate-0",
-          )}
-          height={18}
-          width={18}
+        <Icon
+          className={cn(isOpen)}
+          icon="fluent:layer-diagonal-24-regular"
+          width="24"
         />
       )}
     </div>

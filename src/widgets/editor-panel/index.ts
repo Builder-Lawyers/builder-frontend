@@ -1,1 +1,0 @@
-export { EditorPanelWidget } from "./ui";

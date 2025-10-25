@@ -1,14 +1,14 @@
 import { useWidget, WidgetTitle } from "@/entities/widget";
 import { useMemo } from "react";
-import { OptionsVisitor } from "@/widgets/editor-panel/ui/visitor";
 import { MetaOptions } from "@/shared/types/template";
 import { useEditor } from "@/features/editor";
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
+import { OptionsVisitor } from "@/features/editor/ui/visitor";
 
 interface EditorPanelWidgetProps {
   className?: string;
 }
-export const EditorPanelWidget = ({ className }: EditorPanelWidgetProps) => {
+export const EditorPanel = ({ className }: EditorPanelWidgetProps) => {
   const { state, api } = useWidget();
   const { widgets, dispatch } = useEditor();
 
