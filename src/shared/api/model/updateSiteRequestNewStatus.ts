@@ -6,12 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type UpdateSiteRequestNewStatus = typeof UpdateSiteRequestNewStatus[keyof typeof UpdateSiteRequestNewStatus];
-
+export type UpdateSiteRequestNewStatus =
+  (typeof UpdateSiteRequestNewStatus)[keyof typeof UpdateSiteRequestNewStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UpdateSiteRequestNewStatus = {
-  InCreation: 'InCreation',
-  AwaitingProvision: 'AwaitingProvision',
-  Created: 'Created',
+  InCreation: "InCreation",
+  AwaitingProvision: "AwaitingProvision",
+  Created: "Created",
 } as const;

@@ -1,11 +1,9 @@
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
 import { useEditor } from "@/features/editor";
 import { useWidget, Widget } from "@/entities/widget";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Pages } from "@/shared/types/template";
-import { mockFetchPage } from "@/shared/api/mock";
 import { cn } from "@/shared/lib/utils";
-import { nanoid } from "nanoid";
 
 interface SidebarProps {
   className?: string;
@@ -15,14 +13,6 @@ export const Sidebar = ({ className }: SidebarProps) => {
   const { widgets } = useEditor();
   const { api, state } = useWidget();
   const [pages, setPages] = useState<Pages["label"][]>([]);
-
-  useEffect(() => {
-    mockFetchPage().then((pages) => {
-      pages.forEach((page) =>
-        setPages((prevState) => [...prevState, page.label]),
-      );
-    });
-  }, []);
 
   return (
     <SidebarHeadless
@@ -53,14 +43,14 @@ export const Sidebar = ({ className }: SidebarProps) => {
           label: "Widgets",
           defaultSize: 70,
           element: (
-            <div>
+            <div className="">
               {widgets.map((widget) => (
                 <Widget
                   isActive={state.selectedWidgetId === widget.id}
                   onClick={() => {
                     api.onSelectedWidgetId(widget.id);
                   }}
-                  key={nanoid()}
+                  key={widget.id}
                   widget={widget}
                 />
               ))}

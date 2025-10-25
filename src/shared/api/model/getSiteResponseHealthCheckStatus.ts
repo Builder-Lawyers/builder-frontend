@@ -6,12 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetSiteResponseHealthCheckStatus = typeof GetSiteResponseHealthCheckStatus[keyof typeof GetSiteResponseHealthCheckStatus];
-
+export type GetSiteResponseHealthCheckStatus =
+  (typeof GetSiteResponseHealthCheckStatus)[keyof typeof GetSiteResponseHealthCheckStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetSiteResponseHealthCheckStatus = {
-  Healthy: 'Healthy',
-  Unhealthy: 'Unhealthy',
-  NotProvisioned: 'NotProvisioned',
+  Healthy: "Healthy",
+  Unhealthy: "Unhealthy",
+  NotProvisioned: "NotProvisioned",
 } as const;

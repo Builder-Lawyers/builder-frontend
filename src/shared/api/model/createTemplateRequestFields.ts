@@ -5,9 +5,8 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import type { ErrorResponse } from "./errorResponse";
 
 /**
- * Internal server error
+ * json object with all widgets and fields of a site
  */
-export type InternalServerErrorResponse = ErrorResponse;
+export type CreateTemplateRequestFields = { [key: string]: unknown };

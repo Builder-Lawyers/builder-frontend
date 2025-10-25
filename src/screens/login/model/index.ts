@@ -2,7 +2,7 @@
 
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import { z } from "zod";
-import { SessionTokens, userPool } from "@/shared/cognito";
+import { SessionTokens, userPool } from "@/shared/configs/cognito";
 import { redirect } from "next/navigation";
 import { UseFormSetError } from "react-hook-form";
 import { isDev } from "@/shared/lib/utils";

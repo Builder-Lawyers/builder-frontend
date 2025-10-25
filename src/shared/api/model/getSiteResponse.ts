@@ -5,7 +5,7 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import type { GetSiteResponseHealthCheckStatus } from './getSiteResponseHealthCheckStatus';
+import type { GetSiteResponseHealthCheckStatus } from "./getSiteResponseHealthCheckStatus";
 
 export interface GetSiteResponse {
   healthCheckStatus: GetSiteResponseHealthCheckStatus;

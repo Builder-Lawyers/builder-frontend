@@ -11,39 +11,6 @@ import {
 
 
 /**
- * @summary Enrich some user provided info using AI
- */
-export const enrichContentBody = zod.object({
-  "content": zod.string()
-})
-
-export const enrichContentResponse = zod.object({
-  "enriched": zod.string()
-})
-
-/**
- * Returns whether a domain is available or not
- * @summary Checks domain availability
- */
-export const checkDomainParams = zod.object({
-  "domain": zod.string()
-})
-
-export const checkDomainResponse = zod.object({
-  "available": zod.boolean()
-})
-
-/**
- * Returns a session ID cookie
- * @summary Gets a session from access token
- */
-export const createSessionBody = zod.object({
-  "accessToken": zod.string(),
-  "refreshToken": zod.string(),
-  "idToken": zod.string()
-})
-
-/**
  * Returns a client secret to create a checkout session for payment
  * @summary Gets a client secret to create a payment
  */

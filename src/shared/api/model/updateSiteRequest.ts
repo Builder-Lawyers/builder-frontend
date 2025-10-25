@@ -5,12 +5,12 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import type { UpdateSiteRequestDomainType } from './updateSiteRequestDomainType';
-import type { UpdateSiteRequestNewStatus } from './updateSiteRequestNewStatus';
-import type { UpdateSiteRequestFields } from './updateSiteRequestFields';
+import type { UpdateSiteRequestDomainType } from "./updateSiteRequestDomainType";
+import type { UpdateSiteRequestNewStatus } from "./updateSiteRequestNewStatus";
+import type { UpdateSiteRequestFields } from "./updateSiteRequestFields";
 
 export interface UpdateSiteRequest {
-  templateID: number;
+  templateID?: number;
   domainType?: UpdateSiteRequestDomainType;
   domain?: string;
   newStatus?: UpdateSiteRequestNewStatus;

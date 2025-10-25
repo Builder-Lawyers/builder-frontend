@@ -6,4 +6,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface StripeWebhookRequest { [key: string]: unknown }
+export interface StripeWebhookRequest {
+  [key: string]: unknown;
+}

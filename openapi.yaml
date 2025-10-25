@@ -1,0 +1,735 @@
+openapi: 3.0.3
+info:
+  title: Site Creation API
+  version: 1.0.0
+  description: API for creating user sites with templates
+
+paths:
+  /sites:
+    post:
+      summary: Create a new site
+      operationId: createSite
+      tags:
+        - Sites
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSiteRequest'
+      responses:
+        '201':
+          description: Site created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSiteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /sites/{id}:
+    patch:
+      summary: Update an existing site
+      operationId: updateSite
+      tags:
+        - Sites
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: uint64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSiteRequest'
+      responses:
+        '200':
+          description: Site updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateSiteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get info about an existing site
+      operationId: getSite
+      tags:
+        - Sites
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: uint64
+      responses:
+        '200':
+          description: Site info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSiteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      summary: Delete a provisioned site
+      operationId: deleteSite
+      tags:
+        - Sites
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: uint64
+      responses:
+        '204':
+          description: Site deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /ai/enrich:
+    post:
+      summary: Enrich some user provided info using AI
+      operationId: enrichContent
+      tags:
+        - Other
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrichContentRequest'
+      responses:
+        '200':
+          description: Content enriched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrichContentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /file/upload:
+    post:
+      summary: Upload a file for site static content
+      operationId: fileUpload
+      tags:
+        - Other
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                metadata:
+                  type: object
+                  description: json object with file metadata
+                  additionalProperties: true
+      responses:
+        '201':
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileUploadedResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /template:
+    post:
+      summary: Create a new template
+      operationId: createTemplate
+      tags:
+        - Templates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTemplateRequest'
+      responses:
+        '201':
+          description: Template created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTemplateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /template/{id}:
+    get:
+      summary: Gets template info
+      description: Returns template info such as pages.json
+      operationId: getTemplate
+      tags:
+        - Templates
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: uint8
+      responses:
+        '200':
+          description: Template Info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateInfo'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /domain/{domain}:
+    get:
+      summary: Checks domain availability
+      description: Returns whether a domain is available or not
+      operationId: checkDomain
+      tags:
+        - Other
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: Domain availability info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainAvailability'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/session:
+    post:
+      summary: Gets a session from access token
+      description: Returns a session ID cookie
+      operationId: createSession
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSession'
+      responses:
+        '200':
+          description: Session ID in cookie
+          headers:
+            Set-Cookie:
+              description: Session cookie (HttpOnly)
+              schema:
+                type: string
+                example: ID=abc123; HttpOnly; Path=/; Secure
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/confirmation:
+    post:
+      summary: Creates a confirmation mail with code for user signup
+      description: Sends a mail with confirmation link for user signup
+      operationId: createConfirmation
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConfirmation'
+      responses:
+        '201':
+          description: Mail sent to user
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/verify:
+    post:
+      summary: Verifies provided confirmation code
+      description: Verifies provided confirmation code
+      operationId: verifyUser
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCode'
+      responses:
+        '200':
+          description: Code verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifiedUser'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /auth/oauth/verify:
+    post:
+      summary: Verifies provided oauth2 id_token
+      description: Verifies provided oauth2 id_token, creates a user and returns a session upon success
+      operationId: verifyOauthToken
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOauthToken'
+      responses:
+        '201':
+          description: Session ID in cookie
+          headers:
+            Set-Cookie:
+              description: Session cookie (HttpOnly)
+              schema:
+                type: string
+                example: ID=abc123; HttpOnly; Path=/; Secure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OauthTokenVerified'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /payments:
+    post:
+      summary: Gets a client secret to create a payment
+      description: Returns a client secret to create a checkout session for payment
+      operationId: createPayment
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentRequest'
+      responses:
+        '200':
+          description: Client secret for a checkout session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePaymentResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /payments/{id}:
+    get:
+      summary: Gets a payment checkout session info
+      description: Returns a payment checkout session info
+      operationId: getPaymentStatus
+      tags:
+        - Payments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: Client secret for a checkout session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /payments/webhook:
+    post:
+      summary: Listens for webhook requests from stripe
+      operationId: handleEvent
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StripeWebhookRequest'
+      responses:
+        '200':
+          description: Client secret for a checkout session
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    CreateSiteRequest:
+      type: object
+      properties:
+        templateID:
+          type: integer
+          format: uint8
+          example: 1
+        planID:
+          type: integer
+          format: uint8
+        fields:
+          type: object
+          description: json object with all widgets and fields of a site
+          additionalProperties: true
+      required:
+        - templateID
+        - planID
+
+    CreateSiteResponse:
+      type: object
+      properties:
+        siteID:
+          type: integer
+          format: uint64
+          example: 123456
+      required:
+        - siteID
+
+    UpdateSiteRequest:
+      type: object
+      properties:
+        templateID:
+          type: integer
+          format: uint8
+          example: 2
+        domainType:
+          type: string
+          enum: [DefaultDomain, SeparateDomain, BringYourDomain]
+        domain:
+          type: string
+          example: "example.com"
+        newStatus:
+          type: string
+          enum: [InCreation, AwaitingProvision, Created]
+          example: "Created"
+        fields:
+          type: object
+          additionalProperties: true
+          example:
+            title: "My Site"
+            theme: "dark"
+            customSetting:
+              nested: true
+              list: [ 1, 2, 3 ]
+
+    UpdateSiteResponse:
+      type: object
+      properties:
+        siteID:
+          type: integer
+          format: uint64
+          example: 123456
+      required:
+        - siteID
+
+    CreateTemplateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: template's name
+        fields:
+          type: object
+          description: json object with all widgets and fields of a site
+          additionalProperties: true
+      required:
+        - name
+        - fields
+
+    CreateTemplateResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: uint8
+      required:
+        - id
+
+    EnrichContentRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          example: "Some info about user"
+      required:
+        - content
+        # TODO: add some metadata for AI to better understand what kind of enrichment to perform
+
+    EnrichContentResponse:
+      type: object
+      properties:
+        enriched:
+          type: string
+          example: "Some info about user enriched"
+      required:
+        - enriched
+
+    FileUploadedResponse:
+      type: object
+      properties:
+        fileID:
+          type: string
+          example: 021804b8-5071-7049-7034-8853ffd88039
+        fileURL:
+          type: string
+          example: https://bucketName-s3.region.amazonaws.com/key
+      required:
+        - fileID
+        - fileURL
+
+    CheckDomainParams:
+      type: object
+      properties:
+        domain:
+          type: string
+      required:
+        - domain
+
+    GetSiteResponse:
+      type: object
+      properties:
+        healthCheckStatus:
+          type: string
+          enum: [Healthy, Unhealthy, NotProvisioned]
+        createdAt:
+          type: string
+          format: string
+      required:
+        - healthCheckStatus
+        - createdAt
+
+    TemplateInfo:
+      type: object
+      properties:
+        templateName:
+          type: string
+          format: string
+        structure:
+          type: string
+          format: string
+          description: pages.json file
+      required:
+        - templateName
+        - structure
+
+    DomainAvailability:
+      type: object
+      properties:
+        available:
+          type: boolean
+          example: true
+      required:
+        - available
+
+    CreateSession:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: 3ad6c7c6-c119-475.1203213adssajd.23eqwsaedsa
+        refreshToken:
+          type: string
+          example: 2312312saasasdasf
+        idToken:
+          type: string
+          example: aSLKDs1230kodlsd1k2jdk
+      required:
+        - accessToken
+        - refreshToken
+        - idToken
+
+    CreateConfirmation:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: 021804b8-5071-7049-7034-8853ffd88039
+        email:
+          type: string
+          example: example@gmail.com
+      required:
+        - userID
+        - email
+
+    VerifyCode:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 021804b8-5071-7049-7034-8853ffd88039
+      required:
+        - code
+
+    VerifyOauthToken:
+      type: object
+      properties:
+        idToken:
+          type: string
+          example: 3ad6c7c6-c119-475.1203213adssajd.23eqwsaedsa
+      required:
+        - idToken
+
+    OauthTokenVerified:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: 021804b8-5071-7049-7034-8853ffd88039
+        email:
+          type: string
+          example: example@gmail.com
+      required:
+        - userID
+        - email
+
+    VerifiedUser:
+      type: object
+      properties:
+        userID:
+          type: string
+          example: 021804b8-5071-7049-7034-8853ffd88039
+      required:
+        - userID
+
+    AccessToken:
+      type: object
+      properties:
+        token:
+          type: string
+          example: 3ad6c7c6-c119-4759-9f04-4e985a6a11e7
+      required:
+        - token
+
+    CreatePaymentRequest:
+      type: object
+      properties:
+        planID:
+          type: integer
+          format: uint8
+          example: 2
+        siteID:
+          type: integer
+          format: int64
+          example: 21345
+      required:
+        - planID
+        - siteID
+
+    CreatePaymentResponse:
+      type: object
+      properties:
+        clientSecret:
+          type: string
+          example: asdsad
+        subscriptionID:
+          type: string
+          example: 4ad6c4c6-c119-4759-9f04-4e985a6a11e7
+
+    PaymentStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: Success
+        paymentStatus:
+          type: string
+        paymentIntentID:
+          type: string
+        paymentIntentStatus:
+          type: string
+      required:
+        - status
+        - paymentStatus
+        - paymentIntentID
+        - paymentIntentStatus
+
+    StripeWebhookRequest:
+      type: object
+      additionalProperties: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "invalid request"
+      required:
+        - error
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Invalid request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

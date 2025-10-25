@@ -5,7 +5,7 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import type { ErrorResponse } from './errorResponse';
+import type { ErrorResponse } from "./errorResponse";
 
 /**
  * Invalid request body

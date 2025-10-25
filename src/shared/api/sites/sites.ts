@@ -5,56 +5,184 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import axios from 'axios';
 import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
-import type {
+  BadRequestErrorResponse,
   CreateSiteRequest,
   CreateSiteResponse,
   GetSiteResponse,
+  InternalServerErrorResponse,
+  UnauthorizedErrorResponse,
   UpdateSiteRequest,
-  UpdateSiteResponse
-} from '.././model';
+  UpdateSiteResponse,
+} from ".././model";
 
+import { customInstance } from ".././custom-instance";
 
-
-
-  /**
+/**
  * @summary Create a new site
  */
-export const createSite = <TData = AxiosResponse<CreateSiteResponse>>(
-    createSiteRequest: CreateSiteRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.post(
-      `/sites`,
-      createSiteRequest,options
-    );
-  }
+export type createSiteResponse201 = {
+  data: CreateSiteResponse;
+  status: 201;
+};
+
+export type createSiteResponse400 = {
+  data: BadRequestErrorResponse;
+  status: 400;
+};
+
+export type createSiteResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type createSiteResponseComposite =
+  | createSiteResponse201
+  | createSiteResponse400
+  | createSiteResponse500;
+
+export type createSiteResponse = createSiteResponseComposite & {
+  headers: Headers;
+};
+
+export const getCreateSiteUrl = () => {
+  return `/sites`;
+};
+
+export const createSite = async (
+  createSiteRequest: CreateSiteRequest,
+  options?: RequestInit,
+): Promise<createSiteResponse> => {
+  return customInstance<createSiteResponse>(getCreateSiteUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createSiteRequest),
+  });
+};
+
 /**
  * @summary Update an existing site
  */
-export const updateSite = <TData = AxiosResponse<UpdateSiteResponse>>(
-    id: number,
-    updateSiteRequest: UpdateSiteRequest, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.patch(
-      `/sites/${id}`,
-      updateSiteRequest,options
-    );
-  }
+export type updateSiteResponse200 = {
+  data: UpdateSiteResponse;
+  status: 200;
+};
+
+export type updateSiteResponse400 = {
+  data: BadRequestErrorResponse;
+  status: 400;
+};
+
+export type updateSiteResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type updateSiteResponseComposite =
+  | updateSiteResponse200
+  | updateSiteResponse400
+  | updateSiteResponse500;
+
+export type updateSiteResponse = updateSiteResponseComposite & {
+  headers: Headers;
+};
+
+export const getUpdateSiteUrl = (id: number) => {
+  return `/sites/${id}`;
+};
+
+export const updateSite = async (
+  id: number,
+  updateSiteRequest: UpdateSiteRequest,
+  options?: RequestInit,
+): Promise<updateSiteResponse> => {
+  return customInstance<updateSiteResponse>(getUpdateSiteUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(updateSiteRequest),
+  });
+};
+
 /**
  * @summary Get info about an existing site
  */
-export const getSite = <TData = AxiosResponse<GetSiteResponse>>(
-    id: number, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.get(
-      `/sites/${id}`,options
-    );
-  }
-export type CreateSiteResult = AxiosResponse<CreateSiteResponse>
-export type UpdateSiteResult = AxiosResponse<UpdateSiteResponse>
-export type GetSiteResult = AxiosResponse<GetSiteResponse>
+export type getSiteResponse200 = {
+  data: GetSiteResponse;
+  status: 200;
+};
+
+export type getSiteResponse400 = {
+  data: BadRequestErrorResponse;
+  status: 400;
+};
+
+export type getSiteResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type getSiteResponseComposite =
+  | getSiteResponse200
+  | getSiteResponse400
+  | getSiteResponse500;
+
+export type getSiteResponse = getSiteResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetSiteUrl = (id: number) => {
+  return `/sites/${id}`;
+};
+
+export const getSite = async (
+  id: number,
+  options?: RequestInit,
+): Promise<getSiteResponse> => {
+  return customInstance<getSiteResponse>(getGetSiteUrl(id), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Delete a provisioned site
+ */
+export type deleteSiteResponse204 = {
+  data: null;
+  status: 204;
+};
+
+export type deleteSiteResponse401 = {
+  data: UnauthorizedErrorResponse;
+  status: 401;
+};
+
+export type deleteSiteResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type deleteSiteResponseComposite =
+  | deleteSiteResponse204
+  | deleteSiteResponse401
+  | deleteSiteResponse500;
+
+export type deleteSiteResponse = deleteSiteResponseComposite & {
+  headers: Headers;
+};
+
+export const getDeleteSiteUrl = (id: number) => {
+  return `/sites/${id}`;
+};
+
+export const deleteSite = async (
+  id: number,
+  options?: RequestInit,
+): Promise<deleteSiteResponse> => {
+  return customInstance<deleteSiteResponse>(getDeleteSiteUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};

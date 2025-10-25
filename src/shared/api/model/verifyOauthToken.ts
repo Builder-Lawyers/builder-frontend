@@ -5,9 +5,7 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import type { ErrorResponse } from "./errorResponse";
 
-/**
- * Internal server error
- */
-export type InternalServerErrorResponse = ErrorResponse;
+export interface VerifyOauthToken {
+  idToken: string;
+}

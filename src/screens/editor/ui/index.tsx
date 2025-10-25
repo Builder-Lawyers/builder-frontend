@@ -1,7 +1,4 @@
 "use client";
-import { useEffect } from "react";
-
-import { mockFetchTemplates } from "@/shared/api/mock";
 
 import {
   Editor,
@@ -10,18 +7,23 @@ import {
   Sidebar,
   useEditor,
 } from "@/features/editor";
+import { useEffect } from "react";
+import { Widget } from "@/shared/types/template";
 
 export const EditorScreen = () => {
   const { dispatch } = useEditor();
 
   useEffect(() => {
-    mockFetchTemplates()
+    fetch(
+      "https://sanity-web.s3.eu-north-1.amazonaws.com/templates-sources/templates/template-v1/pages.json",
+    )
+      .then((res) => res.json())
       .then((items) => items[0].registry)
-      .then((widgets) =>
-        widgets.forEach((widget) =>
+      .then((widgets) => {
+        widgets.forEach((widget: Widget) =>
           dispatch({ type: "Widget.Added", payload: { widget } }),
-        ),
-      );
+        );
+      });
   }, []);
 
   return (

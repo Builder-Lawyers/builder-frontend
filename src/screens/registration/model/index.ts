@@ -1,8 +1,9 @@
-import { SessionTokens, userPool } from "@/shared/cognito";
-import { redirect } from "next/navigation";
+import { userPool } from "@/shared/configs/cognito";
 import z from "zod";
 import { UseFormSetError } from "react-hook-form";
-import { isDev } from "@/shared/lib/utils";
+import { ISignUpResult } from "amazon-cognito-identity-js";
+import { createConfirmation } from "@/shared/api/auth/auth";
+import { redirect } from "next/navigation";
 
 export const registrationValidation = z
   .object({
@@ -26,14 +27,14 @@ export type RegistrationFormValues = z.infer<typeof registrationValidation>;
 export function registration(
   email: string,
   password: string,
-): Promise<SessionTokens> {
+): Promise<ISignUpResult> {
   return new Promise((resolve, reject) => {
     userPool.signUp(email, password, [], [], (err, result) => {
       if (err) {
         reject(err);
       } else if (result) {
         console.log(result);
-        resolve(result as unknown as SessionTokens);
+        resolve(result);
       }
     });
   });
@@ -46,15 +47,17 @@ export const useRegistration = ({
 }) => {
   const onSubmit = (data: RegistrationFormValues) => {
     registration(data.email, data.password)
-      .then(() => {})
+      .then((res) => {
+        createConfirmation({
+          email: data.email,
+          userID: res.userSub,
+        }).then(() => {
+          redirect("/editor");
+        });
+      })
       .catch((err) => {
         setError("password", { message: err.message });
         setError("email", { message: err.message });
-      })
-      .finally(() => {
-        if (isDev()) {
-          redirect("/editor");
-        }
       });
   };
 

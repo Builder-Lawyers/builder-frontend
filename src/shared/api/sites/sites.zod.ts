@@ -16,7 +16,6 @@ import {
 export const createSiteBody = zod.object({
   "templateID": zod.number(),
   "planID": zod.number(),
-  "userID": zod.string().uuid(),
   "fields": zod.record(zod.string(), zod.any()).optional().describe('json object with all widgets and fields of a site')
 })
 
@@ -28,7 +27,7 @@ export const updateSiteParams = zod.object({
 })
 
 export const updateSiteBody = zod.object({
-  "templateID": zod.number(),
+  "templateID": zod.number().optional(),
   "domainType": zod.enum(['DefaultDomain', 'SeparateDomain', 'BringYourDomain']).optional(),
   "domain": zod.string().optional(),
   "newStatus": zod.enum(['InCreation', 'AwaitingProvision', 'Created']).optional(),
@@ -49,5 +48,12 @@ export const getSiteParams = zod.object({
 export const getSiteResponse = zod.object({
   "healthCheckStatus": zod.enum(['Healthy', 'Unhealthy', 'NotProvisioned']),
   "createdAt": zod.string()
+})
+
+/**
+ * @summary Delete a provisioned site
+ */
+export const deleteSiteParams = zod.object({
+  "id": zod.number()
 })
 
