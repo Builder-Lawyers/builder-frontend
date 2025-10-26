@@ -1,4 +1,4 @@
-import { VerifyPage } from "@/screens/verify";
+import { VerifyPage } from "@/features/auth";
 
 export default async function Page({
   params,
@@ -6,5 +6,5 @@ export default async function Page({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
-  return <VerifyPage token={token} />;
+  return <VerifyPage code={token} />;
 }
