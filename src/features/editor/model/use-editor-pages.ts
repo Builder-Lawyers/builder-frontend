@@ -12,5 +12,5 @@ export const useEditorPages = () => {
     setActivePage(label);
   };
 
-  return { setPagesList, switchPage, activePage };
+  return { setPagesList, switchPage, activePage, pages };
 };

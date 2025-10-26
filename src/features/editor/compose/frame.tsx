@@ -12,6 +12,7 @@ export const FrameViewer = () => {
   const { api } = useWidget();
   const { widgets } = useEditor();
   const { renderWidget } = useRenderTemplate();
+
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { onHoverElement, onSelectElement, hoverPositions, activePositions } =

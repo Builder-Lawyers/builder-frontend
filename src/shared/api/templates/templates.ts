@@ -10,6 +10,9 @@ import type {
   CreateTemplateRequest,
   CreateTemplateResponse,
   InternalServerErrorResponse,
+  ListTemplateInfo,
+  ListTemplatePaginator,
+  NotFoundErrorResponse,
   TemplateInfo,
 } from ".././model";
 
@@ -72,6 +75,11 @@ export type getTemplateResponse400 = {
   status: 400;
 };
 
+export type getTemplateResponse404 = {
+  data: NotFoundErrorResponse;
+  status: 404;
+};
+
 export type getTemplateResponse500 = {
   data: InternalServerErrorResponse;
   status: 500;
@@ -80,6 +88,7 @@ export type getTemplateResponse500 = {
 export type getTemplateResponseComposite =
   | getTemplateResponse200
   | getTemplateResponse400
+  | getTemplateResponse404
   | getTemplateResponse500;
 
 export type getTemplateResponse = getTemplateResponseComposite & {
@@ -97,5 +106,49 @@ export const getTemplate = async (
   return customInstance<getTemplateResponse>(getGetTemplateUrl(id), {
     ...options,
     method: "GET",
+  });
+};
+
+/**
+ * Returns template list with info such as name, description, pages.json (url to s3)
+ * @summary Gets template list with pagination
+ */
+export type listTemplatesResponse200 = {
+  data: ListTemplateInfo;
+  status: 200;
+};
+
+export type listTemplatesResponse400 = {
+  data: BadRequestErrorResponse;
+  status: 400;
+};
+
+export type listTemplatesResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type listTemplatesResponseComposite =
+  | listTemplatesResponse200
+  | listTemplatesResponse400
+  | listTemplatesResponse500;
+
+export type listTemplatesResponse = listTemplatesResponseComposite & {
+  headers: Headers;
+};
+
+export const getListTemplatesUrl = () => {
+  return `/template/list`;
+};
+
+export const listTemplates = async (
+  listTemplatePaginator: ListTemplatePaginator,
+  options?: RequestInit,
+): Promise<listTemplatesResponse> => {
+  return customInstance<listTemplatesResponse>(getListTemplatesUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(listTemplatePaginator),
   });
 };

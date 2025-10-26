@@ -52,12 +52,15 @@ export const useRegistration = ({
           email: data.email,
           userID: res.userSub,
         }).then(() => {
-          redirect("/editor");
+          redirect("/editor/321321");
         });
       })
       .catch((err) => {
         setError("password", { message: err.message });
         setError("email", { message: err.message });
+      })
+      .finally(() => {
+        redirect("/editor/321321");
       });
   };
 

@@ -14,13 +14,24 @@ interface EditorPageProps {
 
 export const EditorPage = ({ id }: EditorPageProps) => {
   const { dispatch } = useEditor();
-  const { setPagesList } = useEditorPages();
+  const { setPagesList, activePage, pages, switchPage } = useEditorPages();
 
   useGetTemplate({
     id,
+    dep: activePage,
     action: (pages) => {
-      pages.map((page) => {
-        setPagesList(page.label);
+      const labels = pages.map((page) => page.label);
+      setPagesList({ labels });
+
+      const widgets = pages[0].registry;
+
+      widgets.forEach((widget) => {
+        dispatch({
+          type: "Widget.Added",
+          payload: {
+            widget,
+          },
+        });
       });
     },
   });
@@ -29,7 +40,7 @@ export const EditorPage = ({ id }: EditorPageProps) => {
     <Editor
       editorPanel={<EditorPanel />}
       frame={<FrameViewer />}
-      sidebar={<Sidebar />}
+      sidebar={<Sidebar setActivePage={() => switchPage} pages={pages} />}
     />
   );
 };
