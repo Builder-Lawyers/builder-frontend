@@ -1,13 +1,25 @@
+"use client";
+
 import { AuthForm } from "@/features/auth/ui/form";
-import { Button } from "@/shared/ui/button";
 import { PageLayout } from "@/shared/layouts/page";
 import { CenteringLayout } from "@/shared/layouts/centering";
+import { useEffect, useState } from "react";
+import { verifyUser } from "@/shared/api/auth/auth";
 
 interface VerifyPageProps {
-  code?: string;
+  code: string;
 }
 
 export const VerifyPage = ({ code }: VerifyPageProps) => {
+  const [isVerified, setIsVerified] = useState(false);
+  useEffect(() => {
+    verifyUser({
+      code,
+    })
+      .then((res) => res.status === 200 && setIsVerified(true))
+      .catch(console.error);
+  }, []);
+
   return (
     <PageLayout>
       <CenteringLayout>
@@ -15,14 +27,11 @@ export const VerifyPage = ({ code }: VerifyPageProps) => {
           <AuthForm.Header>
             <AuthForm.Title>Verify your account</AuthForm.Title>
             <AuthForm.Subtitle>
-              We’ve sent you a confirmation email. Please check your inbox and
-              follow the link to complete verification.
+              {isVerified
+                ? "Your account success verified"
+                : "Verify error, please try again."}
             </AuthForm.Subtitle>
           </AuthForm.Header>
-          <AuthForm.Actions className="flex flex-row w-full gap-2">
-            <Button variant="bordered">Go back home</Button>
-            <Button>Verify account</Button>
-          </AuthForm.Actions>
         </AuthForm>
       </CenteringLayout>
     </PageLayout>

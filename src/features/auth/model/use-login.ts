@@ -4,6 +4,7 @@ import { SessionTokens, userPool } from "@/shared/configs/cognito";
 import { redirect } from "next/navigation";
 import { UseFormSetError } from "react-hook-form";
 import { isDev } from "@/shared/lib/utils";
+import { createSession } from "@/shared/api/auth/auth";
 
 export const loginValidation = z.object({
   email: z.string().nonempty({
@@ -52,8 +53,8 @@ export const useLogin = ({
 }) => {
   const onSubmit = (data: LoginFormValues) => {
     login(data)
-      .then(() => {
-        redirect("/editor");
+      .then((res) => {
+        createSession(res).then((r) => r.status === 200 && redirect("/editor"));
       })
       .catch((err) => {
         setError("root", { message: err });
