@@ -32,6 +32,7 @@ export const RegistrationPage = () => {
     <div className="h-screen">
       <FormProvider {...form}>
         <AuthForm autoComplete="on" onSubmit={form.handleSubmit(onSubmit)}>
+          <AuthForm.Image />
           <AuthForm.Header>
             <AuthForm.Title>Sign up</AuthForm.Title>
             <AuthForm.Subtitle>
@@ -122,7 +123,7 @@ export const RegistrationPage = () => {
               Do you have account already?{" "}
               <Button size="link" variant="link">
                 <Link href="/login" className="text-foreground">
-                  Sing In
+                  Sign In
                 </Link>
               </Button>
             </p>

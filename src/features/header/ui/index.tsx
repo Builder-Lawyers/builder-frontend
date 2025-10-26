@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const Header = () => {
   return (
-    <header className="h-[96px]">
+    <header className="h-[96px] ">
       <PageLayout className="px-[48px]">
         <div className="h-full w-full flex justify-between  items-center">
           <nav>

@@ -8,7 +8,11 @@ import { EditorPanel } from "@/features/editor/compose/editor-panel";
 import { FrameViewer } from "@/features/editor/compose/frame";
 import { Sidebar } from "@/features/editor/compose/sidebar";
 
-export const EditorPage = () => {
+interface EditorPageProps {
+  id: string;
+}
+
+export const EditorPage = ({ id }: EditorPageProps) => {
   const { dispatch } = useEditor();
 
   useEffect(() => {

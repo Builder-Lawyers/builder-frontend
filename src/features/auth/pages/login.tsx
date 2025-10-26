@@ -31,6 +31,7 @@ export const LoginPage = () => {
     <div className="h-sreen">
       <FormProvider {...form}>
         <AuthForm onSubmit={form.handleSubmit(onSubmit)}>
+          <AuthForm.Image />
           <AuthForm.Header>
             <AuthForm.Title>Log in</AuthForm.Title>
             <AuthForm.Subtitle>
@@ -95,7 +96,7 @@ export const LoginPage = () => {
               Don&#39;t have an account?{" "}
               <Button size="link" variant="link">
                 <Link href="/signup" className="text-foreground">
-                  Sing Up
+                  Sign Up
                 </Link>
               </Button>
             </p>
