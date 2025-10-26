@@ -19,7 +19,7 @@ export const LoginPage = () => {
     resolver: zodResolver(loginValidation),
     defaultValues: {
       email: "sanity@mailinator.com",
-      password: "Password_25!",
+      password: "Admin1234!",
     },
   });
 
