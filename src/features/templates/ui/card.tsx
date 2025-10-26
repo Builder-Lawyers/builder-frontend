@@ -1,3 +1,12 @@
-export const TemplateCard = () => {
-  return <div>card</div>;
+import { ComponentProps } from "react";
+
+interface TemplateCardProps extends ComponentProps<"div"> {
+  image: string;
+  title: string;
+  description: string;
+  id: string;
+}
+
+export const TemplateCard = ({ title, ...rest }: TemplateCardProps) => {
+  return <div {...rest}>{title}</div>;
 };
