@@ -1,7 +1,8 @@
 import React, { FormEventHandler, JSX, ReactNode } from "react";
 import { cn, getChildByType } from "@/shared/lib/utils";
-import { Header, Subtitle, Title } from "@/shared/ui/auth-form/header";
+
 import { CenteringLayout } from "@/shared/layouts/centering";
+import { Header, Subtitle, Title } from "@/features/auth/ui/form-components";
 
 export interface BaseProps {
   children?: ReactNode;

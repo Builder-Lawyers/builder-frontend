@@ -1,9 +1,11 @@
-import { useWidget, WidgetTitle } from "@/entities/widget";
 import { useMemo } from "react";
 import { MetaOptions } from "@/shared/types/template";
-import { useEditor } from "@/features/editor";
+
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
 import { OptionsVisitor } from "@/features/editor/ui/visitor";
+import { useEditor } from "@/features/editor/model/use-editor";
+import { useWidget } from "@/features/editor/model/use-widget";
+import { WidgetTitle } from "@/features/editor/ui/widget";
 
 interface EditorPanelWidgetProps {
   className?: string;

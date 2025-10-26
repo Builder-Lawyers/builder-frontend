@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
-import { useWidget } from "@/entities/widget";
-import { useEditor } from "@/features/editor";
+import { useEditor } from "@/features/editor/model/use-editor";
 import { IFrame } from "@/shared/ui/iframe/ui";
 import { Frame } from "@/features/editor/ui/frame";
 import { useRenderTemplate } from "@/features/editor/model/use-render-template";
 import { PreviewWrapper } from "@/features/editor/compose/preview-mode";
 import { useHighlight } from "@/features/editor/model/use-highlight";
 import { Highlight } from "@/features/editor/ui/highlight";
+import { useWidget } from "@/features/editor/model/use-widget";
 
 export const FrameViewer = () => {
   const { api } = useWidget();

@@ -1,5 +1,3 @@
-"use client";
-
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import { z } from "zod";
 import { SessionTokens, userPool } from "@/shared/configs/cognito";

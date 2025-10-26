@@ -1,16 +1,14 @@
 "use client";
 
-import {
-  Editor,
-  EditorPanel,
-  FrameViewer,
-  Sidebar,
-  useEditor,
-} from "@/features/editor";
 import { useEffect } from "react";
 import { Widget } from "@/shared/types/template";
+import { useEditor } from "@/features/editor/model/use-editor";
+import { Editor } from "@/features/editor/ui/editor-headless";
+import { EditorPanel } from "@/features/editor/compose/editor-panel";
+import { FrameViewer } from "@/features/editor/compose/frame";
+import { Sidebar } from "@/features/editor/compose/sidebar";
 
-export const EditorScreen = () => {
+export const EditorPage = () => {
   const { dispatch } = useEditor();
 
   useEffect(() => {

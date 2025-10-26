@@ -1,47 +1,45 @@
 "use client";
-
-import { FormProvider, useForm } from "react-hook-form";
-
+import {
+  LoginFormValues,
+  loginValidation,
+  useLogin,
+} from "@/features/auth/model/use-login";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthForm } from "@/shared/ui/auth-form";
+import { AuthForm } from "@/features/auth/ui/form";
+import { GoogleLogin } from "@react-oauth/google";
+import { redirect } from "next/navigation";
 import { FormControl, FormField, FormItem } from "@/shared/ui/form";
 import Input from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
-import {
-  RegistrationFormValues,
-  registrationValidation,
-  useRegistration,
-} from "@/screens/registration/model";
-import { GoogleLogin } from "@react-oauth/google";
-import { redirect } from "next/navigation";
+import { FormProvider, useForm } from "react-hook-form";
 
-export const RegistrationPage = () => {
-  const form = useForm<RegistrationFormValues>({
-    resolver: zodResolver(registrationValidation),
+export const LoginPage = () => {
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginValidation),
     defaultValues: {
-      email: "mock_email@gmail.com",
-      password: "Qwerty123_",
-      repeatPassword: "Qwerty123_",
+      email: "sanity@mailinator.com",
+      password: "Password_25!",
     },
   });
 
   const { setError } = form;
-  const { onSubmit } = useRegistration({ setError });
+
+  const { onSubmit } = useLogin({ setError: setError });
 
   return (
-    <div className="h-screen">
+    <div className="h-sreen">
       <FormProvider {...form}>
-        <AuthForm autoComplete="on" onSubmit={form.handleSubmit(onSubmit)}>
+        <AuthForm onSubmit={form.handleSubmit(onSubmit)}>
           <AuthForm.Header>
-            <AuthForm.Title>Sign up</AuthForm.Title>
+            <AuthForm.Title>Log in</AuthForm.Title>
             <AuthForm.Subtitle>
               Please provide your email and password
             </AuthForm.Subtitle>
           </AuthForm.Header>
           <AuthForm.Form>
             <GoogleLogin
-              onSuccess={(credentialResponse) => {
+              onSuccess={() => {
                 redirect("/editor");
               }}
               onError={() => {
@@ -60,7 +58,6 @@ export const RegistrationPage = () => {
                       id="email"
                       label="Email"
                       type="email"
-                      required
                       autoComplete="email"
                       placeholder="Enter your email"
                       error={fieldState.error?.message}
@@ -79,34 +76,9 @@ export const RegistrationPage = () => {
                     <Input
                       {...field}
                       id="password"
-                      autoComplete="new-password"
                       label="Password"
-                      required
-                      name="password"
                       type="password"
                       placeholder="Enter your password"
-                      error={fieldState.error?.message}
-                      aria-invalid={!!fieldState.error}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="repeatPassword"
-              render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      id="repeat-password"
-                      label="Repeat password"
-                      name="password"
-                      type="password"
-                      autoComplete="new-password"
-                      required
-                      placeholder="Enter your repeated password"
                       error={fieldState.error?.message}
                       aria-invalid={!!fieldState.error}
                     />
@@ -120,10 +92,10 @@ export const RegistrationPage = () => {
               submit
             </Button>
             <p className="text-[14px] text-foreground/60">
-              Do you have account already?{" "}
+              Don&#39;t have an account?{" "}
               <Button size="link" variant="link">
-                <Link href="/login" className="text-foreground">
-                  Sing In
+                <Link href="/signup" className="text-foreground">
+                  Sing Up
                 </Link>
               </Button>
             </p>

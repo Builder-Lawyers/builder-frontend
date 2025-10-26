@@ -1,1 +1,0 @@
-export { TemplatesListPage } from "./ui";

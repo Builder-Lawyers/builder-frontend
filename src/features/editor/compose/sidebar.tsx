@@ -1,9 +1,10 @@
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
-import { useEditor } from "@/features/editor";
-import { useWidget, Widget } from "@/entities/widget";
 import { useState } from "react";
 import { Pages } from "@/shared/types/template";
 import { cn } from "@/shared/lib/utils";
+import { useEditor } from "@/features/editor/model/use-editor";
+import { Widget } from "@/features/editor/ui/widget";
+import { useWidget } from "@/features/editor/model/use-widget";
 
 interface SidebarProps {
   className?: string;

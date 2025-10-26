@@ -1,4 +1,4 @@
-import { LoginPage } from "@/screens/login/ui";
+import { LoginPage } from "@/features/auth";
 
 export default function Page() {
   return <LoginPage />;

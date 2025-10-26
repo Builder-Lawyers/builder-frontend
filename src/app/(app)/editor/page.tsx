@@ -1,5 +1,5 @@
-import { EditorScreen } from "@/screens/editor";
+import { EditorPage } from "@/features/editor";
 
-export default function EditorPage() {
-  return <EditorScreen />;
+export default function Page() {
+  return <EditorPage />;
 }

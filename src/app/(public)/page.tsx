@@ -1,5 +1,3 @@
-import { WelcomePage } from "@/screens/welcome";
-
 export default function Home() {
-  return <WelcomePage />;
+  return <div>WelcomePAGE</div>;
 }

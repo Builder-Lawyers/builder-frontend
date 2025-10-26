@@ -1,14 +1,13 @@
 import React from "react";
 import { getChildByType } from "@/shared/lib/utils";
-
-import { AuthForm, BaseProps } from "@/shared/ui/auth-form";
+import { AuthForm, BaseProps } from "@/features/auth/ui/form";
 
 export const Title = ({ children }: BaseProps) => (
   <h1 className="text-2xl font-bold text-center">{children}</h1>
 );
 
 export const Subtitle = ({ children }: BaseProps) => (
-  <p className="text-muted-foreground text-center">{children}</p>
+  <p className="text-foreground/60 text-center">{children}</p>
 );
 
 export const Header = ({ children }: BaseProps) => {
