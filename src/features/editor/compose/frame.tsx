@@ -19,7 +19,7 @@ export const FrameViewer = () => {
 
   return (
     <Frame>
-      <Frame.Actions>actions</Frame.Actions>
+      {/*<Frame.Actions>actions</Frame.Actions>*/}
       <Frame.Content>
         <PreviewWrapper>
           <IFrame
