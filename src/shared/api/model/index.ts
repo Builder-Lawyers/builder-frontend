@@ -42,3 +42,6 @@ export * from "./updateSiteResponse";
 export * from "./verifiedUser";
 export * from "./verifyCode";
 export * from "./verifyOauthToken";
+export * from "./listTemplateInfo";
+export * from "./listTemplatePaginator";
+export * from "./notFoundErrorResponse";

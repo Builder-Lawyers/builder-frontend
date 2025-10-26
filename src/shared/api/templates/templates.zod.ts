@@ -27,7 +27,28 @@ export const getTemplateParams = zod.object({
 })
 
 export const getTemplateResponse = zod.object({
+  "id": zod.number(),
   "templateName": zod.string(),
   "structure": zod.string().describe('pages.json file')
+})
+
+/**
+ * Returns template list with info such as name, description, pages.json (url to s3)
+ * @summary Gets template list with pagination
+ */
+export const listTemplatesBody = zod.object({
+  "page": zod.number().optional(),
+  "size": zod.number().optional()
+})
+
+export const listTemplatesResponse = zod.object({
+  "elements": zod.array(zod.object({
+  "id": zod.number(),
+  "templateName": zod.string(),
+  "structure": zod.string().describe('pages.json file')
+})),
+  "page": zod.number(),
+  "total": zod.number(),
+  "hasNext": zod.boolean()
 })
 

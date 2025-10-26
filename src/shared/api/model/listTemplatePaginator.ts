@@ -6,9 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface TemplateInfo {
-  id: number;
-  templateName: string;
-  /** pages.json file */
-  structure: string;
+export interface ListTemplatePaginator {
+  page?: number;
+  size?: number;
 }

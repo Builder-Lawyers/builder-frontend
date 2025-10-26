@@ -5,10 +5,11 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
+import type { TemplateInfo } from "./templateInfo";
 
-export interface TemplateInfo {
-  id: number;
-  templateName: string;
-  /** pages.json file */
-  structure: string;
+export interface ListTemplateInfo {
+  elements: TemplateInfo[];
+  page: number;
+  total: number;
+  hasNext: boolean;
 }

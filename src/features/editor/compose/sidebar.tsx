@@ -1,5 +1,4 @@
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
-import { useState } from "react";
 import { Pages } from "@/shared/types/template";
 import { cn } from "@/shared/lib/utils";
 import { useEditor } from "@/features/editor/model/use-editor";
@@ -8,12 +7,13 @@ import { useWidget } from "@/features/editor/model/use-widget";
 
 interface SidebarProps {
   className?: string;
+  pages: Pages["label"][];
+  setActivePage: (page: Pages["label"]) => void;
 }
 
-export const Sidebar = ({ className }: SidebarProps) => {
+export const Sidebar = ({ className, pages, setActivePage }: SidebarProps) => {
   const { widgets } = useEditor();
   const { api, state } = useWidget();
-  const [pages, setPages] = useState<Pages["label"][]>([]);
 
   return (
     <SidebarHeadless
@@ -25,14 +25,17 @@ export const Sidebar = ({ className }: SidebarProps) => {
           defaultSize: 30,
           element: (
             <div>
-              {pages.map((widget) => (
+              {pages.map((page) => (
                 <div
+                  onClick={() => {
+                    setActivePage(page);
+                  }}
                   className="px-3 flex items-center w-full justify-between py-3 rounded-2xl duration-150 hover:bg-secondary/[3%]"
-                  key={widget}
+                  key={page}
                 >
                   <div className="flex items-center gap-3">
                     <div>Icon</div>
-                    <p className="text-foreground text-[14px]">{widget}</p>
+                    <p className="text-foreground text-[14px]">{page}</p>
                   </div>
                 </div>
               ))}

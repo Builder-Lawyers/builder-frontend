@@ -5,10 +5,9 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
+import type { ErrorResponse } from "./errorResponse";
 
-export interface TemplateInfo {
-  id: number;
-  templateName: string;
-  /** pages.json file */
-  structure: string;
-}
+/**
+ * Not Found error
+ */
+export type NotFoundErrorResponse = ErrorResponse;
