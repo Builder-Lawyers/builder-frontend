@@ -28,9 +28,9 @@ export const PreviewWrapper = ({ children }: { children: ReactNode }) => {
   const { width, scale } = useDeviceView();
   return (
     <div
-      className="h-full w-full flex m-auto justify-center items-center grow transition-transform duration-300 ease-in-out"
+      className="h-full flex m-auto justify-center items-center  transition-transform duration-300 ease-in-out"
       style={{
-        width,
+        width: width,
         transform: `scale(${scale})`,
         transformOrigin: "center center",
       }}

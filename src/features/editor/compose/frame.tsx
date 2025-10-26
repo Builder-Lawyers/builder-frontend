@@ -4,7 +4,10 @@ import { useEditor } from "@/features/editor";
 import { IFrame } from "@/shared/ui/iframe/ui";
 import { Frame } from "@/features/editor/ui/frame";
 import { useRenderTemplate } from "@/features/editor/model/use-render-template";
-import { PreviewWrapper } from "@/features/editor/compose/preview-mode";
+import {
+  PreviewActions,
+  PreviewWrapper,
+} from "@/features/editor/compose/preview-mode";
 import { useHighlight } from "@/features/editor/model/use-highlight";
 import { Highlight } from "@/features/editor/ui/highlight";
 
@@ -19,13 +22,15 @@ export const FrameViewer = () => {
 
   return (
     <Frame>
-      <Frame.Actions>actions</Frame.Actions>
+      <Frame.Actions>
+        <PreviewActions />
+      </Frame.Actions>
       <Frame.Content>
         <PreviewWrapper>
           <IFrame
             ref={iframeRef}
             injectCSS="/index.css"
-            className="w-full h-full bg-white rounded-2xl shadow-lg "
+            className="h-full w-full bg-white rounded-2xl shadow-lg "
           >
             {widgets.map((w) => (
               <div
