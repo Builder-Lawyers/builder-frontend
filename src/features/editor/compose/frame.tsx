@@ -25,7 +25,7 @@ export const FrameViewer = () => {
           <IFrame
             ref={iframeRef}
             injectCSS="/index.css"
-            className="w-full h-full bg-white rounded-2xl shadow-lg "
+            className="w-full h-full bg-white shadow-lg "
           >
             {widgets.map((w) => (
               <div
