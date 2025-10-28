@@ -2,8 +2,6 @@ import { userPool } from "@/shared/configs/cognito";
 import z from "zod";
 import { UseFormSetError } from "react-hook-form";
 import { ISignUpResult } from "amazon-cognito-identity-js";
-import { createConfirmation } from "@/shared/api/auth/auth";
-import { redirect } from "next/navigation";
 
 export const registrationValidation = z
   .object({
@@ -42,25 +40,25 @@ export function registration(
 
 export const useRegistration = ({
   setError,
+  afterSuccessAction,
 }: {
   setError: UseFormSetError<RegistrationFormValues>;
+  afterSuccessAction: () => void;
 }) => {
   const onSubmit = (data: RegistrationFormValues) => {
     registration(data.email, data.password)
       .then((res) => {
-        createConfirmation({
-          email: data.email,
-          userID: res.userSub,
-        }).then(() => {
-          redirect("/editor/321321");
-        });
+        afterSuccessAction();
+        // createConfirmation({
+        //   email: data.email,
+        //   userID: res.userSub,
+        // }).then(() => {
+        //   redirect("/editor/1");
+        // });
       })
       .catch((err) => {
         setError("password", { message: err.message });
         setError("email", { message: err.message });
-      })
-      .finally(() => {
-        redirect("/editor/321321");
       });
   };
 

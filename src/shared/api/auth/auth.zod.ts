@@ -11,8 +11,20 @@ import {
 
 
 /**
+ * Gets session info from cookie
+ * @summary Gets session info from cookie
+ */
+export const getSessionResponse = zod.object({
+  "userID": zod.uuid(),
+  "email": zod.string(),
+  "userSite": zod.object({
+  "siteID": zod.number()
+}).optional()
+})
+
+/**
  * Returns a session ID cookie
- * @summary Gets a session from access token
+ * @summary Creates a session from access token
  */
 export const createSessionBody = zod.object({
   "accessToken": zod.string(),
@@ -25,7 +37,7 @@ export const createSessionBody = zod.object({
  * @summary Creates a confirmation mail with code for user signup
  */
 export const createConfirmationBody = zod.object({
-  "userID": zod.string(),
+  "userID": zod.uuid(),
   "email": zod.string()
 })
 
@@ -38,7 +50,7 @@ export const verifyUserBody = zod.object({
 })
 
 export const verifyUserResponse = zod.object({
-  "userID": zod.string()
+  "userID": zod.uuid()
 })
 
 /**

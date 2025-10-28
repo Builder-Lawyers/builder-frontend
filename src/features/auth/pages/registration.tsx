@@ -8,24 +8,27 @@ import {
 } from "@/features/auth/model/use-registration";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthForm } from "@/features/auth/ui/form";
-import { GoogleLogin } from "@react-oauth/google";
-import { redirect } from "next/navigation";
 import { FormControl, FormField, FormItem } from "@/shared/ui/form";
 import Input from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
+import { OAuthButton } from "@/features/auth/compose/oauth";
+import { isDev } from "@/shared/lib/utils";
+
+const defaultValues = {
+  email: "mock_email@gmail.com",
+  password: "Qwerty123_",
+  repeatPassword: "Qwerty123_",
+};
 
 export const RegistrationPage = () => {
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationValidation),
-    defaultValues: {
-      email: "mock_email@gmail.com",
-      password: "Qwerty123_",
-      repeatPassword: "Qwerty123_",
-    },
+    defaultValues: (isDev() && defaultValues) || {},
   });
 
   const { setError } = form;
+
   const { onSubmit } = useRegistration({ setError });
 
   return (
@@ -40,14 +43,7 @@ export const RegistrationPage = () => {
             </AuthForm.Subtitle>
           </AuthForm.Header>
           <AuthForm.Form>
-            <GoogleLogin
-              onSuccess={() => {
-                redirect("/editor");
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
+            <OAuthButton />
             <AuthForm.Split>Or</AuthForm.Split>
             <FormField
               control={form.control}

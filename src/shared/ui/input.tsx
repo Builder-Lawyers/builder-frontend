@@ -40,6 +40,7 @@ function InputHeadless({
           className,
         )}
         {...props}
+        value={props.value ?? ""}
       />
     </Root>
   );

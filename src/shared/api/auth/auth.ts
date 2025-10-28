@@ -11,6 +11,7 @@ import type {
   CreateSession,
   InternalServerErrorResponse,
   OauthTokenVerified,
+  SessionInfo,
   UnauthorizedErrorResponse,
   VerifiedUser,
   VerifyCode,
@@ -20,8 +21,49 @@ import type {
 import { customInstance } from ".././custom-instance";
 
 /**
+ * Gets session info from cookie
+ * @summary Gets session info from cookie
+ */
+export type getSessionResponse200 = {
+  data: SessionInfo;
+  status: 200;
+};
+
+export type getSessionResponse401 = {
+  data: UnauthorizedErrorResponse;
+  status: 401;
+};
+
+export type getSessionResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type getSessionResponseComposite =
+  | getSessionResponse200
+  | getSessionResponse401
+  | getSessionResponse500;
+
+export type getSessionResponse = getSessionResponseComposite & {
+  headers: Headers;
+};
+
+export const getGetSessionUrl = () => {
+  return `/auth/session`;
+};
+
+export const getSession = async (
+  options?: RequestInit,
+): Promise<getSessionResponse> => {
+  return customInstance<getSessionResponse>(getGetSessionUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
  * Returns a session ID cookie
- * @summary Gets a session from access token
+ * @summary Creates a session from access token
  */
 export type createSessionResponse200 = {
   data: null;

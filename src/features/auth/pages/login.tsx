@@ -6,26 +6,33 @@ import {
 } from "@/features/auth/model/use-login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthForm } from "@/features/auth/ui/form";
-import { GoogleLogin } from "@react-oauth/google";
-import { redirect } from "next/navigation";
 import { FormControl, FormField, FormItem } from "@/shared/ui/form";
 import Input from "@/shared/ui/input";
 import { Button } from "@/shared/ui/button";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
+import { OAuthButton } from "@/features/auth/compose/oauth";
+import { isDev } from "@/shared/lib/utils";
+import { useAuthFlow } from "@/features/auth/model/use-auth-flow";
+
+const defaultValues = {
+  email: "sanity@mailinator.com",
+  password: "Admin1234!",
+};
 
 export const LoginPage = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginValidation),
-    defaultValues: {
-      email: "sanity@mailinator.com",
-      password: "Admin1234!",
-    },
+    defaultValues: (isDev() && defaultValues) || {},
   });
 
+  const { afterSuccessLogin } = useAuthFlow();
   const { setError } = form;
 
-  const { onSubmit } = useLogin({ setError: setError });
+  const { onSubmit } = useLogin({
+    setError: setError,
+    afterSuccessAction: afterSuccessLogin,
+  });
 
   return (
     <div className="h-sreen">
@@ -39,14 +46,7 @@ export const LoginPage = () => {
             </AuthForm.Subtitle>
           </AuthForm.Header>
           <AuthForm.Form>
-            <GoogleLogin
-              onSuccess={() => {
-                redirect("/editor");
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
+            <OAuthButton />
             <AuthForm.Split>Or</AuthForm.Split>
             <FormField
               control={form.control}

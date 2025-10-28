@@ -2,7 +2,6 @@ import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import { z } from "zod";
 import { SessionTokens, userPool } from "@/shared/configs/cognito";
 import { UseFormSetError } from "react-hook-form";
-import { createSession } from "@/shared/api/auth/auth";
 
 export const loginValidation = z.object({
   email: z.string().nonempty({
@@ -46,24 +45,22 @@ export function login({
 
 export const useLogin = ({
   setError,
+  afterSuccessAction,
 }: {
   setError: UseFormSetError<LoginFormValues>;
+  afterSuccessAction: () => void;
 }) => {
   const onSubmit = (data: LoginFormValues) => {
     login(data)
-      .then((res) => {
-        createSession(res).then((r) => console.log(r));
+      .then(() => {
+        afterSuccessAction();
+        // createSession(res).then((r) => console.log(r));
       })
       .catch((err) => {
         setError("root", { message: err });
         setError("password", { message: err.message });
         setError("email", { message: err.email });
       });
-    // .finally(() => {
-    //   if (isDev()) {
-    //     redirect("/editor");
-    //   }
-    // });
   };
 
   return { onSubmit };
