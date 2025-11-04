@@ -47,7 +47,7 @@ export const useRegistration = ({
 }) => {
   const onSubmit = (data: RegistrationFormValues) => {
     registration(data.email, data.password)
-      .then((res) => {
+      .then(() => {
         afterSuccessAction();
         // createConfirmation({
         //   email: data.email,

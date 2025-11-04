@@ -33,10 +33,10 @@ function InputHeadless({
         data-slot="input"
         aria-invalid={!!error}
         className={cn(
-          "file:text-foreground py-[10px] placeholder:text-secondary/60 selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex w-full min-w-0 rounded-xl border bg-transparent px-3 text-base transition-[color,box-shadow,border] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          "file:text-foreground py-[10px] placeholder:text-input border-input selection:bg-primary selection:text-primary-foreground dark:bg-input/30 flex w-full min-w-0 rounded-xl border bg-transparent px-3 text-base transition-[color,box-shadow,border] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           error
             ? "border-destructive ring-destructive/40 focus-visible:ring-destructive/40"
-            : "border-secondary/40 ring-foreground/60 focus-visible:ring-[2px]",
+            : "focus-visible:ring-[2px]",
           className,
         )}
         {...props}

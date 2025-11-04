@@ -89,9 +89,14 @@ export const LoginPage = () => {
             />
           </AuthForm.Form>
           <AuthForm.Actions>
-            <Button className="w-full" type="submit">
-              submit
-            </Button>
+            <div className="flex w-full gap-2">
+              <Button variant="bordered" className="w-fit" type="submit">
+                Go Back
+              </Button>
+              <Button className="flex-1 w-full" type="submit">
+                Submit
+              </Button>
+            </div>
             <p className="text-[14px] text-foreground/60">
               Don&#39;t have an account?{" "}
               <Button size="link" variant="link">

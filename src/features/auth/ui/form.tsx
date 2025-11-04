@@ -34,7 +34,7 @@ const Actions = ({ children, className }: BaseProps) => (
 );
 
 const Image = () => (
-  <div className="w-[30%] h-full md:flex hidden grow flex-1/4 bg-accent rounded-xl" />
+  <div className="w-[30%] h-full md:flex hidden grow flex-1/4 bg-primary rounded-xl" />
 );
 
 interface AuthFormProps extends React.FormHTMLAttributes<HTMLFormElement> {

@@ -14,6 +14,7 @@ import { Button } from "@/shared/ui/button";
 import Link from "next/link";
 import { OAuthButton } from "@/features/auth/compose/oauth";
 import { isDev } from "@/shared/lib/utils";
+import { useAuthFlow } from "@/features/auth/model/use-auth-flow";
 
 const defaultValues = {
   email: "mock_email@gmail.com",
@@ -28,8 +29,12 @@ export const RegistrationPage = () => {
   });
 
   const { setError } = form;
+  const { afterSuccessRegistration } = useAuthFlow();
 
-  const { onSubmit } = useRegistration({ setError });
+  const { onSubmit } = useRegistration({
+    setError,
+    afterSuccessAction: afterSuccessRegistration,
+  });
 
   return (
     <div className="h-screen">
@@ -112,9 +117,14 @@ export const RegistrationPage = () => {
             />
           </AuthForm.Form>
           <AuthForm.Actions>
-            <Button className="w-full" type="submit">
-              submit
-            </Button>
+            <div className="flex w-full gap-2">
+              <Button variant="bordered" className="w-fit" type="submit">
+                Go Back
+              </Button>
+              <Button className="flex-1 w-full" type="submit">
+                Submit
+              </Button>
+            </div>
             <p className="text-[14px] text-foreground/60">
               Do you have account already?{" "}
               <Button size="link" variant="link">
