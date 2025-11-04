@@ -1,6 +1,7 @@
 "use server";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
+import { routes } from "@/shared/configs/router";
 
 export const ProtectedRouter = async ({
   children,
@@ -10,7 +11,7 @@ export const ProtectedRouter = async ({
   const isAuthenticated = false;
 
   if (!isAuthenticated) {
-    redirect("/login");
+    redirect(routes.auth.login);
   }
 
   return children;

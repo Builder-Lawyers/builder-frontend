@@ -316,7 +316,7 @@
 
 :root {
     --background: var(--colors-white);
-    --foreground: var(--colors-black-normal-active);
+    --foreground: var(--colors-primary-darker);
 
     --card: var(--colors-white);
     --card-foreground: var(--colors-black-normal);
@@ -347,7 +347,7 @@
     --sidebar-foreground: var(--colors-black-normal);
     --sidebar-primary: var(--colors-primary-normal);
     --sidebar-primary-foreground: var(--colors-white);
-    --sidebar-accent: var(--gray-50);
+    --sidebar-accent: var(--colors-primary-light);
     --sidebar-accent-foreground: var(--colors-black-normal);
     --sidebar-border: var(--gray-100);
     --sidebar-ring: var(--gray-500);

@@ -1,11 +1,13 @@
+"use client";
+
 import { ReactNode } from "react";
 import { DashboardSidebar } from "@/features/dashboard/compose/sidebar";
 
 export const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex">
+    <div className="flex w-full bg-[#F3F3F3]/50">
       <DashboardSidebar />
-      <main className="p-2">{children}</main>
+      <main>{children}</main>
     </div>
   );
 };

@@ -5,5 +5,5 @@ interface TemplatesListProps {
 }
 
 export const TemplatesListHeadless = ({ children }: TemplatesListProps) => {
-  return <div></div>;
+  return <div>{children}</div>;
 };

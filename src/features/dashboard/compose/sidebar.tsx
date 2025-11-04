@@ -17,21 +17,22 @@ import { UserCard } from "@/entities/user";
 import Link from "next/link";
 
 const items = [
-  { title: "Projects", url: "/", icon: Home },
-  { title: "Templates", url: "/templates", icon: Inbox },
+  { title: "My Projects", url: "/", icon: Home },
+  { title: "Templates", url: "/dashboard/templates", icon: Inbox },
   { title: "Plans", url: "/plans", icon: Calendar },
   { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 export const DashboardSidebar = () => {
   return (
-    <SidebarProvider>
-      <Sidebar variant="floating" collapsible="icon">
+    <SidebarProvider defaultOpen={false}>
+      <Sidebar className="relative" variant="floating" collapsible="icon">
+        {/*<SidebarTrigger className="absolute right-[-12px] top-[50px] z-20" />*/}
         <SidebarContent className="flex flex-col gap-[12px]">
           <SidebarHeader className="p-3">
             <UserCard name={"Dmytro"} />
           </SidebarHeader>
-          <SidebarGroup className="p-3">
+          <SidebarGroup>
             <SidebarGroupLabel>Main</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu className="flex flex-col gap-2">
@@ -39,8 +40,8 @@ export const DashboardSidebar = () => {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
                       <Link href={item.url} className="flex items-center gap-2">
-                        <item.icon className="w-5 h-5" />
-                        <span>{item.title}</span>
+                        <item.icon />
+                        <span className="text-[14px]">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

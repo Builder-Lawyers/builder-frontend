@@ -1,3 +1,5 @@
+import { WelcomePage } from "@/features/landing";
+
 export default function Home() {
-  return <div>WelcomePAGE</div>;
+  return <WelcomePage />;
 }

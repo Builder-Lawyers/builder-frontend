@@ -14,6 +14,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { OAuthButton } from "@/features/auth/compose/oauth";
 import { isDev } from "@/shared/lib/utils";
 import { useAuthFlow } from "@/features/auth/model/use-auth-flow";
+import { routes } from "@/shared/configs/router";
 
 const defaultValues = {
   email: "sanity@mailinator.com",
@@ -90,9 +91,11 @@ export const LoginPage = () => {
           </AuthForm.Form>
           <AuthForm.Actions>
             <div className="flex w-full gap-2">
-              <Button variant="bordered" className="w-fit" type="submit">
-                Go Back
-              </Button>
+              <Link href={routes.home}>
+                <Button variant="bordered" className="w-fit">
+                  Go Back
+                </Button>
+              </Link>
               <Button className="flex-1 w-full" type="submit">
                 Submit
               </Button>
@@ -100,7 +103,7 @@ export const LoginPage = () => {
             <p className="text-[14px] text-foreground/60">
               Don&#39;t have an account?{" "}
               <Button size="link" variant="link">
-                <Link href="/signup" className="text-foreground">
+                <Link href={routes.auth.signup} className="text-foreground">
                   Sign Up
                 </Link>
               </Button>
