@@ -13,7 +13,6 @@ export const FrameViewer = () => {
   const { widgets, styles } = useEditor();
   const { renderWidget } = useRenderTemplate();
 
-  console.log(styles);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { hoverHighlight, activeHighlight, hoverPos, activePos } =
@@ -23,7 +22,11 @@ export const FrameViewer = () => {
     <Frame>
       <Frame.Content>
         <PreviewWrapper>
-          <IFrame ref={iframeRef} className="w-full h-full bg-white shadow-lg ">
+          <IFrame
+            ref={iframeRef}
+            injectCSS={styles}
+            className="w-full h-full bg-white shadow-lg "
+          >
             {widgets.map((w) => (
               <div
                 onMouseEnter={hoverHighlight.onElementEvent}
