@@ -1,23 +1,15 @@
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
-import { Pages } from "@/shared/types/template";
 import { cn } from "@/shared/lib/utils";
-import { Widget as WidgetProps } from "@/shared/types/template";
 import { Widget } from "@/features/editor/ui/widget";
 import { useWidget } from "@/features/editor/model/use-widget";
+import { useEditor } from "@/features/editor/model/use-editor";
 
 interface SidebarProps {
   className?: string;
-  pages: Pages["label"][];
-  setActivePage: (page: Pages["label"]) => void;
-  widgets: WidgetProps[];
 }
 
-export const Sidebar = ({
-  className,
-  pages,
-  setActivePage,
-  widgets,
-}: SidebarProps) => {
+export const Sidebar = ({ className }: SidebarProps) => {
+  const { pages, widgets } = useEditor();
   const { api, state } = useWidget();
 
   return (
@@ -29,20 +21,22 @@ export const Sidebar = ({
           label: "Pages",
           defaultSize: 30,
           element: (
-            <div>
+            <div className="space-y-1">
               {pages.map((page) => (
-                <div
-                  onClick={() => {
-                    setActivePage(page);
-                  }}
-                  className="px-3 flex items-center w-full justify-between py-3 rounded-2xl duration-150 hover:bg-secondary/[3%]"
-                  key={page}
+                <button
+                  key={page.label}
+                  className={cn(
+                    "flex w-full items-center justify-between rounded-xl px-3 py-2 text-left transition-colors",
+                    "hover:bg-secondary/5 active:bg-secondary/10",
+                  )}
                 >
                   <div className="flex items-center gap-3">
-                    <div>Icon</div>
-                    <p className="text-foreground text-[14px]">{page}</p>
+                    <div className="size-4 bg-muted rounded" />
+                    <span className="text-[14px] text-foreground">
+                      {page.label}
+                    </span>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           ),

@@ -5,50 +5,38 @@ import { Editor } from "@/features/editor/ui/editor-headless";
 import { EditorPanel } from "@/features/editor/compose/editor-panel";
 import { FrameViewer } from "@/features/editor/compose/frame";
 import { Sidebar } from "@/features/editor/compose/sidebar";
-import { useGetTemplate } from "@/features/editor/model/use-get-template";
-import { useEditorPages } from "@/features/editor/model/use-editor-pages";
-import { useWidget } from "@/features/editor/model/use-widget";
+import { useTemplateLoader } from "@/features/editor/model/use-template-loader";
 
 interface EditorPageProps {
   id: number;
 }
 
 export const EditorPage = ({ id }: EditorPageProps) => {
-  const { dispatch, widgets } = useEditor();
-  const { state } = useWidget();
-  const { setPagesList, activePage, pages, switchPage } = useEditorPages();
+  const { dispatch } = useEditor();
 
-  useGetTemplate({
-    id,
-    dep: activePage,
-    action: (pages) => {
-      const labels = pages.map((page) => page.label);
-      setPagesList({ labels });
-
-      const widgets = pages[0].registry;
-
-      widgets.forEach((widget) => {
-        dispatch({
-          type: "Widget.Added",
-          payload: {
-            widget,
-          },
-        });
+  const { isLoading } = useTemplateLoader({
+    id: id || 1,
+    onLoad: (pages) => {
+      dispatch({ type: "Pages.Set", payload: { pages } });
+      dispatch({
+        type: "Page.SetActive",
+        payload: {
+          label: "Home",
+        },
       });
+    },
+    onUnload: () => {
+      dispatch({ type: "Pages.Reset" });
     },
   });
 
   return (
-    <Editor
-      editorPanel={state.selectedWidgetId ? <EditorPanel /> : <div>chose</div>}
-      frame={<FrameViewer />}
-      sidebar={
-        <Sidebar
-          widgets={widgets}
-          setActivePage={() => switchPage}
-          pages={pages}
-        />
-      }
-    />
+    !isLoading && (
+      <Editor
+        editorPanel={<EditorPanel />}
+        frame={<FrameViewer />}
+        sidebar={<Sidebar />}
+      />
+    )
   );
 };
