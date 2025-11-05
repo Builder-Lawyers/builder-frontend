@@ -19,6 +19,14 @@ export const createTemplateBody = zod.object({
 })
 
 /**
+ * Fetches new template sources and rebuilds them (if no templateName specified, fetches all)
+ * @summary Update templates
+ */
+export const updateTemplatesBody = zod.object({
+  "name": zod.string().optional().describe('template\'s name')
+})
+
+/**
  * Returns template info such as pages.json
  * @summary Gets template info
  */
@@ -29,7 +37,9 @@ export const getTemplateParams = zod.object({
 export const getTemplateResponse = zod.object({
   "id": zod.number(),
   "templateName": zod.string(),
-  "structure": zod.string().describe('pages.json file')
+  "structure": zod.string().describe('url to pages.json file'),
+  "styles": zod.string().describe('url to css file'),
+  "preview": zod.string().describe('url to site\'s html for preview')
 })
 
 /**
@@ -45,7 +55,9 @@ export const listTemplatesResponse = zod.object({
   "elements": zod.array(zod.object({
   "id": zod.number(),
   "templateName": zod.string(),
-  "structure": zod.string().describe('pages.json file')
+  "structure": zod.string().describe('url to pages.json file'),
+  "styles": zod.string().describe('url to css file'),
+  "preview": zod.string().describe('url to site\'s html for preview')
 })),
   "page": zod.number(),
   "total": zod.number(),

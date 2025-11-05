@@ -12,11 +12,13 @@ export const Highlight = ({
   height,
   type = "hover",
 }: HighlightProps & { type?: "hover" | "active" }) => {
+  const isVisible = !(top === 0 && left === 0 && width === 0 && height === 0);
   const color = (type === "active" && "rgba(0, 140, 255, 0.1)") || "";
 
   return (
     <div
       style={{
+        display: isVisible ? "" : "none",
         position: "absolute",
         top,
         left,

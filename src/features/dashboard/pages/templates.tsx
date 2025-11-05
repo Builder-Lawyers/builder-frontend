@@ -1,16 +1,22 @@
 import { TemplateCard, TemplatesListHeadless } from "@/entities/template";
 import { Button } from "@/shared/ui/button";
+import Link from "next/link";
+import { routes } from "@/shared/configs/router";
 
 export const TemplatesDashboardPage = () => {
   return (
-    <div className="flex flex-col gap-6 px-2 py-6">
-      <h1 className="text-3xl uppercase">Popular templates</h1>
+    <div className="flex flex-col gap-6">
       <TemplatesListHeadless>
         <TemplateCard
           actions={
-            <div className="flex gap-2">
+            <div className="flex w-full gap-2">
               <Button variant="bordered">Preview</Button>
-              <Button className="flex-1">Get Started</Button>
+              <Link
+                className="w-full flex flex-1"
+                href={routes.dashboard.editor("1")}
+              >
+                <Button className="flex-1">Get Started</Button>
+              </Link>
             </div>
           }
           title={"dsads"}

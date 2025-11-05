@@ -10,7 +10,6 @@ import type {
   CreateConfirmation,
   CreateSession,
   InternalServerErrorResponse,
-  OauthTokenVerified,
   SessionInfo,
   UnauthorizedErrorResponse,
   VerifiedUser,
@@ -66,7 +65,7 @@ export const getSession = async (
  * @summary Creates a session from access token
  */
 export type createSessionResponse200 = {
-  data: null;
+  data: SessionInfo;
   status: 200;
 };
 
@@ -207,7 +206,7 @@ export const verifyUser = async (
  * @summary Verifies provided oauth2 id_token
  */
 export type verifyOauthTokenResponse201 = {
-  data: OauthTokenVerified;
+  data: SessionInfo;
   status: 201;
 };
 

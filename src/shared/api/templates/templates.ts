@@ -14,6 +14,7 @@ import type {
   ListTemplatePaginator,
   NotFoundErrorResponse,
   TemplateInfo,
+  UpdateTemplatesRequest,
 } from ".././model";
 
 import { customInstance } from ".././custom-instance";
@@ -58,6 +59,50 @@ export const createTemplate = async (
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
     body: JSON.stringify(createTemplateRequest),
+  });
+};
+
+/**
+ * Fetches new template sources and rebuilds them (if no templateName specified, fetches all)
+ * @summary Update templates
+ */
+export type updateTemplatesResponse200 = {
+  data: null;
+  status: 200;
+};
+
+export type updateTemplatesResponse400 = {
+  data: BadRequestErrorResponse;
+  status: 400;
+};
+
+export type updateTemplatesResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type updateTemplatesResponseComposite =
+  | updateTemplatesResponse200
+  | updateTemplatesResponse400
+  | updateTemplatesResponse500;
+
+export type updateTemplatesResponse = updateTemplatesResponseComposite & {
+  headers: Headers;
+};
+
+export const getUpdateTemplatesUrl = () => {
+  return `/template`;
+};
+
+export const updateTemplates = async (
+  updateTemplatesRequest: UpdateTemplatesRequest,
+  options?: RequestInit,
+): Promise<updateTemplatesResponse> => {
+  return customInstance<updateTemplatesResponse>(getUpdateTemplatesUrl(), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(updateTemplatesRequest),
   });
 };
 

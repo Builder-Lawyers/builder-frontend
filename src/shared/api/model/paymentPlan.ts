@@ -5,9 +5,10 @@
  * API for creating user sites with templates
  * OpenAPI spec version: 1.0.0
  */
-import type { VerifyOauthTokenProvider } from "./verifyOauthTokenProvider";
 
-export interface VerifyOauthToken {
-  idToken: string;
-  provider: VerifyOauthTokenProvider;
+export interface PaymentPlan {
+  id: number;
+  description: string;
+  /** Price in cents */
+  price: number;
 }

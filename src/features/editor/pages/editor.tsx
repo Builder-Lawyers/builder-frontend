@@ -7,13 +7,15 @@ import { FrameViewer } from "@/features/editor/compose/frame";
 import { Sidebar } from "@/features/editor/compose/sidebar";
 import { useGetTemplate } from "@/features/editor/model/use-get-template";
 import { useEditorPages } from "@/features/editor/model/use-editor-pages";
+import { useWidget } from "@/features/editor/model/use-widget";
 
 interface EditorPageProps {
   id: number;
 }
 
 export const EditorPage = ({ id }: EditorPageProps) => {
-  const { dispatch } = useEditor();
+  const { dispatch, widgets } = useEditor();
+  const { state } = useWidget();
   const { setPagesList, activePage, pages, switchPage } = useEditorPages();
 
   useGetTemplate({
@@ -38,9 +40,15 @@ export const EditorPage = ({ id }: EditorPageProps) => {
 
   return (
     <Editor
-      editorPanel={<EditorPanel />}
+      editorPanel={state.selectedWidgetId ? <EditorPanel /> : <div>chose</div>}
       frame={<FrameViewer />}
-      sidebar={<Sidebar setActivePage={() => switchPage} pages={pages} />}
+      sidebar={
+        <Sidebar
+          widgets={widgets}
+          setActivePage={() => switchPage}
+          pages={pages}
+        />
+      }
     />
   );
 };

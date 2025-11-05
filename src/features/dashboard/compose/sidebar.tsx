@@ -12,20 +12,21 @@ import {
   SidebarProvider,
 } from "@/shared/ui/sidebar";
 
-import { Home, Inbox, Calendar, Settings } from "lucide-react";
+import { Home, Inbox } from "lucide-react";
 import { UserCard } from "@/entities/user";
 import Link from "next/link";
+import { routes } from "@/shared/configs/router";
 
 const items = [
-  { title: "My Projects", url: "/", icon: Home },
-  { title: "Templates", url: "/dashboard/templates", icon: Inbox },
-  { title: "Plans", url: "/plans", icon: Calendar },
-  { title: "Settings", url: "/settings", icon: Settings },
+  { title: "My Projects", url: routes.dashboard.root, icon: Home },
+  { title: "Templates", url: routes.dashboard.templates, icon: Inbox },
+  // { title: "Plans", url: "/plans", icon: Calendar },
+  // { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 export const DashboardSidebar = () => {
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <Sidebar className="relative" variant="floating" collapsible="icon">
         {/*<SidebarTrigger className="absolute right-[-12px] top-[50px] z-20" />*/}
         <SidebarContent className="flex flex-col gap-[12px]">

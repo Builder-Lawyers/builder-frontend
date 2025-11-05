@@ -1,7 +1,7 @@
 import { SidebarHeadless } from "@/shared/ui/custom/sidebar";
 import { Pages } from "@/shared/types/template";
 import { cn } from "@/shared/lib/utils";
-import { useEditor } from "@/features/editor/model/use-editor";
+import { Widget as WidgetProps } from "@/shared/types/template";
 import { Widget } from "@/features/editor/ui/widget";
 import { useWidget } from "@/features/editor/model/use-widget";
 
@@ -9,10 +9,15 @@ interface SidebarProps {
   className?: string;
   pages: Pages["label"][];
   setActivePage: (page: Pages["label"]) => void;
+  widgets: WidgetProps[];
 }
 
-export const Sidebar = ({ className, pages, setActivePage }: SidebarProps) => {
-  const { widgets } = useEditor();
+export const Sidebar = ({
+  className,
+  pages,
+  setActivePage,
+  widgets,
+}: SidebarProps) => {
   const { api, state } = useWidget();
 
   return (

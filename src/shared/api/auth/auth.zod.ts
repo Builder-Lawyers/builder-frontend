@@ -32,6 +32,14 @@ export const createSessionBody = zod.object({
   "idToken": zod.string()
 })
 
+export const createSessionResponse = zod.object({
+  "userID": zod.uuid(),
+  "email": zod.string(),
+  "userSite": zod.object({
+  "siteID": zod.number()
+}).optional()
+})
+
 /**
  * Sends a mail with confirmation link for user signup
  * @summary Creates a confirmation mail with code for user signup
@@ -58,6 +66,7 @@ export const verifyUserResponse = zod.object({
  * @summary Verifies provided oauth2 id_token
  */
 export const verifyOauthTokenBody = zod.object({
-  "idToken": zod.string()
+  "idToken": zod.string(),
+  "provider": zod.enum(['Google'])
 })
 

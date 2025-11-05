@@ -5,9 +5,9 @@ import { DashboardSidebar } from "@/features/dashboard/compose/sidebar";
 
 export const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex w-full bg-[#F3F3F3]/50">
+    <div className="flex w-full ">
       <DashboardSidebar />
-      <main>{children}</main>
+      <main className="w-full p-4 flex">{children}</main>
     </div>
   );
 };

@@ -25,6 +25,17 @@ export const createPaymentResponse = zod.object({
 })
 
 /**
+ * Returns a list of payment plans
+ * @summary Gets a list of payment plans
+ */
+export const listPaymentPlansResponseItem = zod.object({
+  "id": zod.number(),
+  "description": zod.string(),
+  "price": zod.number().describe('Price in cents')
+})
+export const listPaymentPlansResponse = zod.array(listPaymentPlansResponseItem)
+
+/**
  * Returns a payment checkout session info
  * @summary Gets a payment checkout session info
  */

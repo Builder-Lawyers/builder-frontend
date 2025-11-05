@@ -10,6 +10,7 @@ import type {
   CreatePaymentRequest,
   CreatePaymentResponse,
   InternalServerErrorResponse,
+  PaymentPlanList,
   PaymentStatusResponse,
   StripeWebhookRequest,
   UnauthorizedErrorResponse,
@@ -64,6 +65,53 @@ export const createPayment = async (
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
     body: JSON.stringify(createPaymentRequest),
+  });
+};
+
+/**
+ * Returns a list of payment plans
+ * @summary Gets a list of payment plans
+ */
+export type listPaymentPlansResponse200 = {
+  data: PaymentPlanList;
+  status: 200;
+};
+
+export type listPaymentPlansResponse400 = {
+  data: BadRequestErrorResponse;
+  status: 400;
+};
+
+export type listPaymentPlansResponse401 = {
+  data: UnauthorizedErrorResponse;
+  status: 401;
+};
+
+export type listPaymentPlansResponse500 = {
+  data: InternalServerErrorResponse;
+  status: 500;
+};
+
+export type listPaymentPlansResponseComposite =
+  | listPaymentPlansResponse200
+  | listPaymentPlansResponse400
+  | listPaymentPlansResponse401
+  | listPaymentPlansResponse500;
+
+export type listPaymentPlansResponse = listPaymentPlansResponseComposite & {
+  headers: Headers;
+};
+
+export const getListPaymentPlansUrl = () => {
+  return `/payments`;
+};
+
+export const listPaymentPlans = async (
+  options?: RequestInit,
+): Promise<listPaymentPlansResponse> => {
+  return customInstance<listPaymentPlansResponse>(getListPaymentPlansUrl(), {
+    ...options,
+    method: "GET",
   });
 };
 

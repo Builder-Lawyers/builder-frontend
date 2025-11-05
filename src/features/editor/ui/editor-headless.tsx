@@ -14,7 +14,7 @@ interface EditorProps {
 export const Editor = ({ sidebar, editorPanel, frame }: EditorProps) => {
   return (
     <ResizablePanelGroup
-      className="flex p-2 gap-1 grow bg-secondary/10 min-h-dvh"
+      className="flex gap-1 w-full grow min-h-dvh"
       direction="horizontal"
     >
       <ResizablePanel minSize={10} maxSize={20} defaultSize={15}>

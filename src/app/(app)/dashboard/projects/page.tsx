@@ -1,3 +1,5 @@
+import { UserProjectsPage } from "@/features/dashboard";
+
 export default function Page() {
-  return <div>projects</div>;
+  return <UserProjectsPage />;
 }

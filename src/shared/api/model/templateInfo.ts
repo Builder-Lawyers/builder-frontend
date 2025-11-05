@@ -9,6 +9,10 @@
 export interface TemplateInfo {
   id: number;
   templateName: string;
-  /** pages.json file */
+  /** url to pages.json file */
   structure: string;
+  /** url to css file */
+  styles: string;
+  /** url to site's html for preview */
+  preview: string;
 }

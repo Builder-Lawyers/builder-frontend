@@ -4,9 +4,9 @@ import { IFrame } from "@/shared/ui/iframe/ui";
 import { Frame } from "@/features/editor/ui/frame";
 import { useRenderTemplate } from "@/features/editor/model/use-render-template";
 import { PreviewWrapper } from "@/features/editor/compose/preview-mode";
-import { useHighlight } from "@/features/editor/model/use-highlight";
 import { Highlight } from "@/features/editor/ui/highlight";
 import { useWidget } from "@/features/editor/model/use-widget";
+import { useHighlights } from "@/features/editor/model/use-highlight";
 
 export const FrameViewer = () => {
   const { api } = useWidget();
@@ -15,8 +15,8 @@ export const FrameViewer = () => {
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const { onHoverElement, onSelectElement, hoverPositions, activePositions } =
-    useHighlight(iframeRef);
+  const { hoverHighlight, activeHighlight, hoverPos, activePos } =
+    useHighlights(iframeRef);
 
   return (
     <Frame>
@@ -30,20 +30,20 @@ export const FrameViewer = () => {
           >
             {widgets.map((w) => (
               <div
-                onMouseEnter={onHoverElement}
+                onMouseEnter={hoverHighlight.onElementEvent}
                 key={w.id}
                 data-widget-id={w.id}
                 onClick={(e) => {
                   api.onSelectedWidgetId(w.id);
-                  onSelectElement(e);
+                  activeHighlight.onElementEvent(e);
                 }}
                 dangerouslySetInnerHTML={{
                   __html: renderWidget(w.component, w.options),
                 }}
               />
             ))}
-            <Highlight {...hoverPositions} type="hover" />
-            <Highlight {...activePositions} type="active" />
+            <Highlight {...hoverPos} type="hover" />
+            <Highlight {...activePos} type="active" />
           </IFrame>
         </PreviewWrapper>
       </Frame.Content>
