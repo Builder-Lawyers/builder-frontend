@@ -8,10 +8,16 @@ import {
 interface EditorProps {
   editorPanel: ReactNode;
   frame: ReactNode;
+  isEditing: boolean;
   sidebar: ReactNode;
 }
 
-export const Editor = ({ sidebar, editorPanel, frame }: EditorProps) => {
+export const Editor = ({
+  sidebar,
+  editorPanel,
+  isEditing,
+  frame,
+}: EditorProps) => {
   return (
     <ResizablePanelGroup
       className="flex gap-1 w-full grow min-h-dvh"
@@ -23,9 +29,11 @@ export const Editor = ({ sidebar, editorPanel, frame }: EditorProps) => {
       <ResizableHandle className="opacity-0" />
       <ResizablePanel defaultSize={70}>{frame}</ResizablePanel>
       <ResizableHandle className="opacity-0" />
-      <ResizablePanel minSize={0} maxSize={20} defaultSize={0}>
-        {editorPanel}
-      </ResizablePanel>
+      {isEditing && (
+        <ResizablePanel minSize={10} maxSize={20} defaultSize={15}>
+          {editorPanel}
+        </ResizablePanel>
+      )}
     </ResizablePanelGroup>
   );
 };

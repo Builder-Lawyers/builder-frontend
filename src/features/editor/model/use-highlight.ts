@@ -1,54 +1,81 @@
-import { useRef, useState, useEffect } from "react";
-import { HighlightFactory } from "@/features/editor/model/highlight-factory";
-import { HighlightProps } from "@/features/editor/ui/highlight";
+import { useEffect, useState, RefObject } from "react";
+
+interface HighlightPosition {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
+interface HighlightControls {
+  onElementEvent: (e: React.MouseEvent<HTMLElement>) => void;
+}
+
+interface UseHighlightsReturn {
+  hoverHighlight: HighlightControls;
+  activeHighlight: HighlightControls;
+  hoverPos: HighlightPosition;
+  activePos: HighlightPosition;
+}
 
 export const useHighlights = (
-  iframeRef: React.RefObject<HTMLIFrameElement | null>,
-) => {
-  const factoryRef = useRef(new HighlightFactory(iframeRef));
-
-  const [hoverPos, setHoverPos] = useState<HighlightProps>({
+  iframeRef: RefObject<HTMLIFrameElement | null>,
+  selectedWidgetId?: string,
+): UseHighlightsReturn => {
+  const [hoverPos, setHoverPos] = useState<HighlightPosition>({
+    top: 0,
+    left: 0,
+    width: 0,
+    height: 0,
+  });
+  const [activePos, setActivePos] = useState<HighlightPosition>({
     top: 0,
     left: 0,
     width: 0,
     height: 0,
   });
 
-  const [activePos, setActivePos] = useState<HighlightProps>({
-    top: 0,
-    left: 0,
-    width: 0,
-    height: 0,
-  });
+  const updateFromElement = (
+    el: HTMLElement,
+    setter: (pos: HighlightPosition) => void,
+  ) => {
+    const rect = el.getBoundingClientRect();
+    const iframeWindow = iframeRef.current?.contentWindow;
+    if (!iframeWindow) return;
 
-  const hoverHighlight = factoryRef.current.create("hover", setHoverPos);
-  const activeHighlight = factoryRef.current.create("active", setActivePos);
+    setter({
+      top: rect.top + iframeWindow.scrollY,
+      left: rect.left + iframeWindow.scrollX,
+      width: rect.width,
+      height: rect.height,
+    });
+  };
+
+  const hoverHighlight = {
+    onElementEvent: (e: React.MouseEvent<HTMLElement>) => {
+      const el = e.currentTarget as HTMLElement;
+      if (el) updateFromElement(el, setHoverPos);
+    },
+  };
+
+  const activeHighlight = {
+    onElementEvent: (e: React.MouseEvent<HTMLElement>) => {
+      const el = e.currentTarget as HTMLElement;
+      if (el) updateFromElement(el, setActivePos);
+    },
+  };
 
   useEffect(() => {
-    const iframe = iframeRef.current;
-    if (!iframe) return;
+    if (!selectedWidgetId || !iframeRef.current) return;
+    const iframeDoc = iframeRef.current.contentDocument;
+    if (!iframeDoc) return;
 
-    const win = iframe.contentWindow;
-    const handleUpdate = () => {
-      hoverHighlight.update();
-      activeHighlight.update();
-    };
+    const el = iframeDoc.querySelector(
+      `[data-widget-id="${selectedWidgetId}"]`,
+    ) as HTMLElement | null;
 
-    const resizeObs = new ResizeObserver(handleUpdate);
-    resizeObs.observe(iframe);
+    if (el) updateFromElement(el, setActivePos);
+  }, [selectedWidgetId, iframeRef]);
 
-    win?.addEventListener("scroll", handleUpdate, { passive: true });
-
-    return () => {
-      resizeObs.disconnect();
-      win?.removeEventListener("scroll", handleUpdate);
-    };
-  }, [iframeRef, hoverHighlight, activeHighlight]);
-
-  return {
-    hoverHighlight,
-    activeHighlight,
-    hoverPos,
-    activePos,
-  };
+  return { hoverHighlight, activeHighlight, hoverPos, activePos };
 };

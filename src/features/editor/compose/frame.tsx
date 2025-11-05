@@ -9,15 +9,17 @@ import { useWidget } from "@/features/editor/model/use-widget";
 import { useHighlights } from "@/features/editor/model/use-highlight";
 
 export const FrameViewer = () => {
-  const { api } = useWidget();
+  const { api, state } = useWidget();
   const { widgets, styles } = useEditor();
   const { renderWidget } = useRenderTemplate();
-
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const { hoverHighlight, activeHighlight, hoverPos, activePos } =
-    useHighlights(iframeRef);
+  const { hoverHighlight, hoverPos, activePos } = useHighlights(
+    iframeRef,
+    state.selectedWidgetId,
+  );
 
+  console.log(state.selectedWidgetId);
   return (
     <Frame>
       <Frame.Content>
@@ -25,22 +27,22 @@ export const FrameViewer = () => {
           <IFrame
             ref={iframeRef}
             injectCSS={styles}
-            className="w-full h-full bg-white shadow-lg "
+            className="w-full h-full bg-white shadow-lg"
           >
             {widgets.map((w) => (
               <div
-                onMouseEnter={hoverHighlight.onElementEvent}
                 key={w.id}
                 data-widget-id={w.id}
                 onClick={(e) => {
+                  e.stopPropagation();
                   api.onSelectedWidgetId(w.id);
-                  activeHighlight.onElementEvent(e);
                 }}
                 dangerouslySetInnerHTML={{
                   __html: renderWidget(w.component, w.options),
                 }}
               />
             ))}
+
             <Highlight {...hoverPos} type="hover" />
             <Highlight {...activePos} type="active" />
           </IFrame>

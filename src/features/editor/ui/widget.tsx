@@ -112,9 +112,9 @@ export const Widget = ({ widget, isActive, ...rest }: WidgetContainerProps) => {
           "transition-all duration-250 ease-in-out overflow-hidden",
         )}
       >
-        {isOpen && widget.options && (
-          <Options contentRef={contentRef} options={widget.options} />
-        )}
+        {/*{isOpen && widget.options && (*/}
+        {/*  <Options contentRef={contentRef} options={widget.options} />*/}
+        {/*)}*/}
       </div>
     </div>
   );

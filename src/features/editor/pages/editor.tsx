@@ -16,7 +16,6 @@ export const EditorPage = ({ id }: EditorPageProps) => {
   const { dispatch } = useEditor();
   const { api, state } = useWidget();
 
-  console.log(state);
   const { isLoading } = useTemplateLoader({
     id: id || 1,
     onLoad: (pages, styles) => {
@@ -43,6 +42,7 @@ export const EditorPage = ({ id }: EditorPageProps) => {
   return (
     !isLoading && (
       <Editor
+        isEditing={!!state.selectedWidgetId}
         editorPanel={<EditorPanel />}
         frame={<FrameViewer />}
         sidebar={<Sidebar />}

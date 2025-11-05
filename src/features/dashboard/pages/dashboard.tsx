@@ -7,7 +7,7 @@ export const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex w-full ">
       <DashboardSidebar />
-      <main className="w-full p-4 flex">{children}</main>
+      <main className="w-full flex">{children}</main>
     </div>
   );
 };
