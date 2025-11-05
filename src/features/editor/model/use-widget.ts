@@ -9,6 +9,7 @@ interface State {
 interface Api {
   onSelectedWidgetId: (widgetId: string) => void;
   findWidgetById: (widgetId: string, widgets: Widget[]) => Widget;
+  resetSelectedWidget: () => void;
 }
 
 interface WidgetModel {
@@ -33,6 +34,10 @@ export const useWidget = create<WidgetModel>()(
         }
         return found;
       },
+      resetSelectedWidget: () =>
+        setState((state) => {
+          state.state.selectedWidgetId = "";
+        }),
     },
   })),
 );

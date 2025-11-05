@@ -4,6 +4,7 @@ import { Pages, Widget, MetaOptions } from "@/shared/types/template";
 export type EditorEvent =
   | { type: "Pages.Set"; payload: { pages: Pages[] } }
   | { type: "Pages.Reset" }
+  | { type: "Page.SetStyles"; payload: { styles: string } }
   | { type: "Page.SetActive"; payload: { label: Pages["label"] } }
   | { type: "Widget.Added"; payload: { widget: Widget } }
   | {
@@ -23,6 +24,7 @@ export type EditorEvent =
 export interface EditorModelState {
   pages: Pages[];
   widgets: Widget[];
+  styles: string;
   activePageLabel: string | null;
   past: EditorEvent[];
   future: EditorEvent[];
@@ -30,6 +32,7 @@ export interface EditorModelState {
 
 const initialState: EditorModelState = {
   pages: [],
+  styles: "",
   widgets: [],
   activePageLabel: null,
   past: [],
@@ -68,6 +71,14 @@ function editorReducer(
         pages: [],
         widgets: [],
         activePageLabel: null,
+        past: [...state.past, action],
+        future: [],
+      };
+
+    case "Page.SetStyles":
+      return {
+        ...state,
+        styles: action.payload.styles,
         past: [...state.past, action],
         future: [],
       };

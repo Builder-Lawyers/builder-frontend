@@ -23,7 +23,7 @@ export const Editor = ({ sidebar, editorPanel, frame }: EditorProps) => {
       <ResizableHandle className="opacity-0" />
       <ResizablePanel defaultSize={70}>{frame}</ResizablePanel>
       <ResizableHandle className="opacity-0" />
-      <ResizablePanel minSize={10} maxSize={20} defaultSize={15}>
+      <ResizablePanel minSize={0} maxSize={20} defaultSize={0}>
         {editorPanel}
       </ResizablePanel>
     </ResizablePanelGroup>

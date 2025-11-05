@@ -4,7 +4,7 @@ import { Pages } from "@/shared/types/template";
 
 interface UseTemplateLoaderProps {
   id: number;
-  onLoad?: (pages: Pages[]) => void;
+  onLoad?: (pages: Pages[], styles: string) => void;
   onUnload?: () => void;
   deps?: unknown[];
 }
@@ -27,11 +27,11 @@ export const useTemplateLoader = ({
         const meta = await getTemplate(id);
         if (meta.status !== 200) throw new Error("Failed to load template");
 
-        const response = await fetch(meta.data.structure);
-        const json = (await response.json()) as Pages[];
+        const responseJSON = await fetch(meta.data.structure);
+        const pages = (await responseJSON.json()) as Pages[];
 
         if (!cancelled) {
-          onLoad?.(json);
+          onLoad?.(pages, meta.data.styles);
         }
       } catch (err) {
         if (!cancelled) setError(err);

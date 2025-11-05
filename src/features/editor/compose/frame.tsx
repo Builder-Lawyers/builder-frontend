@@ -10,9 +10,10 @@ import { useHighlights } from "@/features/editor/model/use-highlight";
 
 export const FrameViewer = () => {
   const { api } = useWidget();
-  const { widgets } = useEditor();
+  const { widgets, styles } = useEditor();
   const { renderWidget } = useRenderTemplate();
 
+  console.log(styles);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { hoverHighlight, activeHighlight, hoverPos, activePos } =
@@ -20,14 +21,9 @@ export const FrameViewer = () => {
 
   return (
     <Frame>
-      {/*<Frame.Actions>actions</Frame.Actions>*/}
       <Frame.Content>
         <PreviewWrapper>
-          <IFrame
-            ref={iframeRef}
-            injectCSS="/index.css"
-            className="w-full h-full bg-white shadow-lg "
-          >
+          <IFrame ref={iframeRef} className="w-full h-full bg-white shadow-lg ">
             {widgets.map((w) => (
               <div
                 onMouseEnter={hoverHighlight.onElementEvent}
