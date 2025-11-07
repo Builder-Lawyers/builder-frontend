@@ -3,14 +3,14 @@ import {
   Widget as WidgetProps,
   WidgetOptions,
 } from "@/shared/types/template";
-import React, { HTMLAttributes, RefObject, useRef, useState } from "react";
+import React, { HTMLAttributes, RefObject, useState } from "react";
 import { cn } from "@/shared/lib/utils";
 import { Icon } from "@iconify/react";
 
 export const WidgetTitle = ({ label }: { label: WidgetProps["label"] }) => {
   return (
     <div className="flex items-center gap-3">
-      <p className="text-foreground text-[14px]">{label}</p>
+      <p className="text-[14px]">{label}</p>
     </div>
   );
 };
@@ -43,8 +43,8 @@ const WidgetComponent = ({
       {...rest}
       onClick={onClick}
       className={cn(
-        "px-[12px] flex items-center w-full justify-between py-[12px] rounded-2xl duration-150 hover:bg-secondary/[3%]",
-        isActive && "bg-secondary/[5%]",
+        "px-[12px] flex items-center w-full justify-between py-[12px] rounded-2xl duration-150 hover:bg-secondary/60",
+        isActive && "bg-secondary text-primary",
       )}
     >
       <WidgetTitle label={widget.label} />
@@ -93,8 +93,6 @@ interface WidgetContainerProps extends HTMLAttributes<HTMLDivElement> {
 export const Widget = ({ widget, isActive, ...rest }: WidgetContainerProps) => {
   const [isOpen, setIsOpen] = useState(isActive);
 
-  const contentRef = useRef<HTMLDivElement>(null);
-
   return (
     <div className="flex flex-col">
       <WidgetComponent
@@ -107,15 +105,15 @@ export const Widget = ({ widget, isActive, ...rest }: WidgetContainerProps) => {
         }}
         widget={widget}
       />
-      <div
-        className={cn(
-          "transition-all duration-250 ease-in-out overflow-hidden",
-        )}
-      >
-        {/*{isOpen && widget.options && (*/}
-        {/*  <Options contentRef={contentRef} options={widget.options} />*/}
-        {/*)}*/}
-      </div>
+      {/*<div*/}
+      {/*  className={cn(*/}
+      {/*    "transition-all duration-250 ease-in-out overflow-hidden",*/}
+      {/*  )}*/}
+      {/*>*/}
+      {/*  /!*{isOpen && widget.options && (*!/*/}
+      {/*  /!*  <Options contentRef={contentRef} options={widget.options} />*!/*/}
+      {/*  /!*)}*!/*/}
+      {/*</div>*/}
     </div>
   );
 };

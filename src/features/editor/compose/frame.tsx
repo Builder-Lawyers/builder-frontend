@@ -14,12 +14,11 @@ export const FrameViewer = () => {
   const { renderWidget } = useRenderTemplate();
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const { hoverHighlight, hoverPos, activePos } = useHighlights(
+  const { hoverPos, activePos } = useHighlights(
     iframeRef,
     state.selectedWidgetId,
   );
 
-  console.log(state.selectedWidgetId);
   return (
     <Frame>
       <Frame.Content>

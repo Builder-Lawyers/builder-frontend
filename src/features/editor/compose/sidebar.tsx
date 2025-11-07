@@ -46,11 +46,12 @@ export const Sidebar = ({ className }: SidebarProps) => {
           label: "Widgets",
           defaultSize: 70,
           element: (
-            <div className="">
+            <div className="flex flex-col gap-1.5">
               {widgets.map((widget) => (
                 <Widget
                   isActive={state.selectedWidgetId === widget.id}
                   onClick={() => {
+                    console.log(state.selectedWidgetId === widget.id);
                     api.onSelectedWidgetId(widget.id);
                   }}
                   key={widget.id}

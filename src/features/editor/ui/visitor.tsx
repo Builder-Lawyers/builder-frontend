@@ -30,13 +30,13 @@ const OptionsLabel = ({
   icon,
   action,
 }: {
-  icon: ReactNode;
+  icon?: ReactNode;
   label: string;
   action?: ReactNode;
 }) => (
   <div className="flex items-center justify-between w-full">
     <label className="flex items-center gap-2">
-      {icon}
+      {!icon ? <div className="h-6 w-6 bg-gray-200 rounded" /> : icon}
       <p className="capitalize text-[14px]">{label}</p>
     </label>
     {action && action}
@@ -46,7 +46,7 @@ const OptionsLabel = ({
 const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
   text: ({ field, onChange }: { field: TextOption; onChange?: any }) => (
     <div className="flex flex-col gap-1.5">
-      <OptionsLabel icon={<div>icon</div>} label={field.label} />
+      <OptionsLabel label={field.label} />
       {field.changeable.value.length > 40 ? (
         <Textarea
           value={field.changeable.value}
@@ -65,7 +65,7 @@ const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
 
   image: ({ field, onChange }: { field: ImageOption; onChange?: any }) => (
     <div className="flex flex-col gap-2">
-      <OptionsLabel icon={<div>icon</div>} label={field.label} />
+      <OptionsLabel label={field.label} />
       <Input
         type="text"
         value={field.changeable.src}
@@ -87,7 +87,7 @@ const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
 
   link: ({ field, onChange }: { field: LinkOption; onChange?: any }) => (
     <div className="flex flex-col gap-1.5">
-      <OptionsLabel icon={<div>icon</div>} label={field.label} />
+      <OptionsLabel label={field.label} />
       <Input
         type="text"
         value={field.changeable.href}
@@ -106,9 +106,8 @@ const defaultComponents: Record<MetaType, FieldRenderer<any>> = {
   button: ({ field, onChange }: { field: ButtonOption; onChange?: any }) => (
     <div className="flex flex-col gap-1.5">
       <OptionsLabel
-        icon={<div>icon</div>}
         label={field.label}
-        action={<div>icon</div>}
+        action={<div className="h-6 w-6 bg-gray-200 rounded" />}
       />
       <Input
         type="text"
